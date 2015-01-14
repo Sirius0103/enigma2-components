@@ -1,5 +1,5 @@
 # PiconUni
-# Copyright (c) 2boom 2012-14
+# Copyright (c) 2boom 2012-15
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,15 +20,29 @@
 # 02.12.2013 added compatibility with CaidInfo2 (SatName)
 # 18.12.2013 added picon miltipath
 # 27.12.2013 added picon reference
-# 27.01.2014 added nocale parameter (noscale="0" is default, scale picon is on)
+# 27.01.2014 added noscale parameter (noscale="0" is default, scale picon is on)
 # 28.01.2014 code otimization
 # 02.04.2014 added iptv ref code
 # 17.04.2014 added path in plugin dir...
 # 02.07.2014 small fix reference
+# 09.01.2015 redesign code
 
 from Renderer import Renderer 
 from enigma import ePixmap
-from Tools.Directories import fileExists, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename 
+from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename 
+import os
+
+searchPaths = []
+
+def initPiconPaths():
+	global searchPaths
+	if os.path.isfile('/proc/mounts'):
+		for line in open('/proc/mounts'):
+			if '/dev/sd' in line:
+				piconPath = line.split()[1].replace('\\040', ' ') + '/%s/'
+				searchPaths.append(piconPath)
+	searchPaths.append(resolveFilename(SCOPE_CURRENT_SKIN, '%s/'))
+	searchPaths.append(resolveFilename(SCOPE_PLUGINS, '%s/'))
 
 class PiconUni(Renderer):
 	__module__ = __name__
@@ -74,7 +88,7 @@ class PiconUni(Renderer):
 					pngname = self.findPicon('picon_default')
 					if pngname is '':
 						tmp = resolveFilename(SCOPE_CURRENT_SKIN, 'picon_default.png')
-						if fileExists(tmp):
+						if os.path.isfile(tmp):
 							pngname = tmp
 						else:
 							pngname = resolveFilename(SCOPE_SKIN_IMAGE, 'skin_default/picon_default.png')
@@ -93,17 +107,13 @@ class PiconUni(Renderer):
 				self.pngname = pngname
 
 	def findPicon(self, serviceName):
-		searchPaths = []
-		if fileExists('/proc/mounts'):
-			for line in open('/proc/mounts'):
-				if '/dev/sd' in line:
-					searchPaths.append(line.split()[1].replace('\\040', ' ') + "/%s/")
-		searchPaths.append(resolveFilename(SCOPE_CURRENT_SKIN, '%s/'))
-		searchPaths.append(resolveFilename(SCOPE_PLUGINS, '%s/'))
+		global searchPaths
 		pathtmp = self.path.split(',')
 		for path in searchPaths:
-			for i in pathtmp:
-				pngname = (path % i) + serviceName + '.png'
-				if fileExists(pngname):
+			for dirName in pathtmp:
+				pngname = (path % dirName) + serviceName + '.png'
+				if os.path.isfile(pngname):
 					return pngname
 		return ''
+
+initPiconPaths()

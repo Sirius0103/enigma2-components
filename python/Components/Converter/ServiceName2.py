@@ -374,8 +374,6 @@ class ServiceName2(Converter, object):
 			return "StarLink"
 		elif 'udp/239.255.2.' in refstr:
 			return "Planeta"
-		elif 'udp/225.1.' in refstr:
-			return "JetNet"
 		elif 'udp/233.7.70.' in refstr:
 			return "Rostelecom"
 		elif 'udp/239.1.1.' in refstr:
@@ -386,7 +384,7 @@ class ServiceName2(Converter, object):
 			return "MovieStar"
 		elif 'udp/239.0.0.' in refstr:
 			return "Trinity"
-		elif 'udp/239.100.' in refstr or 'udp/233.252.8.' in refstr or 'udp/225.225.225.' in refstr:
+		elif 'udp/239.100.' in refstr or 'udp/233.252.8.' in refstr or 'udp/225.225.225.' in refstr or 'udp/225.1.' in refstr:
 			return "Volia TV"
 		elif '.cn.ru' in refstr or 'novotelecom' in refstr:
 			return "Novotelecom"
@@ -394,6 +392,8 @@ class ServiceName2(Converter, object):
 			return "www.youtube.com"
 		elif '.torrent-tv.ru' in refstr:
 			return "torrent-tv.ru"
+		elif 'tv.lifelink.ru' in refstr:
+			return "tv.lifelink.ru"
 		elif 'sat-elit.net' in refstr:
 			return "iptv.sat-elit.net"
 		elif '//91.201.' in refstr:

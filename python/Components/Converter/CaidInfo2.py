@@ -1,6 +1,6 @@
 #
 #  CaidInfo2 - Converter
-#  ver 1.2.1 28.11.2013
+#  ver 1.2.2 28.12.2014
 #
 #  Coded by bigroma & 2boom
 
@@ -51,6 +51,8 @@ class CaidInfo2(Poll, Converter, object):
 	CRD = 33
 	CRDTXT = 34
 	SHORT = 35
+	IS_FTA = 36
+	IS_CRYPTED = 37
 	my_interval = 1000
 
 
@@ -123,6 +125,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.CRD
 		elif type == "CrdTxt":
 			self.type = self.CRDTXT
+		elif  type == "IsFta":
+			self.type = self.IS_FTA
+		elif  type == "IsCrypted":
+			self.type = self.IS_CRYPTED
 		elif type == "Short":
 			self.type = self.SHORT
 		elif type == "Default" or type == "" or type == None or type == "%":
@@ -173,6 +179,14 @@ class CaidInfo2(Poll, Converter, object):
 			return False
 
 		caids = info.getInfoObject(iServiceInformation.sCAIDs)
+		if self.type is self.IS_FTA:
+			if caids:
+				return False
+			return True
+		if self.type is self.IS_CRYPTED:
+			if caids:
+				return True
+			return False
 		if caids:
 			if self.type == self.SECA:
 				for caid in caids:
