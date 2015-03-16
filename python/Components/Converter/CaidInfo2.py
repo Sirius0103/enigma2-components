@@ -1,6 +1,6 @@
 #
 #  CaidInfo2 - Converter
-#  ver 1.2.2 28.12.2014
+#  ver 1.2.3 15.02.2015
 #
 #  Coded by bigroma & 2boom
 
@@ -536,20 +536,19 @@ class CaidInfo2(Poll, Converter, object):
 								info["source"] = "net"
 								it_tmp = item[1].strip().split(" ")
 								info["ecm time"] = "%s msec" % it_tmp[0]
+								info["reader"] = it_tmp[-1].strip('R0[').strip(']')
 								y = it_tmp[-1].find('[')
 								if y !=-1:
 									info["server"] = it_tmp[-1][:y]
 									info["protocol"] = it_tmp[-1][y+1:-1]
-								#item[0]="port"
-								#item[1] = ""
 								y = it_tmp[-1].find('(')
 								if y !=-1:
 									info["server"] = it_tmp[-1].split("(")[-1].split(":")[0]
 									info["port"] = it_tmp[-1].split("(")[-1].split(":")[-1].rstrip(")")
+									info["reader"] = it_tmp[-2]
 								elif y == -1:
 									item[0] = "source"
 									item[1] = "sci"
-								#y = it_tmp[-1].find('emu')
 								if it_tmp[-1].find('emu') >-1 or it_tmp[-1].find('cache') > -1 or it_tmp[-1].find('card') > -1 or it_tmp[-1].find('biss') > -1:
 									item[0] = "source"
 									item[1] = "emu"

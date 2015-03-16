@@ -394,6 +394,10 @@ class ServiceName2(Converter, object):
 			return "torrent-tv.ru"
 		elif 'tv.lifelink.ru' in refstr:
 			return "tv.lifelink.ru"
+		elif 'svc.iptv.rt.ru' in refstr:
+			return "Onlime"
+		elif 'iptv.rubintele.com' in refstr:
+			return "Rubintelecom"
 		elif 'sat-elit.net' in refstr:
 			return "iptv.sat-elit.net"
 		elif '//91.201.' in refstr:
