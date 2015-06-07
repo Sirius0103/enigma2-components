@@ -1,6 +1,6 @@
 # EcmInfoLine Converter
-# Copyright (c) 2boom 2014
-# v.0.6-r1
+# Copyright (c) 2boom 2014-15
+# v.0.6-r2
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -58,7 +58,9 @@ class EcmInfoLine(Poll, Converter, object):
 			"07" : "DigiCipher",
 			"56" : "Verimatrix",
 			"7B" : "DRE-Crypt",
-			"A1" : "Rosscrypt"}
+			"A1" : "Rosscrypt",
+			"0E" : "PowerVu"
+			}
 
 	@cached
 	def getText(self):
@@ -69,13 +71,10 @@ class EcmInfoLine(Poll, Converter, object):
 		# %C - caid, %P - Provider, %T - time, %U -using, %R - Reader, %S - source, %H - hops, %O - port, %L - Protocol
 		out_data = {'caid':'', 'prov':'', 'time':'', 'using':'', 'protocol':'', 'reader':'', 'port':'', 'source':'', 'hops':''}
 		caid_data = ecm_time = prov_data = using_data = port_data = protocol_data = reader_data = hops_data = display_data = ''
-		caid_mask, prov_mask = '0000', '000000'
 		iscrypt = info.getInfo(iServiceInformation.sIsCrypted)
 		if self.type is self.Auto or self.type is self.Format or self.type is self.PreDefine:
 			if not iscrypt or iscrypt == -1:
 				return _('Free-to-air')
-			#elif not info.endswith(':'):
-				#return _('Free-to-air')
 			elif iscrypt and not os.path.isfile('/tmp/ecm.info'):
 				return _('No parse cannot emu')
 			elif iscrypt and os.path.isfile('/tmp/ecm.info'):
@@ -93,9 +92,7 @@ class EcmInfoLine(Poll, Converter, object):
 				for line in filedata.readlines():
 				##### get caid
 					if "caid:" in line:
-						caid_data = line.strip("\n").split()[-1][2:]
-						if len(caid_data) < 4:
-							caid_data = caid_mask[len(caid_data):] + caid_data
+						caid_data = line.strip("\n").split()[-1][2:].zfill(4)
 					elif "CaID" in line or "CAID" in line:
 						caid_data = line.split(',')[0].split()[-1][2:]
 					if not caid_data is '':
@@ -118,8 +115,8 @@ class EcmInfoLine(Poll, Converter, object):
 						out_data['port'] = ':%s' % port_data
 					##### get prov
 					if 'provid:' in line or 'PROVIDER' in line:
-						prov_data = line.split()[-1].replace('0x', '')
-						prov_data = prov_mask[len(prov_data):] + prov_data
+						prov_data = line.split()[-1].replace('0x', '').zfill(6)
+						#prov_data = prov_mask[len(prov_data):] + prov_data
 					elif ('prov:' in line or 'Provider:' in line) and 'pkey:' not in line:
 						prov_data = line.split()[-1].replace('0x', '')
 					elif 'prov:' in line and 'pkey:' in line:

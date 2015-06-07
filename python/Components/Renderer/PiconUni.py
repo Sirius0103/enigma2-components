@@ -26,10 +26,10 @@
 # 17.04.2014 added path in plugin dir...
 # 02.07.2014 small fix reference
 # 09.01.2015 redesign code
-# 21.02.2015 use picLoad
+# 02.05.2015 add path uuid device
 
 from Renderer import Renderer 
-from enigma import ePixmap, ePicLoad
+from enigma import ePixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename 
 import os
 
@@ -39,7 +39,7 @@ def initPiconPaths():
 	global searchPaths
 	if os.path.isfile('/proc/mounts'):
 		for line in open('/proc/mounts'):
-			if '/dev/sd' in line:
+			if '/dev/sd' in line or '/dev/disk/by-uuid/' in line or '/dev/mmc' in line:
 				piconPath = line.split()[1].replace('\\040', ' ') + '/%s/'
 				searchPaths.append(piconPath)
 	searchPaths.append(resolveFilename(SCOPE_CURRENT_SKIN, '%s/'))
@@ -59,6 +59,8 @@ class PiconUni(Renderer):
 		for (attrib, value,) in self.skinAttributes:
 			if attrib == 'path':
 				self.path = value
+			elif attrib == 'noscale':
+				self.scale = value
 			else:
 				attribs.append((attrib, value))
 		self.skinAttributes = attribs
@@ -93,18 +95,17 @@ class PiconUni(Renderer):
 							pngname = resolveFilename(SCOPE_SKIN_IMAGE, 'skin_default/picon_default.png')
 					self.nameCache['default'] = pngname
 			if not self.pngname is pngname:
-				self.picload = ePicLoad()
-				self.picload.PictureData.get().append(self.piconShow)
-				#0=Width 1=Height 2=Aspect 3=use_cache 4=resize_type 5=Background(#AARRGGBB)
-				self.picload.setPara((self.instance.size().width(), self.instance.size().height(), 1, 1, False, 1, "#00000000"))
-				self.picload.startDecode(pngname)
+				if self.scale is '0':
+					if pngname:
+						self.instance.setScale(1)
+						self.instance.setPixmapFromFile(pngname)
+						self.instance.show()
+					else:
+						self.instance.hide()
+				else:
+					if pngname:
+						self.instance.setPixmapFromFile(pngname)
 				self.pngname = pngname
-
-	def piconShow(self, picInfo = None):
-		ptr = self.picload.getData()
-		if not ptr is None:
-			self.instance.setPixmap(ptr.__deref__())
-		return
 
 	def findPicon(self, serviceName):
 		global searchPaths

@@ -43,7 +43,7 @@ class FanTempInfo(Poll, Converter, object):
 		elif self.type is self.TempInfo:
 			if fileExists("/proc/stb/sensors/temp0/value") and fileExists("/proc/stb/sensors/temp0/unit"):
 				info = "%s%s%s" % (open("/proc/stb/sensors/temp0/value").read().strip('\n'), unichr(176).encode("latin-1"), open("/proc/stb/sensors/temp0/unit").read().strip('\n'))
-			if fileExists("/proc/stb/fp/temp_sensor_avs"): #/proc/stb/fp/temp_sensor_avs
+			if fileExists("/proc/stb/fp/temp_sensor_avs"): 
 				info = "%s%sC" % (open("/proc/stb/fp/temp_sensor_avs").read().strip('\n'), unichr(176).encode("latin-1"))
 		return info
 	
