@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 #EventName2 Converter
-# Copyright (c) 2boom 2012-14
-# v.1.5-r3
+# Copyright (c) 2boom 2012-15
+# v.1.6-r2
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -16,30 +17,37 @@
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from enigma import eEPGCache
-from time import localtime
+from enigma import eEPGCache, eServiceReference
+from time import localtime, time, mktime, strftime
+from datetime import datetime
 
 class EventName2(Converter, object):
 	NAME = 0
-	SHORT_DESCRIPTION = 1
-	EXTENDED_DESCRIPTION = 2
-	FULL_DESCRIPTION = 3
-	ID = 4
-	NEXT_NAME = 5
-	NEXT_DESCRIPTION = 6
-	NEXT_NAMEWT = 7
-	NEXT_NAME_NEXT = 8
-	NEXT_NAME_NEXTWT = 9
-	NEXT_EVENT_LIST = 10
-	NEXT_EVENT_LISTWT = 11
-	NEXT_EVENT_LIST2 = 12
-	NEXT_EVENT_LISTWT2 = 13
-	NEXT_TIME_DURATION = 14
+	NAME_TWEAKED = 1
+	SHORT_DESCRIPTION = 2
+	EXTENDED_DESCRIPTION = 3
+	FULL_DESCRIPTION = 4
+	ID = 5
+	NEXT_NAME = 6
+	NEXT_DESCRIPTION = 7
+	NEXT_NAMEWT = 8
+	NEXT_NAME_NEXT = 9
+	NEXT_NAME_NEXTWT = 10
+	NEXT_EVENT_LIST = 11
+	NEXT_EVENT_LISTWT = 12
+	NEXT_EVENT_LIST2 = 13
+	NEXT_EVENT_LISTWT2 = 14
+	NEXT_TIME_DURATION = 15
+	PRIME_TIME_NO_DURATION = 16
+	PRIME_TIME_ONLY_DURATION = 17
+	PRIME_TIME_WITH_DURATION = 18
 	
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.epgcache = eEPGCache.getInstance()
-		if type == "Description" or type == "Short":
+		if type == "NameTweaked":
+			self.type = self.NAME_TWEAKED
+		elif type == "Description" or type == "Short":
 			self.type = self.SHORT_DESCRIPTION
 		elif type == "ExtendedDescription":
 			self.type = self.EXTENDED_DESCRIPTION
@@ -67,6 +75,12 @@ class EventName2(Converter, object):
 			self.type = self.NEXT_EVENT_LISTWT2
 		elif type == "NextTimeDuration":
 			self.type = self.NEXT_TIME_DURATION
+		elif type == "PrimeTimeNoDuration":
+			self.type = self.PRIME_TIME_NO_DURATION
+		elif type == "PrimeTimeOnlyDuration":
+			self.type = self.PRIME_TIME_ONLY_DURATION
+		elif type == "PrimeTimeWithDuration":
+			self.type = self.PRIME_TIME_WITH_DURATION
 		else:
 			self.type = self.NAME
 
@@ -77,13 +91,19 @@ class EventName2(Converter, object):
 			return ""
 		if self.type is self.NAME:
 			return event.getEventName()
+		elif self.type is self.NAME_TWEAKED:
+			description = '%s %s' % (event.getEventName().strip(), event.getShortDescription().strip())
+			return description.replace('DOLBY, 16:9', '').replace('(', '').replace(')', '').replace('|', '').replace('0+', '').replace('16+', '').replace('6+', '').replace('12+', '').replace('18+', '')
 		elif self.type is self.SHORT_DESCRIPTION:
 			return event.getShortDescription()
 		elif self.type is self.EXTENDED_DESCRIPTION:
 			text = event.getShortDescription()
 			if text and not text[-1] is'\n' and not text[-1] is ' ':
-				text += ' '
-			return text + event.getExtendedDescription() or event.getEventName()
+				text += ' ' 
+			text = text + event.getExtendedDescription() or event.getEventName()
+			if 'EPG-SAT.DE' in text:
+				return ''
+			return text
 		elif self.type is self.FULL_DESCRIPTION:
 			description = event.getShortDescription()
 			extended = event.getExtendedDescription()
@@ -92,6 +112,28 @@ class EventName2(Converter, object):
 			return description + extended
 		elif self.type is self.ID:
 			return str(event.getEventId())
+		elif self.type is self.PRIME_TIME_NO_DURATION or self.type is self.PRIME_TIME_ONLY_DURATION or self.type is self.PRIME_TIME_WITH_DURATION:
+			reference = self.source.service
+			current_event = self.source.getCurrentEvent()
+			if current_event:
+				now = localtime(time())
+				dt = datetime(now.tm_year, now.tm_mon, now.tm_mday, 20, 15)
+				self.epgcache.startTimeQuery(eServiceReference(reference.toString()), int(mktime(dt.timetuple())))
+				next = self.epgcache.getNextTimeEntry()
+				if next and (next.getBeginTime() <= int(mktime(dt.timetuple()))):
+					begin = strftime('%H:%M', localtime(next.getBeginTime()))
+					end = strftime('%H:%M', localtime(next.getBeginTime() + next.getDuration()))
+					title = next.getEventName()
+					duration = _('%d min') % (next.getDuration() / 60)
+					if self.type is self.PRIME_TIME_WITH_DURATION:
+						return '%s - %s (%s)  %s' % (begin, end, duration, title)
+					elif self.type is self.PRIME_TIME_ONLY_DURATION:
+						return duration
+					elif self.type == self.PRIME_TIME_NO_DURATION:
+						return '%s - %s  %s' % (begin, end, title)
+					else:
+						return ''
+			return ''
 		elif self.type is self.NEXT_NAME or self.type is self.NEXT_TIME_DURATION or self.type is self.NEXT_DESCRIPTION or self.type is self.NEXT_NAMEWT:
 			reference = self.source.service
 			info = reference and self.source.info
@@ -103,9 +145,9 @@ class EventName2(Converter, object):
 						duration = _("%d min") % (int(0 if eventNext[0][2] is None else eventNext[0][2]) / 60)
 						if len(eventNext[0]) > 4 and eventNext[0][4]:
 							if self.type is self.NEXT_NAME:
-								return "%02d:%02d  (%s)  %s" % (t[3], t[4], duration, eventNext[0][4])
+								return "%02d:%02d (%s) %s" % (t[3], t[4], duration, eventNext[0][4])
 							elif self.type is self.NEXT_TIME_DURATION:
-								return "%02d:%02d  (%s)" % (t[3], t[4], duration)
+								return "%02d:%02d (%s)" % (t[3], t[4], duration)
 							else:
 								return "%s" %  eventNext[0][4]
 						else:
@@ -113,6 +155,8 @@ class EventName2(Converter, object):
 					elif self.type is self.NEXT_DESCRIPTION:
 						for i in (6, 5, 4):
 							if len(eventNext[0]) > i and eventNext[0][i]:
+								if 'EPG-SAT.DE' in eventNext[0][i]:
+									return ''
 								return "%s" %  eventNext[0][i]
 				else:
 					return ''
@@ -157,3 +201,5 @@ class EventName2(Converter, object):
 			return ''
 
 	text = property(getText)
+
+   

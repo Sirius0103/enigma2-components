@@ -18,6 +18,8 @@
 # Version: 1.6 (14.10.2014) add Tricolor Sibir prov - 2boom
 # Version: 1.7 (10.03.2015) remove Tricolor Sibir prov - 2boom
 # Version: 1.8 (15.03.2015) add custom provname - 2boom
+# Version: 1.9 (31.07.2015) add custom provname for custom name channel- 2boom
+# Version: 2.0 (29.08.2015) custom provname fix - 2boom
 # Support: http://dream.altmaster.net/ & http://gisclub.tv & http://2boom-2boom.blogspot.com
 #
 
@@ -235,6 +237,8 @@ class ServiceName2(Converter, object):
 					result += _("Cable")
 				elif type == 'DVB-T':
 					result += _("Terrestrial")
+				elif type == 'DVB-T2':
+					result += _("T2")
 				elif type == 'IP-TV':
 					result += _('Stream-tv')
 				else:
@@ -247,7 +251,8 @@ class ServiceName2(Converter, object):
 					result += type
 			elif f == 'F':	# %F - frequency (dvb-s/s2/c/t) in KHz
 				if type in ('DVB-S','DVB-C','DVB-T'):
-					result += '%d'%(self.tpdata.get('frequency', 0) / 1000) 
+					result += '%d'% round(self.tpdata.get('frequency', 0) / 1000.0)
+					
 			elif f == 'f':	# %f - fec_inner (dvb-s/s2/c/t)
 				if type in ('DVB-S','DVB-C'):
 					x = self.tpdata.get('fec_inner', 15)
@@ -351,26 +356,18 @@ class ServiceName2(Converter, object):
 		return ""
 
 	def getIPTVProvider(self, refstr):
-		if 'tvshka' in refstr or ('::' in refstr and '2' == refstr.split(':')[-3]):
-			return "SCHURA"
-		elif 'kirito.la.net.ua' in refstr or ('::' in refstr and '3' == refstr.split(':')[-3]):
+		if 'kirito.la.net.ua' in refstr or ('::' in refstr and '3' == refstr.split(':')[-3]):
 			return "Lanet"
-		elif '3a7777' in refstr or ('::' in refstr and '4' == refstr.split(':')[-3]):
-			return "IPTVNTV"
-		elif 'KartinaTV' in refstr or ('::' in refstr and '5' == refstr.split(':')[-3]):
-			return "KartinaTV"
+		elif 'Kartina.TV' in refstr or ':FF01:' in refstr or ('::' in refstr and ':FF01:' == refstr.split(':')[-3]):
+			return "Kartina.TV"
 		elif 'Megaimpuls' in refstr or ('::' in refstr and '6' == refstr.split(':')[-3]):
-			return "MEGAIMPULSTV"
+			return "MegaImpuls.TV"
 		elif 'Newrus' in refstr or ('::' in refstr and '7' == refstr.split(':')[-3]):
-			return "NEWRUSTV"
-		elif 'Sovok' in refstr or ('::' in refstr and '8' == refstr.split(':')[-3]):
-			return "SOVOKTV"
-		elif 'Rodnoe' in refstr or ('::' in refstr and '9' == refstr.split(':')[-3]):
-			return "RODNOETV"
+			return "NewRus.TV"
 		elif '238.1.1.' in refstr or ('::' in refstr and 'A' == refstr.split(':')[-3]):
 			return "Matrix"
 		elif 'cdnet' in refstr or ('::' in refstr and 'B' == refstr.split(':')[-3]):
-			return "NonameTV"
+			return "Noname.TV"
 		elif 'unicast' in refstr or ('::' in refstr and 'C' == refstr.split(':')[-3]):
 			return "StarLink"
 		elif 'udp/239.255.2.' in refstr or ('::' in refstr and 'D' == refstr.split(':')[-3]):
@@ -378,7 +375,7 @@ class ServiceName2(Converter, object):
 		elif 'udp/233.7.70.' in refstr or '239.4.0.' in refstr or '239.4.1.' in refstr or '239.5.0' in refstr or ('::' in refstr and 'E' == refstr.split(':')[-3]):
 			return "Rostelecom"
 		elif 'udp/239.1.1.' in refstr or ('::' in refstr and 'F' == refstr.split(':')[-3]):
-			return "Real"
+			return "InfoMir"
 		elif 'udp/238.0.' in refstr or 'udp/233.191.' in refstr or ('::' in refstr and 'A1' == refstr.split(':')[-3]):
 			return "Triolan"
 		elif '%3a8208' in refstr or ('::' in refstr and 'A2' == refstr.split(':')[-3]):
@@ -387,7 +384,7 @@ class ServiceName2(Converter, object):
 			return "Trinity"
 		elif 'udp/239.100.' in refstr or 'udp/233.252.8.' in refstr or 'udp/225.225.225.' in refstr or 'udp/225.1.' in refstr or ('::' in refstr and 'A4' == refstr.split(':')[-3]):
 			return "Volia TV"
-		elif '.cn.ru' in refstr or 'novotelecom' in refstr or ('::' in refstr and 'A5' == refstr.split(':')[-3]):
+		elif 'novotelecom' in refstr or ('::' in refstr and 'A5' == refstr.split(':')[-3]):
 			return "Novotelecom"
 		elif 'www.youtube.com' in refstr or ('::' in refstr and 'A6' == refstr.split(':')[-3]):
 			return "www.youtube.com"
@@ -399,9 +396,9 @@ class ServiceName2(Converter, object):
 			return "trofey.net"
 		elif '31.28.169.242' in refstr or ('::' in refstr and 'AA' == refstr.split(':')[-3]):
 			return "say.tv"
-		elif 'svc.iptv.rt.ru' in refstr or 'hls.svc.moyo.tv' in refstr or '46.61.226.18' in refstr or ('::' in refstr and 'AB' == refstr.split(':')[-3]):
+		elif '/hls/CH_' in refstr or ('::' in refstr and 'FF07' == refstr.split(':')[-3]):
 			return "Zabava TV"
-		elif 'peerstv.ufanet.ru' in refstr or ('::' in refstr and 'AC' == refstr.split(':')[-3]):
+		elif 'peerstv.ufanet.ru' in refstr or '.cn.ru' in refstr or ('::' in refstr and 'AC' == refstr.split(':')[-3]):
 			return "Peers TV"
 		elif 'cosmo.divan.tv' in refstr or ('::' in refstr and '1' == refstr.split(':')[-3]):
 			return "Divan.TV"
@@ -417,10 +414,16 @@ class ServiceName2(Converter, object):
 			return "PAC12"
 		elif 'iseehd' in refstr or ('::' in refstr and 'B4' == refstr.split(':')[-3]):
 			return "IseeHD"
+		elif 'hls.svc.moyo.tv' in refstr or ('::' in refstr and 'B5' == refstr.split(':')[-3]):
+			return "Moyo TV"
+		elif '195.2.237.' in refstr or '195.2.236.' in refstr or ('::' in refstr and 'B6' == refstr.split(':')[-3]):
+			return "Lan4Ever TV"
+		elif ':521:' in refstr or ('::' in refstr and 'B7' == refstr.split(':')[-3]):
+			return "SHURA.TV"
+		elif 'sovok' in refstr or ('::' in refstr and 'B8' == refstr.split(':')[-3]):
+			return "Sovok.Tv"
 		elif '4097' in refstr or ('::' in refstr and 'B3' == refstr.split(':')[-3]):
 			return "StreamTV"
-		elif '%3a1234' in refstr:
-			return "IPTV1"
 		return ""
 
 	def getPlayingref(self, ref):
@@ -497,6 +500,8 @@ class ServiceName2(Converter, object):
 			info = service and self.source.info
 			ref = service
 		if not info: return ""
+		refname = 'ServiceName2.ref'
+		searchpath = ['/etc/enigma2/', '/usr/lib/enigma2/python/Components/Converter/']
 		if ref:
 			refstr = ref.toString()
 		else:
@@ -537,21 +542,17 @@ class ServiceName2(Converter, object):
 			return bouq
 		elif self.type == self.PROVIDER:
 			tmpprov = tmpref = refpath = ''
-			refname = 'ServiceName2.ref'
-			searchpath = ['/etc/enigma2/', '/usr/lib/enigma2/python/Components/Converter/']
 			if self.isStream:
-				#if self.refstr and ('%3a//' in self.refstr or '%3a//' in self.refstr):
-					#return self.getIPTVProvider(self.refstr)
 				if self.refstr:
-					return self.getIPTVProvider(self.refstr)
-				return self.getIPTVProvider(refstr)
+					tmpprov = self.getIPTVProvider(self.refstr)
+				tmpprov = self.getIPTVProvider(refstr)
 			else:
 				if self.ref:
-					tmpprov += self.getProviderName(self.ref)
+					tmpprov = self.getProviderName(self.ref)
 				if ref:
-					tmpprov += self.getProviderName(ref)
+					tmpprov = self.getProviderName(ref)
 				else: 
-					tmpprov += info.getInfoString(iServiceInformation.sProvider) or ''
+					tmpprov = info.getInfoString(iServiceInformation.sProvider) or ''
 			if '' is tmpprov or 'Unknown' in tmpprov:
 				if self.refstr:
 					tmpref = self.refstr
@@ -561,11 +562,13 @@ class ServiceName2(Converter, object):
 					if os.path.isfile('%s%s' % (searchpath[i], refname)):
 						refpath = '%s%s' % (searchpath[i], refname)
 				if not '' is refpath:
-					for line in open(refpath):
-						if tmpref in line:
-							tmpprov = line.split(':')[-1].strip('\r').strip('\n').strip()
-						elif '::' in line:
-							tmpprov = line.split(':')[-1].strip('\r').strip('\n').strip()
+					tmpref = ':'.join(tmpref.split(':')[:10])
+					reffile = open(refpath, 'r').read()
+					if not reffile.endswith('\r\n\r\n'):
+						reffile = '%s\r\n' % reffile
+					for line in reffile.splitlines(True):
+						if line.startswith(tmpref):
+							tmpprov = line.strip('\r').strip('\n').split(':')[-1].strip()
 				return tmpprov
 			return tmpprov
 		elif self.type == self.REFERENCE:
@@ -633,29 +636,34 @@ class ServiceName2(Converter, object):
 					num, bouq = self.getServiceNumber(ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref)))
 					ret += bouq
 				elif f == 'P':	# %P - Provider
-				
-					tmpprov = ''
+					tmpprov = tmpref = refpath = ''
 					if self.isStream:
-						if self.refstr and '%3a//' in self.refstr:
+						if self.refstr:
 							tmpprov = self.getIPTVProvider(self.refstr)
-						else:
-							tmpprov = self.getIPTVProvider(refstr)
+						tmpprov = self.getIPTVProvider(refstr)
 					else:
 						if self.ref:
 							tmpprov = self.getProviderName(self.ref)
-						else:
-							if ref:
-								tmpprov = self.getProviderName(ref)
-							else: 
-								tmpprov = info.getInfoString(iServiceInformation.sProvider) or ''
-					#tmpprov = ''
-					#tmpprov = ref and self.getProviderName(ref) or info.getInfoString(iServiceInformation.sProvider)
+						if ref:
+							tmpprov = self.getProviderName(ref)
+						else: 
+							tmpprov = info.getInfoString(iServiceInformation.sProvider) or ''
 					if '' is tmpprov or 'Unknown' in tmpprov:
-						if os.path.isfile('/etc/enigma2/ServiceName2.ref'):
-							for line in open('/etc/enigma2/ServiceName2.ref'):
-								if tmpref in line:
-									tmpprov = line.split(':')[-1].strip('\r').strip('\n').strip()
-					#ret += ref and self.getProviderName(ref) or info.getInfoString(iServiceInformation.sProvider)
+						if self.refstr:
+							tmpref = self.refstr
+						else:
+							tmpref = refstr
+						for i in range(len(searchpath)):
+							if os.path.isfile('%s%s' % (searchpath[i], refname)):
+								refpath = '%s%s' % (searchpath[i], refname)
+						if not '' is refpath:
+							tmpref = ':'.join(tmpref.split(':')[:10])
+							reffile = open(refpath, 'r').read()
+							if not reffile.endswith('\r\n\r\n'):
+								reffile = '%s\r\n' % reffile
+							for line in reffile.splitlines(True):
+								if line.startswith(tmpref):
+									tmpprov = line.strip('\r').strip('\n').split(':')[-1].strip()
 					ret += tmpprov	
 				elif f == 'R':	# %R - Reference
 					if self.refstr:

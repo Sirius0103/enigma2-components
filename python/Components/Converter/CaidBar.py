@@ -1,6 +1,6 @@
 # CaidBar Converter
-# Copyright (c) 2boom 2014
-# v.0.3-r7
+# Copyright (c) 2boom 2014-15
+# v.0.3-r8
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -31,9 +31,9 @@ class CaidBar(Poll, Converter, object):
 		self.ecmcolor = self.convert_color(self.type[2].strip())
 		self.poll_interval = 1000
 		self.poll_enabled = True
-		self.caid_default = ['B', 'D', 'I', 'S', 'V', 'N', 'EX', 'CW', 'ND', 'CO', 'BI']
+		self.caid_default = ['B', 'D', 'I', 'S', 'V', 'N', 'PV', 'CW', 'ND', 'CO', 'BI']
 		self.txt_caids = {'26':'BI', '01':'S', '06':'I', '17':'B', '05':'V', '18':'N', '09':'ND', '0B':'CO', '0D':'CW', '4A':'D', '27':'EX',\
-			'7B':'D',  '0E':'PV', '22':'CC', '07':'DC', '56':'VM', 'A1':'RC', 'FF':'FF'}
+			'7B':'D', '0E':'PV', '22':'CC', '07':'DC', '56':'VM', 'A1':'RC', 'FF':'FF'}
 	
 	def convert_color(self, color_in):
 		hex_color = {'0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9',\
@@ -45,7 +45,6 @@ class CaidBar(Poll, Converter, object):
 
 	def getCaidInEcmFile(self):
 		caidvalue = return_line = ''
-		zero_line = '0000'
 		ecm_files = ['/tmp/ecm.info', '/tmp/ecm1.info'] # Tuner A,B
 		for ecm_file in ecm_files:
 			if os.path.isfile(ecm_file):
@@ -56,9 +55,7 @@ class CaidBar(Poll, Converter, object):
 				if filedata:
 					for line in filedata.readlines():
 						if "caid:" in line:
-							caidvalue = line.strip("\n").split()[-1][2:]
-							if len(caidvalue) < 4:
-								caidvalue = zero_line[len(caidvalue):] + caidvalue
+							caidvalue = line.strip("\n").split()[-1][2:].zfill(4)
 						elif "CaID" in line or "CAID" in line:
 							caidvalue = line.split(',')[0].split()[-1][2:]
 					return_line += ' %s ' % self.txt_caids.get(caidvalue[:2].upper(), ' ')

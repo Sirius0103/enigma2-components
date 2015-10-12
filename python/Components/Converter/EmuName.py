@@ -44,6 +44,11 @@ class EmuName(Poll, Converter, object):
 				#nofile = True
 			else: 
 				camdname = None
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
+			for line in open("/etc/image-version"):
+				if "=AAF" in line or "=openATV" in line:
+					if config.softcam.actCam.value: 
+						camdname = StringIO(config.softcam.actCam.value)
 		# VTI 	
 		elif fileExists("/tmp/.emu.info"):
 			try:

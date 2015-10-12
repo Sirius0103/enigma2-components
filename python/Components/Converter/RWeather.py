@@ -106,7 +106,7 @@ class RWeather(Poll, Converter, object):
 				for i in range(3, len(weather_data[0].split())):
 					rweather['city'] += weather_data[0].split()[i] + ' '
 				rweather['city'] = rweather['city'].strip()
-				rweather['temp'] = weather_data[-3].split()[0]
+				rweather['temp'] = '%s%sC' % (weather_data[-3].split()[0][:-3],unichr(176).encode("latin-1"))
 				for i in range(1, len(weather_data[-3].split())):
 					rweather['condition'] += weather_data[-3].split()[i].strip(',') + ' '
 				rweather['condition'] = rweather['condition'].strip()
