@@ -356,7 +356,7 @@ class ServiceName2(Converter, object):
 		return ""
 
 	def getIPTVProvider(self, refstr):
-		if 'kirito.la.net.ua' in refstr or ('::' in refstr and '3' == refstr.split(':')[-3]):
+		if 'kirito.la.net.ua' in refstr or '.lanet.tv' in refstr or ('::' in refstr and '3' == refstr.split(':')[-3]):
 			return "Lanet"
 		elif 'Kartina.TV' in refstr or ':FF01:' in refstr or ('::' in refstr and ':FF01:' == refstr.split(':')[-3]):
 			return "Kartina.TV"
@@ -664,7 +664,7 @@ class ServiceName2(Converter, object):
 							for line in reffile.splitlines(True):
 								if line.startswith(tmpref):
 									tmpprov = line.strip('\r').strip('\n').split(':')[-1].strip()
-					ret += tmpprov	
+					ret += tmpprov
 				elif f == 'R':	# %R - Reference
 					if self.refstr:
 						ret += self.refstr

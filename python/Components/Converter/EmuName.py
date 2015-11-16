@@ -1,6 +1,6 @@
 # EmuName
 # Copyright (c) 2boom & Taapat 2013-14
-# v.1.1
+# v.1.2
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -40,15 +40,14 @@ class EmuName(Poll, Converter, object):
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.py"):
 			if config.plugins.AltSoftcam.actcam.value != "none":
 				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
-				#camdname = config.plugins.AltSoftcam.actcam.value
-				#nofile = True
 			else: 
 				camdname = None
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
-			for line in open("/etc/image-version"):
-				if "=AAF" in line or "=openATV" in line:
-					if config.softcam.actCam.value: 
-						camdname = StringIO(config.softcam.actCam.value)
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart") and not fileExists("/etc/init.d/softcam") and not fileExists("/etc/init.d/cardserver"):
+			if fileExists('/etc/issue'):
+				for line in open('/etc/issue'):
+					if 'openatv' in line.lower():
+						if config.softcam.actCam.value: 
+							camdname = StringIO(config.softcam.actCam.value)
 		# VTI 	
 		elif fileExists("/tmp/.emu.info"):
 			try:
@@ -117,7 +116,6 @@ class EmuName(Poll, Converter, object):
 
 		if cardname:
 			for line in cardname:
-				#info2 = ""
 				if 'oscam' in line.lower():
 					info2 = 'oscam'
 				elif 'newcs' in line.lower():
