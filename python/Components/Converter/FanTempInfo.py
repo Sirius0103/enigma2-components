@@ -1,6 +1,6 @@
 # FanTempInfo Converter  v.0.3
-# Copyright (c) 2boom 2012-14
-# v.0.4-r0
+# Copyright (c) 2boom 2012-15
+# v.0.5-r1
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
 from Poll import Poll
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from Tools.Directories import fileExists
+import os
 
 class FanTempInfo(Poll, Converter, object):
 	FanInfo = 0
@@ -38,13 +38,20 @@ class FanTempInfo(Poll, Converter, object):
 	def getText(self):
 		info = 'N/A'
 		if self.type is self.FanInfo:
-			if fileExists("/proc/stb/fp/fan_speed"):
+			if os.path.isfile("/proc/stb/fp/fan_speed"):
 				info = open("/proc/stb/fp/fan_speed").read().strip('\n')
+			elif os.path.isfile("/proc/stb/fp/fan_pwm"):
+				info = open("/proc/stb/fp/fan_pwm").read().strip('\n')
+			
 		elif self.type is self.TempInfo:
-			if fileExists("/proc/stb/sensors/temp0/value") and fileExists("/proc/stb/sensors/temp0/unit"):
+			if os.path.isfile("/proc/stb/sensors/temp0/value") and os.path.isfile("/proc/stb/sensors/temp0/unit"):
 				info = "%s%s%s" % (open("/proc/stb/sensors/temp0/value").read().strip('\n'), unichr(176).encode("latin-1"), open("/proc/stb/sensors/temp0/unit").read().strip('\n'))
-			if fileExists("/proc/stb/fp/temp_sensor_avs"): 
+			elif os.path.isfile("/proc/stb/fp/temp_sensor_avs"): 
 				info = "%s%sC" % (open("/proc/stb/fp/temp_sensor_avs").read().strip('\n'), unichr(176).encode("latin-1"))
+			elif os.path.isfile("/proc/stb/fp/temp_sensor"): 
+				info = "%s%sC" % (open("/proc/stb/fp/temp_sensor").read().strip('\n'), unichr(176).encode("latin-1"))
+			if info.startswith('0'):
+				info = 'N/A'
 		return info
 	
 	text = property(getText)

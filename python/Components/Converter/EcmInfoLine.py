@@ -1,6 +1,6 @@
 # EcmInfoLine Converter
-# Copyright (c) 2boom 2014-15
-# v.0.6-r2
+# Copyright (c) 2boom 2014-16
+# v.0.6-r4
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -163,11 +163,15 @@ class EcmInfoLine(Poll, Converter, object):
 					#### get source
 					if 'emu' in line:
 						out_data['source'] = 'emu'
-					elif 'response time:' and '[' and ']'in line:
+					elif 'response time:' in line and 'by EMU' in line:
 						out_data['source'] = 'emu'
-					elif 'response time:' and 'cache'in line:
+					elif 'response time:' in line and '[' in line and ']'in line:
+						out_data['source'] = 'emu'
+					elif 'response time:' in line and 'cache'in line:
 						out_data['source'] = 'emu'
 					elif 'source:' in line and 'card' in line and 'biss' in line:
+						out_data['source'] = 'emu'
+					elif 'protocol' in line and 'virtual' in line:
 						out_data['source'] = 'emu'
 					elif 'local' in line:
 						out_data['source'] = 'sci'

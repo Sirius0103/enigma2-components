@@ -1,6 +1,6 @@
 #
 #  CaidInfo2 - Converter
-#  ver 1.2.3 15.02.2015
+#  ver 1.2.4 29.02.2016
 #
 #  Coded by bigroma & 2boom
 
@@ -333,6 +333,10 @@ class CaidInfo2(Poll, Converter, object):
 			if self.type == self.CRYPT2:
 				self.poll_interval = self.my_interval
 				self.poll_enabled = True
+				info = service and service.info()
+				if info:
+					if not info.getInfoObject(iServiceInformation.sCAIDs):
+						return 'fta'
 				ecm_info = self.ecmfile()
 				if fileExists("/tmp/ecm.info"):
 					try:

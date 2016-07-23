@@ -15,7 +15,7 @@
 #  modify it (if you keep the license), but it may not be commercially 
 #  distributed other than under the conditions noted above.
 #  
-#  mod by 2boom 2013-14 20.09.2014
+#  mod by 2boom 2013-15 08.12.2015
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, eTimer, eServiceReference
@@ -61,7 +61,7 @@ class Bitrate2(Converter, object):
 		vpid = apid = dvbnamespace = tsid = onid = -1
 		if binaryfound:
 			if service:
-				serviceInfo = service.info()
+				serviceInfo = service and service.info()
 				vpid = serviceInfo.getInfo(iServiceInformation.sVideoPID)
 				apid = serviceInfo.getInfo(iServiceInformation.sAudioPID)
 				tsid = serviceInfo.getInfo(iServiceInformation.sTSID)
@@ -108,4 +108,7 @@ class Bitrate2(Converter, object):
 			elif what[1] is iPlayableService.evEnd:
 				self.clearData()
 				Converter.changed(self, what)
+		elif what[0] is self.CHANGED_POLL:
+			#self.downstream_elements.changed(what)
+			self.initTimer.start(500, True)
 

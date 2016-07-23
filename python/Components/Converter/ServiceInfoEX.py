@@ -1,6 +1,6 @@
 # ServiceInfoEX
 # Copyright (c) 2boom 2013-14
-# v.1.4.0 27.04.2014
+# v.1.4.1 14.02.2016
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -316,7 +316,10 @@ class ServiceInfoEX(Poll, Converter, object):
 			subservices = service.subServices()
 			return subservices and subservices.getNumberOfSubservices() > 0
 		elif self.type == self.HAS_HBBTV:
-			return info.getInfoString(iServiceInformation.sHBBTVUrl) != ""
+			try:
+				return info.getInfoString(iServiceInformation.sHBBTVUrl) != ""
+			except:
+				pass
 		elif self.type == self.AUDIOTRACKS_AVAILABLE:
 			audio = service.audioTracks()
 			return audio and audio.getNumberOfTracks() > 1

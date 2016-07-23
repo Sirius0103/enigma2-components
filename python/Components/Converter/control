@@ -1,0 +1,11 @@
+Package: enigma2-plugin-extensions-skin-lib
+Version: 8.3-r0
+Description: skin convertors & renderers
+Section: extra
+Priority: optional
+Maintainer: 2boom
+Architecture: all
+OE: enigma2-plugin-extensions-skin-lib
+Homepage: 4bob@ua.fm
+Depends: 
+Source:

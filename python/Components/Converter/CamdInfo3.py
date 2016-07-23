@@ -1,4 +1,4 @@
-# 2boom 2011-15
+# 2boom 2011-16
 #  CamdInfo3 - Converter
 # <widget source="session.CurrentService" render="Label" position="189,397" zPosition="4" size="350,20" noWrap="1" valign="center" halign="center" font="Regular;14" foregroundColor="clText" transparent="1"  backgroundColor="#20002450">
 #	<convert type="CamdInfo">Camd</convert>
@@ -44,10 +44,8 @@ class CamdInfo3(Poll, Converter, object):
 		elif fileExists("/tmp/ucm_cam.info"):
 			return open("/tmp/ucm_cam.info").read()
 		# egami
-		elif os.path.isfile("/tmp/egami.inf"):
-			for line in open("/tmp/egami.inf"):
-				if 'Current emulator:' in line:
-					return line.split(':')[-1].lstrip().strip('\n')
+		elif os.path.isfile("/etc/CurrentEGCamName"):
+			return open("/etc/CurrentEGCamName").read()
 		# Pli
 		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
 			try:
