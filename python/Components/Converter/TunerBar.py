@@ -1,6 +1,6 @@
 # TunerBar Converter
-# Copyright (c) 2boom 2014
-# v.0.2-r0
+# Copyright (c) 2boom 2014-16
+# v.0.3-r0
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -37,7 +37,8 @@ class TunerBar(Converter, object):
 
 	@cached
 	def getText(self):
-		string = ''
+		string = stringout = ''
+		nimletter = []
 		for nim in nimmanager.nim_slots:
 			if nim.type:
 				if nim.slot is self.source.slot_number:
@@ -47,6 +48,14 @@ class TunerBar(Converter, object):
 				else:
 					string += self.maincolor
 				string += chr(ord("A") + nim.slot) + '  '
-		return string
+		for letter in string.split():
+			nimletter.append(letter)
+		fbc = len(nimletter)/4         
+		for count in range(0, len(nimletter)):
+			if count < fbc:
+				stringout += nimletter[count] + '  '
+			if count >= fbc * 4:
+				stringout +=  nimletter[count] + '  '
+		return stringout
 
 	text = property(getText)

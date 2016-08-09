@@ -1,6 +1,6 @@
 #
 #  CaidInfo2 - Converter
-#  ver 1.2.4 29.02.2016
+#  ver 1.2.5 02.08.2016
 #
 #  Coded by bigroma & 2boom
 
@@ -302,7 +302,8 @@ class CaidInfo2(Poll, Converter, object):
 					if source == "sci":
 						return True
 					#wicardd
-					if source != "cache" and source != "net" and source.find("emu") == -1:
+					#if source != "cache" and source != "net" and source.find("emu") == -1:
+					if source != "cache" and source != "net" and source != "emu":
 						return True
 					return False
 				source = ecm_info.get("source", "")
@@ -493,10 +494,10 @@ class CaidInfo2(Poll, Converter, object):
 									pass
 					else:
 						if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
-							textvalue = "No parse cannot emu"
+							textvalue = _("No parse cannot emu")
 				else:
 					if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
-						textvalue = "Free-to-air"
+						textvalue = _("Free-to-air")
 		return textvalue
 
 	text = property(getText)
@@ -553,7 +554,7 @@ class CaidInfo2(Poll, Converter, object):
 								elif y == -1:
 									item[0] = "source"
 									item[1] = "sci"
-								if it_tmp[-1].find('emu') >-1 or it_tmp[-1].find('cache') > -1 or it_tmp[-1].find('card') > -1 or it_tmp[-1].find('biss') > -1:
+								if it_tmp[-1].find('emu') >-1 or it_tmp[-1].find('EMU') >-1 or it_tmp[-1].find('cache') > -1 or it_tmp[-1].find('card') > -1 or it_tmp[-1].find('biss') > -1:
 									item[0] = "source"
 									item[1] = "emu"
 							elif item[0] == "hops":
