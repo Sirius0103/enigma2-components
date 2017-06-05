@@ -146,6 +146,8 @@ class EmuName(Poll, Converter, object):
 						info = 'mgcamd'
 					elif 'oscam' in line.lower():
 						info = 'oscam'
+					elif 'ncam' in line.lower():
+						info = 'ncam'
 					elif 'wicard' in line.lower():
 						info = 'wicardd'
 					elif 'cccam' in line.lower():

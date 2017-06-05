@@ -142,7 +142,7 @@ class CaidInfo2(Poll, Converter, object):
 			"01" : "Seca Mediaguard",
 			"06" : "Irdeto",
 			"17" : "BetaCrypt",
-			"05" : "Viacces",
+			"05" : "Viaccess",
 			"18" : "Nagravision",
 			"09" : "NDS-Videoguard",
 			"0B" : "Conax",
@@ -302,7 +302,6 @@ class CaidInfo2(Poll, Converter, object):
 					if source == "sci":
 						return True
 					#wicardd
-					#if source != "cache" and source != "net" and source.find("emu") == -1:
 					if source != "cache" and source != "net" and source != "emu":
 						return True
 					return False
@@ -311,13 +310,11 @@ class CaidInfo2(Poll, Converter, object):
 					return using == "emu" or source == "emu" or source == "card" or reader == "emu" or source.find("card") > -1 or source.find("emu") > -1 or source.find("biss") > -1 or source.find("cache") > -1
 				source = ecm_info.get("source", "")
 				if self.type == self.IS_NET:
-					if using == "CCcam-s2s":
+					if using == "CCcam":
 						return 1
 					else:
 						if source != "cache" and source == "net" and source.find("emu") == -1:
 							return True
-						#return  (source != None and source == "net") or (source != None and source != "sci") or (source != None and source != "emu") or (reader != None and reader != "emu") or (source != None and source != "card") 
-						
 				else:
 					return False
 

@@ -1,6 +1,6 @@
 # CaidBar Converter
-# Copyright (c) 2boom 2014-15
-# v.0.3-r8
+# Copyright (c) 2boom 2014-16
+# v.0.4-r0
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -25,15 +25,20 @@ class CaidBar(Poll, Converter, object):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
+		self.caid_default = []
 		self.type = type.split(',')
 		self.maincolor = self.convert_color(self.type[0].strip())
 		self.emmcolor = self.convert_color(self.type[1].strip())
 		self.ecmcolor = self.convert_color(self.type[2].strip())
+		if len(self.type) > 3:
+			self.caid_default = self.type[-1].split()
+		else:
+			self.caid_default = ['B', 'D', 'I', 'S', 'V', 'N', 'PV', 'CW', 'ND', 'CO', 'BI']
 		self.poll_interval = 1000
 		self.poll_enabled = True
-		self.caid_default = ['B', 'D', 'I', 'S', 'V', 'N', 'PV', 'CW', 'ND', 'CO', 'BI']
-		self.txt_caids = {'26':'BI', '01':'S', '06':'I', '17':'B', '05':'V', '18':'N', '09':'ND', '0B':'CO', '0D':'CW', '4A':'D', '27':'EX',\
+		self.txt_caids = {'26':'BI', '01':'S', '06':'I', '17':'B', '05':'V', '55':'BU', '18':'N', '09':'ND', '0B':'CO', '0D':'CW', '27':'EX',\
 			'7B':'D', '0E':'PV', '22':'CC', '07':'DC', '56':'VM', 'A1':'RC', 'FF':'FF'}
+		self.txt_dre_caids = {'E0':'D', 'E1':'D', 'EE':'BU', 'D0':'XC', 'D1':'XC', '70':'DM', 'EA':'CG', '20':'AC'}
 	
 	def convert_color(self, color_in):
 		hex_color = {'0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9',\
@@ -58,7 +63,10 @@ class CaidBar(Poll, Converter, object):
 							caidvalue = line.strip("\n").split()[-1][2:].zfill(4)
 						elif "CaID" in line or "CAID" in line:
 							caidvalue = line.split(',')[0].split()[-1][2:]
-					return_line += ' %s ' % self.txt_caids.get(caidvalue[:2].upper(), ' ')
+					if caidvalue.upper().startswith('4A'):
+						return_line += ' %s ' % self.txt_dre_caids.get(caidvalue[2:].upper(), ' ')
+					else:
+						return_line += ' %s ' % self.txt_caids.get(caidvalue[:2].upper(), ' ')
 					filedata.close()
 		return return_line
 
@@ -91,7 +99,10 @@ class CaidBar(Poll, Converter, object):
 		if caidinfo:
 			ecmcaid = self.getCaidInEcmFile()
 		for caid in caidinfo.split():
-			line_caids += self.addspaces(self.txt_caids.get(caid[:2]))
+			if caid.upper().startswith('4A'):
+				line_caids += self.addspaces(self.txt_dre_caids.get(caid[2:]))
+			else:
+				line_caids += self.addspaces(self.txt_caids.get(caid[:2]))
 		for i in range(len(self.caid_default)):
 			if self.addspaces(self.caid_default[i]) in ecmcaid:
 				string += self.ecmcolor

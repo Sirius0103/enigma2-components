@@ -1,5 +1,5 @@
 # PiconUni
-# Copyright (c) 2boom 2012-15
+# Copyright (c) 2boom 2012-16
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 # 02.07.2014 small fix reference
 # 09.01.2015 redesign code
 # 02.05.2015 add path uuid device
+# 08.05.2016 add 5001, 5002 stream id
 
 from Renderer import Renderer 
 from enigma import ePixmap
@@ -74,8 +75,10 @@ class PiconUni(Renderer):
 			if not what[0] is self.CHANGED_CLEAR:
 				sname = self.source.text
 				sname = sname.upper().replace('.', '').replace('\xc2\xb0', '')
-				if sname.startswith('4097'):
-					sname = sname.replace('4097', '1', 1)
+				print sname
+				#if sname.startswith('4097'):
+				if not sname.startswith('1'):
+					sname = sname.replace('4097', '1', 1).replace('5001', '1', 1).replace('5002', '1', 1)
 				if ':' in sname:
 					sname = '_'.join(sname.split(':')[:10])
 				pngname = self.nameCache.get(sname, '')
