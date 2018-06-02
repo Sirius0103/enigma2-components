@@ -1,5 +1,5 @@
 # Coded by Nikolasi
-# v 1.1
+# v1.1
 #
 
 from Components.Converter.Converter import Converter
