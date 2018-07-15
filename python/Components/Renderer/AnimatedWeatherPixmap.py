@@ -12,8 +12,9 @@ class AnimatedWeatherPixmap(Renderer):
 
 	def __init__(self):
 		Renderer.__init__(self)
-		self.path = '/media/usb/AnimatedWeatherPixmap'
 		self.path = '/tmp/AnimatedWeatherPixmap'
+		self.path = '/media/usb/AnimatedWeatherPixmap'
+		self.path = '/media/hdd/AnimatedWeatherPixmap'
 		self.pixdelay = 100
 		self.control = 1
 		self.ftpcontrol = 0
