@@ -1,5 +1,5 @@
 # Coded by Nikolasi
-# v1.1
+# v1.2
 #
 from Tools.LoadPixmap import LoadPixmap 
 from Renderer import Renderer 
@@ -12,7 +12,7 @@ class AnimatedWeatherPixmap(Renderer):
 
 	def __init__(self):
 		Renderer.__init__(self)
-		self.path = '/tmp/AnimatedWeatherPixmap'
+#		self.path = '/tmp/AnimatedWeatherPixmap'
 		self.path = '/media/usb/AnimatedWeatherPixmap'
 		self.path = '/media/hdd/AnimatedWeatherPixmap'
 		self.pixdelay = 100
@@ -57,13 +57,14 @@ class AnimatedWeatherPixmap(Renderer):
 				name = '8'
 			else:
 				name = self.txt_naim.get(sname, sname)
-			if self.ftpcontrol == 1:
-				if fileExists('/tmp/AnimatedWeatherPixmap'):
-					self.runAnim(name)
+#			if self.ftpcontrol == 1:
+#				if fileExists('/tmp/AnimatedWeatherPixmap'):
+#					self.runAnim(name)
 #				else:
 #					self.dovloud(name)
-			else:
-				self.runAnim(name)
+#			else:
+#				self.runAnim(name)
+			self.runAnim(name)
 
 #	def dovloud(self, id):
 #		os.system('wget -q ftp://u5616:f4bca98e@frog.hostink.ru/public_ftp/AnimatedWeatherPixmap.tar.gz -O /tmp/AnimatedWeatherPixmap.tar.gz')
