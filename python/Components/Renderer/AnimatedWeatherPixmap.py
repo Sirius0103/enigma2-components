@@ -1,20 +1,31 @@
 # Coded by Nikolasi
-# v1.2
-#
-from Tools.LoadPixmap import LoadPixmap 
+# v1.3
+# code otimization (by Sirius)
+# fix searchPaths (by Sirius)
+
 from Renderer import Renderer 
-from enigma import ePixmap, eTimer 
-from Tools.Directories import fileExists
+from Tools.LoadPixmap import LoadPixmap
+from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
+from enigma import ePixmap, eTimer
 import os
 
 class AnimatedWeatherPixmap(Renderer):
 	__module__ = __name__
+#	searchPaths = ('/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
 
 	def __init__(self):
 		Renderer.__init__(self)
-#		self.path = '/tmp/AnimatedWeatherPixmap'
-		self.path = '/media/usb/AnimatedWeatherPixmap'
-		self.path = '/media/hdd/AnimatedWeatherPixmap'
+#		self.path = 'AnimatedWeatherPixmap'
+		if fileExists('/media/hdd/AnimatedWeatherPixmap'):
+			self.path = '/media/hdd/AnimatedWeatherPixmap'
+		elif fileExists('/media/usb/AnimatedWeatherPixmap'):
+			self.path = '/media/usb/AnimatedWeatherPixmap'
+		elif fileExists('/media/sdb1/AnimatedWeatherPixmap'):
+			self.path = '/media/sdb1/AnimatedWeatherPixmap'
+		elif fileExists('/media/sdb2/AnimatedWeatherPixmap'):
+			self.path = '/media/sdb2/AnimatedWeatherPixmap'
+		else:
+			self.path = None
 		self.pixdelay = 100
 		self.control = 1
 		self.ftpcontrol = 0
@@ -24,13 +35,13 @@ class AnimatedWeatherPixmap(Renderer):
 	def applySkin(self, desktop, parent):
 		attribs = []
 		for (attrib, value,) in self.skinAttributes:
-			if attrib == "path":
+			if attrib == 'path':
 				self.path = value
-			elif attrib == "pixdelay":
+			elif attrib == 'pixdelay':
 				self.pixdelay = int(value)
-			elif attrib == "ftpcontrol":
+			elif attrib == 'ftpcontrol':
 				self.ftpcontrol = int(value)
-			elif attrib == "control":
+			elif attrib == 'control':
 				self.control = int(value)
 			else:
 				attribs.append((attrib, value))
@@ -83,7 +94,7 @@ class AnimatedWeatherPixmap(Renderer):
 			self.slideicon = total
 			animokicon = True
 		else:
-			if fileExists('%s/NA' % self.path):    
+			if fileExists('%s/NA' % self.path):
 				pathanimicon = '%s/NA/a' % self.path
 				path = '%s/NA'  % self.path
 				dir_work = os.listdir(path)

@@ -1,9 +1,10 @@
 # -*- coding: UTF-8 -*-
 #Coders by Nikolasi
 # v1.1
+# code otimization (by Sirius)
+# fix searchPaths (by Sirius)
 
 from Renderer import Renderer
-from Tools.Directories import fileExists
 from Tools.LoadPixmap import LoadPixmap 
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
 from enigma import ePixmap, eServiceCenter, loadPic, eTimer, ePicLoad

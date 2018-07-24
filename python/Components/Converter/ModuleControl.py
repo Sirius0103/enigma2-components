@@ -1,6 +1,7 @@
 # Coded by Nikolasi
 # v1.1
-#
+# code otimization (by Sirius)
+# add ModuleSlot, rename NameSlot (by Sirius)
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached

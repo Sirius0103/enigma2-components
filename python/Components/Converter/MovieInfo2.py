@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 #Coders by Sirius
 # v1.1
+# code otimization (by Sirius)
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
@@ -140,35 +141,35 @@ class MovieInfo2(Converter, object):
 					if fileExists(filetext):
 						director = open("%s" % filetext, "r").readlines()[2]
 					else:
-						director = _("No Director")
+						director = _("No director")
 					return director
 #Actors
 				elif self.type == self.MOVIE_ACTORS:
 					if fileExists(filetext):
 						actors = open("%s" % filetext, "r").readlines()[3]
 					else:
-						actors = _("No Actors")
+						actors = _("No actors")
 					return actors
 #Coutry
 				elif self.type == self.MOVIE_COUNTRY:
 					if fileExists(filetext):
 						coutry = open("%s" % filetext, "r").readlines()[1]
 					else:
-						coutry = _("No Coutry")
+						coutry = _("No coutry")
 					return coutry
 #Genre
 				elif self.type == self.MOVIE_GENRE:
 					if fileExists(filetext):
 						genre = open("%s" % filetext, "r").readlines()[5]
 					else:
-						genre = _("No Genre")
+						genre = _("No genre")
 					return genre
 #Year
 				elif self.type == self.MOVIE_YEAR:
 					if fileExists(filetext):
 						year = open("%s" % filetext, "r").readlines()[6]
 					else:
-						year =  _("No Year")
+						year =  _("No year")
 					return year
 #Rating
 				elif self.type == self.MOVIE_RATING:
@@ -183,7 +184,7 @@ class MovieInfo2(Converter, object):
 					if fileExists(filetext):
 						movieinfo = open("%s" % filetext, "r").readlines()[7]
 					else:
-						movieinfo = _("No Info")
+						movieinfo = _("No info")
 					return movieinfo
 #MovieName
 				elif self.type == self.MOVIE_ORIG_NAME:
@@ -191,7 +192,7 @@ class MovieInfo2(Converter, object):
 						nameall = open("%s" % filetext, "r").readlines()[0]
 						moviename = nameall.split('Оригинальное название:')[1].strip()
 					else:
-						moviename = _("No Name")
+						moviename = _("No name")
 					return moviename
 #CoverName
 				elif self.type == self.MOVIE_COVER_NAME:
@@ -225,7 +226,7 @@ class MovieInfo2(Converter, object):
 						return _("%d B") % filesize
 #End
 			except:
-				return _("No Text")
+				return _("No text")
 		return ""
 
 	text = property(getText)
