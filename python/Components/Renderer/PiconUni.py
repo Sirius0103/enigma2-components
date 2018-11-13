@@ -124,9 +124,12 @@ class PiconUni(Renderer):
 
 	def findPicon(self, serviceName):
 		for path in self.searchPaths:
-			pngname = (((path % self.path) + serviceName) + '.png')
-			if fileExists(pngname):
-				return pngname
+			try:
+				pngname = (((path % self.path) + serviceName) + '.png')
+				if fileExists(pngname):
+					return pngname
+			except:
+				return ''
 		return ''
 
 #initPiconPaths()
