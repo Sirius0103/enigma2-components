@@ -34,21 +34,20 @@ from enigma import ePixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename, fileExists
 import os
 
-#searchPaths = []
+searchPaths = []
 
-#def initPiconPaths():
-#	global searchPaths
-#	if os.path.isfile('/proc/mounts'):
-#		for line in open('/proc/mounts'):
-#			if '/dev/sd' in line or '/dev/disk/by-uuid/' in line or '/dev/mmc' in line:
-#				piconPath = line.split()[1].replace('\\040', ' ') + '/%s/'
-#				searchPaths.append(piconPath)
-#	searchPaths.append(resolveFilename(SCOPE_CURRENT_SKIN, '%s/'))
-#	searchPaths.append(resolveFilename(SCOPE_PLUGINS, '%s/'))
+def initPiconPaths():
+	global searchPaths
+	if os.path.isfile('/proc/mounts'):
+		for line in open('/proc/mounts'):
+			if '/dev/sd' in line or '/dev/disk/by-uuid/' in line or '/dev/mmc' in line:
+				piconPath = line.split()[1].replace('\\040', ' ') + '/%s/'
+				searchPaths.append(piconPath)
+	searchPaths.append(resolveFilename(SCOPE_SKIN_IMAGE, '%s/'))
+	searchPaths.append(resolveFilename(SCOPE_PLUGINS, '%s/'))
 
 class PiconUni(Renderer):
 	__module__ = __name__
-	searchPaths = ('/usr/share/enigma2/%s/', '/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
 
 	def __init__(self):
 		Renderer.__init__(self)
@@ -112,24 +111,14 @@ class PiconUni(Renderer):
 						self.instance.setPixmapFromFile(pngname)
 				self.pngname = pngname
 
-#	def findPicon(self, serviceName):
-#		global searchPaths
-#		pathtmp = self.path.split(',')
-#		for path in searchPaths:
-#			for dirName in pathtmp:
-#				pngname = (path % dirName) + serviceName + '.png'
-#				if os.path.isfile(pngname):
-#					return pngname
-#		return ''
-
 	def findPicon(self, serviceName):
-		for path in self.searchPaths:
-			try:
-				pngname = (((path % self.path) + serviceName) + '.png')
-				if fileExists(pngname):
+		global searchPaths
+		pathtmp = self.path.split(',')
+		for path in searchPaths:
+			for dirName in pathtmp:
+				pngname = (path % dirName) + serviceName + '.png'
+				if os.path.isfile(pngname):
 					return pngname
-			except:
-				return ''
 		return ''
 
-#initPiconPaths()
+initPiconPaths()
