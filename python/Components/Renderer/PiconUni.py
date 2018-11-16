@@ -28,10 +28,11 @@
 # 09.01.2015 redesign code
 # 02.05.2015 add path uuid device
 # 08.05.2016 add 5001, 5002 stream id
+# 16.11.2018 fix search Paths (by Sirius, thx Taapat)
 
 from Renderer import Renderer 
 from enigma import ePixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename, fileExists
+from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename 
 import os
 
 searchPaths = []
@@ -43,12 +44,11 @@ def initPiconPaths():
 			if '/dev/sd' in line or '/dev/disk/by-uuid/' in line or '/dev/mmc' in line:
 				piconPath = line.split()[1].replace('\\040', ' ') + '/%s/'
 				searchPaths.append(piconPath)
-	searchPaths.append(resolveFilename(SCOPE_SKIN_IMAGE, '%s/'))
-	searchPaths.append(resolveFilename(SCOPE_PLUGINS, '%s/'))
+	searchPaths.append('/usr/share/enigma2/%s/')
+	searchPaths.append('/usr/lib/enigma2/python/Plugins/%s/')
 
 class PiconUni(Renderer):
 	__module__ = __name__
-
 	def __init__(self):
 		Renderer.__init__(self)
 		self.path = 'piconUni'
