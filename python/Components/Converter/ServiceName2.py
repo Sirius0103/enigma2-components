@@ -358,6 +358,14 @@ class ServiceName2(Converter, object):
 	def getIPTVProvider(self, refstr):
 		if 'kirito.la.net.ua' in refstr or '.lanet.tv' in refstr or ('::' in refstr and '3' == refstr.split(':')[-3]):
 			return "Lanet"
+		elif '/iptv/' in refstr:
+			return "Edem TV"
+		elif '.itv.' in refstr:
+			return "ITV.Live"
+		elif '.iptvx.tv' in refstr:
+			return "Gomel-Sat"
+		elif '.shara.' in refstr:
+			return "Spro TV"
 		elif 'Kartina.TV' in refstr or ':FF01:' in refstr or ('::' in refstr and ':FF01:' == refstr.split(':')[-3]):
 			return "Kartina.TV"
 		elif 'Megaimpuls' in refstr or ('::' in refstr and '6' == refstr.split(':')[-3]):
