@@ -1,6 +1,6 @@
 # ServiceInfoEX
 # Copyright (c) 2boom 2013-16
-# v.1.4.2 28.10.2016
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# v 1.5 21.11.18 fix video codec (by Sirius)
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -207,8 +209,8 @@ class ServiceInfoEX(Poll, Converter, object):
 		if audio:
 			if audio.getCurrentTrack() > -1:
 				self.stream['atype'] = str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()).replace(",","")
-		self.stream['vtype'] = ("MPEG2", "MPEG4", "MPEG1", "MPEG4-II", "VC1", "VC1-SM", "HVEC", "")[info.getInfo(iServiceInformation.sVideoType)]
-		self.stream['avtype'] = ("MPEG2/", "MPEG4/", "MPEG1/", "MPEG4-II/", "VC1/", "VC1-SM/", "HVEC/", "")[info.getInfo(iServiceInformation.sVideoType)] + self.stream['atype']
+		self.stream['vtype'] = ("MPEG1", "MPEG2", "MPEG4", "MPEG4-VC", "VC1", "VC1-SM", "HVEC", "")[info.getInfo(iServiceInformation.sVideoType)]
+		self.stream['avtype'] = ("MPEG1/", "MPEG2/", "MPEG4/", "MPEG4-VC/", "VC1/", "VC1-SM/", "HVEC/", "")[info.getInfo(iServiceInformation.sVideoType)] + self.stream['atype']
 		if self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000)) != "N/A":
 			self.stream['fps'] = self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000))
 		if self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x/1024)) != "N/A":

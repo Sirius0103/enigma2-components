@@ -1,17 +1,19 @@
 # ServiceInfo2 based on standart ServiceInfo from E2
 # 
 # made by bigroma & 2boom
-# ver 0.2x 11/07/2011
-# ver 0.2a 02/11/2011 added xALL (SID, VPID, APID) mod by 2boom
-# ver 0.2b 17.01.2012 xALL in radio-mode fix (SID, APID) mod by 2boom
-# ver 0.2c 01/02/2012 fix sCAIDs, xTSID, xONID by 2boom
-# ver 0.2d 03/02/2012 added yALL (SID, VPID, APID, TSID, ONID) mod by 2boom
-# ver 0.3a  23/05/2012 added xVTYPE mod by 2boom
-# ver 0.4 03/08/2012 added VideoHeight and  VideoWidth mod by 2boom
-# ver 0.4a 02/09/2012 added Framerate mod by 2boom
-# ver 0.4b 15/12/2012 added xATYPE mod by 2boom
-# ver 0.4c 16/12/2012 added xALLTYPE mod by 2boom
-# ver 0.5a 03/01/2013 speed opt. mod by 2boom
+# v 0.2x 11/07/2011
+# v 0.2a 02/11/2011 added xALL (SID, VPID, APID) mod by 2boom
+# v 0.2b 17.01.2012 xALL in radio-mode fix (SID, APID) mod by 2boom
+# v 0.2c 01/02/2012 fix sCAIDs, xTSID, xONID by 2boom
+# v 0.2d 03/02/2012 added yALL (SID, VPID, APID, TSID, ONID) mod by 2boom
+# v 0.3a  23/05/2012 added xVTYPE mod by 2boom
+# v 0.4 03/08/2012 added VideoHeight and  VideoWidth mod by 2boom
+# v 0.4a 02/09/2012 added Framerate mod by 2boom
+# v 0.4b 15/12/2012 added xATYPE mod by 2boom
+# v 0.4c 16/12/2012 added xALLTYPE mod by 2boom
+# v 0.5a 03/01/2013 speed opt. mod by 2boom
+# v 0.6 fix video codec (by Sirius)
+
 from Poll import Poll
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
@@ -92,11 +94,11 @@ class ServiceInfo2(Poll, Converter, object):
 			except:
 				return "N/A"
 		elif self.type == self.xVTYPE:
-			return ("MPEG2", "MPEG4", "MPEG1", "MPEG4-II", "VC1", "VC1-SM", "")[info.getInfo(iServiceInformation.sVideoType)]
+			return ("MPEG1", "MPEG2", "MPEG4", "MPEG4-VC", "VC1", "VC1-SM", "HVEC", "")[info.getInfo(iServiceInformation.sVideoType)]
 		elif self.type == self.xALLTYPE:
 			audio = service.audioTracks()
 			try:
-				return "%s%s" % (("MPEG2/", "MPEG4/", "MPEG1/", "MPEG4-II/", "VC1/", "VC1-SM/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
+				return "%s%s" % (("MPEG1/", "MPEG2/", "MPEG4/", "MPEG4-VC/", "VC1/", "VC1-SM/", "HVEC/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
 			except:
 				return ""
 		elif self.type == self.xATYPE:
