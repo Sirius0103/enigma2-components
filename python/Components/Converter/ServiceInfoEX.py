@@ -1,6 +1,6 @@
 # ServiceInfoEX
-# Copyright (c) 2boom 2013-16
-#
+# Copyright (c) 2boom 2013-18
+# v.1.4.3 17.11.2018
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,8 +13,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
-#
-# v 1.5 21.11.18 fix video codec (by Sirius)
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -63,6 +61,7 @@ class ServiceInfoEX(Poll, Converter, object):
 	IS_SATELLITE_S2 = 35
 	volume = 36
 	volumedata = 37
+	vsize = 38
 	
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -143,6 +142,8 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.volume
 		elif  type == "IsVolumeData":
 			self.type = self.volumedata
+		elif type == 'vsize':
+			self.type = self.vsize
 		else: 
 			self.type = self.format
 			self.sfmt = type[:]
@@ -209,8 +210,8 @@ class ServiceInfoEX(Poll, Converter, object):
 		if audio:
 			if audio.getCurrentTrack() > -1:
 				self.stream['atype'] = str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()).replace(",","")
-		self.stream['vtype'] = ("MPEG2", "AVC", "H263", "VC1", "MPEG4-VC", "VC1-SM", "MPEG1", "HVEC", "VP8","VP9", "XVID", "N/A 11", "N/A 12", "DIVX 3.11", "DIVX 4", "DIVX 5", "AVS", "N/A 17", "VP6", "N/A 19", "N/A 20", "SPARK", "")[info.getInfo(iServiceInformation.sVideoType)]
-		self.stream['avtype'] = ("MPEG2/", "AVC/", "H263/", "VC1/", "MPEG4-VC/", "VC1-SM/", "MPEG1/", "HVEC/", "VP8/","VP9/", "XVID/", "N/A 11/", "N/A 12/", "DIVX 3.11/", "DIVX 4/", "DIVX 5/", "AVS/", "N/A 17/", "VP6/", "N/A 19/", "N/A 20/", "SPARK/", "")[info.getInfo(iServiceInformation.sVideoType)] + self.stream['atype']
+		self.stream['vtype'] = ('MPEG2', 'AVC', 'H263', 'VC1', 'MPEG4-VC', 'VC1-SM', 'MPEG1', 'HEVC', 'VP8', 'VP9', 'XVID', 'N/A 11', 'N/A 12', 'DIVX 3', 'DIVX 4', 'DIVX 5', 'AVS', 'N/A 17', 'VP6', 'N/A 19', 'N/A 20', 'SPARK', "")[info.getInfo(iServiceInformation.sVideoType)]
+		self.stream['avtype'] = ('MPEG2/', 'AVC/', 'H263/', 'VC1/', 'MPEG4-VC/', 'VC1-SM/', 'MPEG1/', 'HEVC/', 'VP8/', 'VP9/', 'XVID/', 'N/A 11/', 'N/A 12/', 'DIVX 3/', 'DIVX 4/', 'DIVX 5/', 'AVS/', 'N/A 17/', 'VP6/', 'N/A 19/', 'N/A 20/', 'SPARK/', " ")[info.getInfo(iServiceInformation.sVideoType)] + self.stream['atype']
 		if self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000)) != "N/A":
 			self.stream['fps'] = self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000))
 		if self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x/1024)) != "N/A":
@@ -254,6 +255,8 @@ class ServiceInfoEX(Poll, Converter, object):
 			streaminfo = _('Vol: %s') % config.audio.volume.value
 		elif self.type == self.volumedata:
 			streaminfo = '%s' % config.audio.volume.value
+		elif self.type == self.vsize:
+			streaminfo = self.stream['xres'] + 'x' + self.getServiceInfoString(info, iServiceInformation.sVideoHeight) + ' ' + ('i', 'p', '')[info.getInfo(iServiceInformation.sProgressive)] + self.stream['fps']
 		elif self.type == self.format:
 			tmp = self.sfmt[:]
 			for param in tmp.split():

@@ -31,28 +31,32 @@ class CaidInfo2(Poll, Converter, object):
 	NDS = 13
 	SECA = 14
 	VIA = 15
-	BETA_C = 16
-	CONAX_C = 17
-	CRW_C = 18
-	DRE_C = 19
-	IRD_C = 20
-	NAGRA_C = 21
-	NDS_C = 22
-	SECA_C = 23
-	VIA_C = 24
-	BISS = 25
-	BISS_C = 26
-	EXS = 27
-	EXS_C = 28
-	HOST = 29
-	DELAY = 30
-	FORMAT = 31
-	CRYPT2 = 32
-	CRD = 33
-	CRDTXT = 34
-	SHORT = 35
-	IS_FTA = 36
-	IS_CRYPTED = 37
+	PWR = 16
+	TAN = 17
+	BETA_C = 18
+	CONAX_C = 19
+	CRW_C = 20
+	DRE_C = 21
+	IRD_C = 22
+	NAGRA_C = 23
+	NDS_C = 24
+	SECA_C = 25
+	VIA_C = 26
+	PWR_C = 27
+	TAN_C = 28	
+	BISS = 29
+	BISS_C = 30
+	EXS = 31
+	EXS_C = 32
+	HOST = 33
+	DELAY = 34
+	FORMAT = 35
+	CRYPT2 = 36
+	CRD = 37
+	CRDTXT = 38
+	SHORT = 39
+	IS_FTA = 40
+	IS_CRYPTED = 41
 	my_interval = 1000
 
 
@@ -97,6 +101,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.SECA
 		elif type == "ViaCrypt":
 			self.type = self.VIA
+		elif type == "PwuCrypt":
+			self.type = self.PWR
+		elif type == "TanCrypt":
+			self.type = self.TAN						
 		elif type == "BetaEcm":
 			self.type = self.BETA_C
 		elif type == "ConaxEcm":
@@ -117,6 +125,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.SECA_C
 		elif type == "ViaEcm":
 			self.type = self.VIA_C
+		elif type == "PwuEcm":
+			self.type = self.PWR_C
+		elif type == "TanEcm":
+			self.type = self.TAN_C			
 		elif type == "BisCrypt":
 			self.type = self.BISS
 		elif type == "BisEcm":
@@ -168,7 +180,9 @@ class CaidInfo2(Poll, Converter, object):
 			"0D" : "CRW",
 			"27" : "EXS",
 			"7B" : "DRE",
-			"4A" : "DRE" }
+			"4A" : "DRE",
+			"0E" : "PWR",
+			"10" : "TAN" }
 
 	@cached
 	def getBoolean(self):
@@ -237,6 +251,16 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == "05":
 						return True
 				return False
+			if self.type == self.PWR:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "0E":
+						return True
+				return False
+			if self.type == self.TAN:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "10":
+						return True						
+				return False
 			if self.type == self.BISS:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "26":
@@ -286,6 +310,14 @@ class CaidInfo2(Poll, Converter, object):
 				if self.type == self.VIA_C:
 					if caid == "05":
 						return True
+					return False
+				if self.type == self.PWR_C:
+					if caid == "0E":
+						return True
+					return False
+				if self.type == self.TAN_C:
+					if caid == "10":
+						return True						
 					return False
 				if self.type == self.BISS_C:
 					if caid == "26":
