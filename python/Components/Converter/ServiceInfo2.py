@@ -94,11 +94,11 @@ class ServiceInfo2(Poll, Converter, object):
 			except:
 				return "N/A"
 		elif self.type == self.xVTYPE:
-			return ("MPEG1", "MPEG2", "MPEG4", "MPEG4-VC", "VC1", "VC1-SM", "HVEC", "")[info.getInfo(iServiceInformation.sVideoType)]
+			return ("MPEG2", "MPEG4", "MPEG1", "VC1", "MPEG4-VC", "VC1-SM", "HVEC", "VP8","VP9", "XVID", "N/A 11", "N/A 12", "DIVX 3.11", "DIVX 4", "DIVX 5", "AVS", "N/A 17", "VP6", "N/A 19", "N/A 20", "SPARK", "")[info.getInfo(iServiceInformation.sVideoType)]
 		elif self.type == self.xALLTYPE:
 			audio = service.audioTracks()
 			try:
-				return "%s%s" % (("MPEG1/", "MPEG2/", "MPEG4/", "MPEG4-VC/", "VC1/", "VC1-SM/", "HVEC/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
+				return "%s%s" % (("MPEG2/", "MPEG4/", "MPEG1/", "VC1/", "MPEG4-VC/", "VC1-SM/", "HVEC/", "VP8/","VP9/", "XVID/", "N/A 11/", "N/A 12/", "DIVX 3.11/", "DIVX 4/", "DIVX 5/", "AVS/", "N/A 17/", "VP6/", "N/A 19/", "N/A 20/", "SPARK/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
 			except:
 				return ""
 		elif self.type == self.xATYPE:
