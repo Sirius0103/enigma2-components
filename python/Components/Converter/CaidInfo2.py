@@ -104,7 +104,7 @@ class CaidInfo2(Poll, Converter, object):
 		elif type == "PwuCrypt":
 			self.type = self.PWR
 		elif type == "TanCrypt":
-			self.type = self.TAN						
+			self.type = self.TAN
 		elif type == "BetaEcm":
 			self.type = self.BETA_C
 		elif type == "ConaxEcm":
@@ -128,7 +128,7 @@ class CaidInfo2(Poll, Converter, object):
 		elif type == "PwuEcm":
 			self.type = self.PWR_C
 		elif type == "TanEcm":
-			self.type = self.TAN_C			
+			self.type = self.TAN_C
 		elif type == "BisCrypt":
 			self.type = self.BISS
 		elif type == "BisEcm":
@@ -259,7 +259,7 @@ class CaidInfo2(Poll, Converter, object):
 			if self.type == self.TAN:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "10":
-						return True						
+						return True
 				return False
 			if self.type == self.BISS:
 				for caid in caids:
@@ -317,7 +317,7 @@ class CaidInfo2(Poll, Converter, object):
 					return False
 				if self.type == self.TAN_C:
 					if caid == "10":
-						return True						
+						return True
 					return False
 				if self.type == self.BISS_C:
 					if caid == "26":
