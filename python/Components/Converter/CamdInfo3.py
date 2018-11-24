@@ -2,7 +2,7 @@
 #  CamdInfo3 - Converter
 # <widget source="session.CurrentService" render="Label" position="189,397" zPosition="4" size="350,20" noWrap="1" valign="center" halign="center" font="Regular;14" foregroundColor="clText" transparent="1"  backgroundColor="#20002450">
 #	<convert type="CamdInfo">Camd</convert>
-# </widget>			
+# </widget>
 
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
@@ -148,7 +148,7 @@ class CamdInfo3(Poll, Converter, object):
 					if x[1] == 1:
 						cam = x[2] 
 				return cam
-		   	except:
+			except:
 				return None
 		else:
 			return None

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #Coders by Nikolasi
 # v1.1
-# code otimization (by Sirius)
+# code optimization (by Sirius)
 # fix search Paths (by Sirius)
 
 from Renderer import Renderer
@@ -97,7 +97,7 @@ class MovieCover(Renderer, Poll):
 			self.timer.start(self.pixdelay, True)
 		else:
 			self.instance.setPixmap(self.png)
-		
+
 	def timerEvent(self):
 		if self.slide > 0:
 			self.timer.stop()

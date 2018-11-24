@@ -1,7 +1,7 @@
 # Coded by Nikolasi
 # v1.3
-# code otimization (by Sirius)
-# fix searchPaths (by Sirius)
+# code optimization (by Sirius)
+# fix search Paths (by Sirius)
 
 from Renderer import Renderer 
 from Tools.LoadPixmap import LoadPixmap

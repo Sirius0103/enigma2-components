@@ -86,7 +86,7 @@ class EcmInfoLine(Poll, Converter, object):
 			}
 		self.out_data = {'caid':'', 'prov':'', 'time':'', 'using':'', 'protocol':'', 'reader':'', 'port':'', 'source':'', 'hops':''}
 		self.caid_data = self.ecm_time = self.prov_data = self.using_data = self.port_data = self.protocol_data = self.reader_data = self.hops_data = self.display_data = ''
-			
+
 	def	get_ecm_data(self):
 		self.out_data = {'caid':'', 'prov':'', 'time':'', 'using':'', 'protocol':'', 'reader':'', 'port':'', 'source':'', 'hops':''}
 		self.caid_data = self.ecm_time = self.prov_data = self.using_data = self.port_data = self.protocol_data = self.reader_data = self.hops_data = self.display_data = ''
@@ -200,7 +200,6 @@ class EcmInfoLine(Poll, Converter, object):
 						self.out_data['using'] = self.out_data['using'] + self.out_data['port']
 				filedata.close()
 
-
 	@cached
 	def getText(self):
 		service = self.source.service
@@ -291,7 +290,7 @@ class EcmInfoLine(Poll, Converter, object):
 				.replace('%R', self.out_data.get('reader', '')).replace('%H', self.out_data.get('hops', '')).replace('%O', self.out_data.get('port', '')).replace('%L', self.out_data.get('protocol', '')).replace('%S', self.out_data.get('source', ''))
 
 	text = property(getText)
-	
+
 	@cached
 	def getBoolean(self):
 		service = self.source.service

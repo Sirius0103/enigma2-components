@@ -138,6 +138,5 @@ class CpuUsageMonitor(Poll, object):
 		if not len(self.__callbacks) and self.poll_enabled:
 			self.poll_enabled = False
 
-
 cpuUsageMonitor = CpuUsageMonitor()
 

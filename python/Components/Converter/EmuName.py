@@ -30,7 +30,7 @@ class EmuName(Poll, Converter, object):
 		Poll.__init__(self)
 		self.poll_interval = 2000
 		self.poll_enabled = True
-		
+
 	@cached
 	def getText(self):
 		info = info2 = ""
@@ -48,7 +48,7 @@ class EmuName(Poll, Converter, object):
 					if 'openatv' in line.lower():
 						if config.softcam.actCam.value: 
 							camdname = StringIO(config.softcam.actCam.value)
-		# VTI 	
+		# VTI
 		elif fileExists("/tmp/.emu.info"):
 			try:
 				camdname = open("/tmp/.emu.info", "r")
@@ -60,25 +60,25 @@ class EmuName(Poll, Converter, object):
 				camdname = open("/etc/startcam.sh", "r")
 			except:
 				camdname = None
-		# BlackHole	
+		# BlackHole
 		elif fileExists("/etc/CurrentBhCamName"):
 			try:
 				camdname = open("/etc/CurrentBhCamName", "r")
 			except:
 				camdname = None
-		# Domica	
+		# Domica
 		elif fileExists("/etc/active_emu.list"):
 			try:
 				camdname = open("/etc/active_emu.list", "r")
 			except:
 				camdname = None
-				# OoZooN
+		# OoZooN
 		elif fileExists("/tmp/cam.info"):
 			try:
 				camdname = open("/tmp/cam.info", "r")
 			except:
 				camdname = None
-		# Merlin2	
+		# Merlin2
 		elif fileExists("/etc/clist.list"):
 			try:
 				camdname = open("/etc/clist.list", "r")

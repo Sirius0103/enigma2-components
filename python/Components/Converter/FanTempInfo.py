@@ -24,7 +24,7 @@ class FanTempInfo(Poll, Converter, object):
 	TempInfo = 1
 	TxtFanInfo = 2
 	TxtTempInfo = 3
-	
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
@@ -38,9 +38,8 @@ class FanTempInfo(Poll, Converter, object):
 			self.type = self.TxtTempInfo
 		self.poll_interval = 5000
 		self.poll_enabled = True
-	
+
 	@cached
-	
 	def getText(self):
 		info = 'N/A'
 		if self.type is self.FanInfo or self.type is self.TxtFanInfo:
@@ -65,9 +64,9 @@ class FanTempInfo(Poll, Converter, object):
 			if self.type is self.TxtTempInfo:
 				info = "Temp: " + info
 		return info
-	
+
 	text = property(getText)
-	
+
 	def changed(self, what):
 		if what[0] is self.CHANGED_POLL:
 			self.downstream_elements.changed(what)

@@ -197,17 +197,17 @@ class YWeather(Poll, Converter, object):
 		self.iConsole = iConsole()
 		self.poll_interval = time_update_ms
 		self.poll_enabled = True
-		
+
 	def write_none(self):
 		self.iConsole.ePopen("echo -e 'None' >> /tmp/yweather.xml")
-		
+
 	def get_xmlfile(self):
 		self.iConsole.ePopen("wget -P /tmp -T2 'http://weather.yahooapis.com/forecastrss?w=%s&u=c' -O /tmp/yweather.xml" % weather_city, self.control_xml)
-		
+
 	def control_xml(self, result, retval, extra_args):
 		if retval is not 0:
 			self.write_none()
-			
+
 	@cached
 	def getText(self):
 		fweather, tweather = [], []
@@ -255,7 +255,7 @@ class YWeather(Poll, Converter, object):
 				xweather['ylong'] = line.split('<')[1].split('>')[1]
 			elif "<yweather:forecast" in line:
 				fweather.append(line.split('<yweather:forecast')[-1].split('/>')[0].strip())
-				
+
 		if self.type == self.city:
 			info = xweather['ycity']
 		elif self.type == self.city_title:

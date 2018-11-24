@@ -29,7 +29,7 @@ class DiskInfo(Poll, Converter, object):
 	fsystem = 3
 	dpoint = 4
 	format = 5
-	
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
@@ -55,21 +55,21 @@ class DiskInfo(Poll, Converter, object):
 
 		self.poll_interval = 2000
 		self.poll_enabled = True
-	
+
 	def filesystem(self, mountpoint):
 		if fileExists("/proc/mounts"):
 			for line in open("/proc/mounts"):
 				if mountpoint in line:
 					return "%s  %s" % (line.split()[2], line.split()[3].split(',')[0])
 		return ''
-		
+
 	def devpoint(self, mountpoint):
 		if fileExists("/proc/mounts"):
 			for line in open("/proc/mounts"):
 				if mountpoint in line:
 					return line.split()[0]
 		return ''
-		
+
 	@cached
 	def getText(self):
 		data = tmpdata = ''

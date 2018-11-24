@@ -68,7 +68,7 @@ class WiFiInfo(Poll, Converter, object):
 			self.type = self.wifionoff
 		self.poll_interval = 3000
 		self.poll_enabled = True
-		
+
 	@cached
 	def getText(self):
 		wifi = " "
@@ -116,7 +116,7 @@ class WiFiInfo(Poll, Converter, object):
 							wifi = "WEP"
 		return wifi
 	text = property(getText)
-	
+
 	@cached
 	def getValue(self):
 		linkq = 0
@@ -129,7 +129,7 @@ class WiFiInfo(Poll, Converter, object):
 		return linkq
 	value = property(getValue)
 	range = 100
-	
+
 	@cached
 	def getBoolean(self):
 		info = False
@@ -137,7 +137,7 @@ class WiFiInfo(Poll, Converter, object):
 			if self.type == self.wifionoff and (line.split()[0] == "wlan0" or line.split()[0] == "ra0") and line.split()[3] == "0003":
 				info = True
 		return info
-		
+
 	boolean = property(getBoolean)
 
 	def changed(self, what):

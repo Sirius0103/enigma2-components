@@ -46,7 +46,6 @@ class ServiceName2(Converter, object):
 	SATELLITE = 7
 	ALLREF = 8
 	FORMAT = 9
-	
 
 	def __init__(self, type):
 		Converter.__init__(self, type)

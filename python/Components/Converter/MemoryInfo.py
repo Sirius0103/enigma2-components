@@ -16,7 +16,7 @@
 
 # <widget source="session.CurrentService" render="Label" position="189,397" zPosition="4" size="350,20" noWrap="1" valign="center" halign="center" font="Regular;14" foregroundColor="clText" transparent="1"  backgroundColor="#20002450">
 #	<convert type="MemoryInfo">MemTotal</convert>
-# </widget>			
+# </widget>
 
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
@@ -28,7 +28,7 @@ class MemoryInfo(Converter, object):
 	MemFree = 1
 	SwapTotal = 2
 	SwapFree = 3
-	
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.type = {
@@ -37,7 +37,7 @@ class MemoryInfo(Converter, object):
 				"SwapTotal": (self.SwapTotal),
 				"SwapFree": (self.SwapFree),
 			}[type]
-			
+
 	@cached
 	def getText(self):
 		service = self.source.service

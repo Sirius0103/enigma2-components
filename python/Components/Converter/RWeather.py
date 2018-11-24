@@ -69,12 +69,12 @@ class RWeather(Poll, Converter, object):
 		self.iConsole = iConsole()
 		self.poll_interval = time_update_ms
 		self.poll_enabled = True
-	
+
 	def write_none(self):
 		with open('/tmp/rweather.xml', 'w') as noneweather:
 			noneweather.write('None')
 		noneweather.close()
-	
+
 	def get_xmlfile(self):
 		self.iConsole.ePopen("wget -P /tmp -T2 'http://informers.rambler.ru/weather/geoid//?version=4' -O /tmp/rweather.xml", self.control_xml)
 	

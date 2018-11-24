@@ -26,7 +26,7 @@ class LabelDuoColors(VariableText, Renderer):
 		self.colors = self.firstColor = self.secondColor = self.tmptext = self.text = ""
 
 	GUI_WIDGET = eLabel
-	
+
 	def convert_color(self, color_in):
 		hex_color = {'0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9',\
 			'a':':', 'b':';', 'c':'<', 'd':'=', 'e':'>', 'f':'?', 'A':':', 'B':';', 'C':'<', 'D':'=', 'E':'>', 'F':'?'}
@@ -63,4 +63,3 @@ class LabelDuoColors(VariableText, Renderer):
 				else:
 					self.tmptext += self.secondColor + self.source.text.split()[i] + '   '
 			self.text = self.tmptext.strip()
-

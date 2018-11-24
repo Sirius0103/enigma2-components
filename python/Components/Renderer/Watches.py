@@ -77,13 +77,13 @@ class Watches(Renderer):
 		for x in range(x0, x1 + 1):
 			if steep:
 				self.instance.fillRect(eRect(y, x, 1, 2), self.fColor)
-			else:          
+			else:
 				self.instance.fillRect(eRect(x, y, 1, 2), self.fColor)
 			error = error + deltay
 			if error > 0:
 				y = y + ystep
 				error = error - deltax
-        
+
 	def changed(self, what):
 		sss = self.source.value
 		if what[0] == self.CHANGED_CLEAR:
@@ -94,7 +94,7 @@ class Watches(Renderer):
 					self.numval = sss
 					self.instance.clear(self.bColor)
 					self.hand()
-					
+
 	def postWidgetCreate(self, instance):
 
 		def parseSize(str):
@@ -105,5 +105,3 @@ class Watches(Renderer):
 			if ((attrib == 'size') and self.instance.setSize(parseSize(value))):
 				pass
 		self.instance.clear(self.bColor)
-
-        

@@ -41,7 +41,7 @@ class EventName2(Converter, object):
 	PRIME_TIME_NO_DURATION = 16
 	PRIME_TIME_ONLY_DURATION = 17
 	PRIME_TIME_WITH_DURATION = 18
-	
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.epgcache = eEPGCache.getInstance()
@@ -201,5 +201,3 @@ class EventName2(Converter, object):
 			return ''
 
 	text = property(getText)
-
-   
