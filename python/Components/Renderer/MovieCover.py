@@ -2,14 +2,14 @@
 #Coders by Nikolasi
 # v1.1
 # code otimization (by Sirius)
-# fix searchPaths (by Sirius)
+# fix search Paths (by Sirius)
 
 from Renderer import Renderer
-from Tools.LoadPixmap import LoadPixmap 
+from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
 from enigma import ePixmap, eServiceCenter, loadPic, eTimer, ePicLoad
 from Components.Converter.Poll import Poll
-from Components.Pixmap import Pixmap 
+from Components.Pixmap import Pixmap
 import os
 
 class MovieCover(Renderer, Poll):
