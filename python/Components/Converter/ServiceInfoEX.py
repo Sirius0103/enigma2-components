@@ -1,6 +1,6 @@
 # ServiceInfoEX
 # Copyright (c) 2boom 2013-18
-# v.1.4.3 17.11.2018
+# v.1.4.4
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# 25.11.2018 code opt. mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -62,7 +64,7 @@ class ServiceInfoEX(Poll, Converter, object):
 	volume = 36
 	volumedata = 37
 	vsize = 38
-	
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
@@ -142,14 +144,14 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.volume
 		elif  type == "IsVolumeData":
 			self.type = self.volumedata
-		elif type == 'vsize':
+		elif type == "vsize":
 			self.type = self.vsize
 		else: 
 			self.type = self.format
 			self.sfmt = type[:]
 		self.poll_interval = 1000
 		self.poll_enabled = True
-		
+
 	def getServiceInfoString2(self, info, what, convert = lambda x: "%d" % x):
 		v = info.getInfo(what)
 		if v == -3:
@@ -162,7 +164,7 @@ class ServiceInfoEX(Poll, Converter, object):
 			else:
 				return ""
 		return convert(v)
-		
+
 	def getServiceInfoString(self, info, what, convert = lambda x: "%d" % x):
 		v = info.getInfo(what)
 		if v == -1:
@@ -171,7 +173,6 @@ class ServiceInfoEX(Poll, Converter, object):
 			return info.getInfoString(what)
 		return convert(v)
 
-		
 	@cached
 	def getText(self):
 		self.stream = { 'apid':"N/A", 'vpid':"N/A", 'sid':"N/A", 'onid':"N/A", 'tsid':"N/A", 'prcpid':"N/A", 'caids':"FTA", 'pmtpid':"N/A", 'txtpid':"N/A", 'xres':"", 'yres':"", 'atype':"", 'vtype':"", 'avtype':"", 'fps':"", 'tbps':"",}
@@ -181,7 +182,6 @@ class ServiceInfoEX(Poll, Converter, object):
 		info = service and service.info()
 		if not info:
 			return ""
-		
 		if self.getServiceInfoString(info, iServiceInformation.sAudioPID) != "N/A":
 			self.stream['apid'] = "%0.4X" % int(self.getServiceInfoString(info, iServiceInformation.sAudioPID))
 		if self.getServiceInfoString(info, iServiceInformation.sVideoPID) != "N/A":
@@ -211,12 +211,12 @@ class ServiceInfoEX(Poll, Converter, object):
 			if audio.getCurrentTrack() > -1:
 				self.stream['atype'] = str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()).replace(",","")
 		self.stream['vtype'] = ('MPEG2', 'AVC', 'H263', 'VC1', 'MPEG4-VC', 'VC1-SM', 'MPEG1', 'HEVC', 'VP8', 'VP9', 'XVID', 'N/A 11', 'N/A 12', 'DIVX 3', 'DIVX 4', 'DIVX 5', 'AVS', 'N/A 17', 'VP6', 'N/A 19', 'N/A 20', 'SPARK', "")[info.getInfo(iServiceInformation.sVideoType)]
-		self.stream['avtype'] = ('MPEG2/', 'AVC/', 'H263/', 'VC1/', 'MPEG4-VC/', 'VC1-SM/', 'MPEG1/', 'HEVC/', 'VP8/', 'VP9/', 'XVID/', 'N/A 11/', 'N/A 12/', 'DIVX 3/', 'DIVX 4/', 'DIVX 5/', 'AVS/', 'N/A 17/', 'VP6/', 'N/A 19/', 'N/A 20/', 'SPARK/', " ")[info.getInfo(iServiceInformation.sVideoType)] + self.stream['atype']
+		self.stream['avtype'] = self.stream['vtype'] + '/' + self.stream['atype']
 		if self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000)) != "N/A":
 			self.stream['fps'] = self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000))
 		if self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x/1024)) != "N/A":
 			self.stream['tbps'] = self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x/1024))
-		
+
 		if self.type == self.apid:
 			streaminfo = self.stream['apid']
 		elif self.type == self.vpid:
@@ -266,9 +266,8 @@ class ServiceInfoEX(Poll, Converter, object):
 					else:
 						streaminfo += ' ' + self.stream[param.strip('%')] + '  '
 		return streaminfo
-		
 	text = property(getText)
-	
+
 	@cached
 	def getValue(self):
 		service = self.source.service
@@ -282,9 +281,8 @@ class ServiceInfoEX(Poll, Converter, object):
 		if self.type == self.FRAMERATE:
 			return info.getInfo(iServiceInformation.sFrameRate)
 		return -1
-
 	value = property(getValue)
-	
+
 	@cached
 	def getBoolean(self):
 		service = self.source.service

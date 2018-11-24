@@ -36,7 +36,7 @@ class ServiceInfo2(Poll, Converter, object):
 	VideoWidth = 12
 	Framerate = 13
 	Provider = 14
-	
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
@@ -59,7 +59,7 @@ class ServiceInfo2(Poll, Converter, object):
 			}[type]
 		self.poll_interval = 1000
 		self.poll_enabled = True
-		
+
 	def getServiceInfoString(self, info, what, convert = lambda x: "%d" % x):
 		v = info.getInfo(what)
 		if v == -1:
@@ -80,7 +80,6 @@ class ServiceInfo2(Poll, Converter, object):
 			else:
 				return ""
 		return convert(v)
-
 
 	@cached
 	def getText(self):
