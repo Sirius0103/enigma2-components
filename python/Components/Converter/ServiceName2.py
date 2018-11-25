@@ -20,8 +20,8 @@
 # Version: 1.8 (15.03.2015) add custom provname - 2boom
 # Version: 1.9 (31.07.2015) add custom provname for custom name channel- 2boom
 # Version: 2.0 (29.08.2015) custom provname fix - 2boom
+# Version: 2.1 (25.11.2018) add DVB-T2 system - ikrom
 # Support: http://dream.altmaster.net/ & http://gisclub.tv & http://2boom-2boom.blogspot.com
-#
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
@@ -246,8 +246,11 @@ class ServiceName2(Converter, object):
 				if type == 'DVB-S':
 					x = self.tpdata.get('system', 0)
 					result += x in range(2) and {0:'DVB-S',1:'DVB-S2'}[x] or ''
+				if type == 'DVB-T':
+					x = self.tpdata.get('system', 0)
+					result += x in range(2) and {0:'DVB-T',1:'DVB-T2'}[x] or ''
 				else:
-					result += type
+					result += 'N/A'
 			elif f == 'F':	# %F - frequency (dvb-s/s2/c/t) in KHz
 				if type in ('DVB-S','DVB-C','DVB-T'):
 					result += '%d'% round(self.tpdata.get('frequency', 0) / 1000.0)
