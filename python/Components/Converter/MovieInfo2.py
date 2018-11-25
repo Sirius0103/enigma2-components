@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 #Coders by Sirius
-# v1.1
+# v1.2
 # code otimization (by Sirius)
 
 from Components.Converter.Converter import Converter
