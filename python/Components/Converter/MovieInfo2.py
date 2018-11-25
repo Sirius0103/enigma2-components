@@ -15,18 +15,19 @@ class MovieInfo2(Converter, object):
 	MOVIE_SHORT_DESCRIPTION = 0 # meta description when available.. when not .eit short description
 	MOVIE_META_DESCRIPTION = 1 # just meta description when available
 	MOVIE_REC_SERVICE_NAME = 2 # name of recording service
-	MOVIE_REC_FILESIZE = 3 # filesize of recording
-	MOVIE_ORIG_NAME = 4
-	MOVIE_COVER_NAME = 5
-	MOVIE_FULL_DESCRIPTION = 6
-	MOVIE_DESCRIPTION = 7
-	MOVIE_DIRECTOR = 8
-	MOVIE_ACTORS = 9
-	MOVIE_COUNTRY = 10
-	MOVIE_GENRE = 11
-	MOVIE_YEAR = 12
-	MOVIE_RATING = 13
-	MOVIE_INFO = 14
+	MOVIE_REC_FILE_NAME = 3 # name of recording file
+	MOVIE_REC_FILESIZE = 4 # filesize of recording
+	MOVIE_ORIG_NAME = 5
+	MOVIE_COVER_NAME = 6
+	MOVIE_FULL_DESCRIPTION = 7
+	MOVIE_DESCRIPTION = 8
+	MOVIE_DIRECTOR = 9
+	MOVIE_ACTORS = 10
+	MOVIE_COUNTRY = 11
+	MOVIE_GENRE = 12
+	MOVIE_YEAR = 13
+	MOVIE_RATING = 14
+	MOVIE_INFO = 15
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -56,6 +57,8 @@ class MovieInfo2(Converter, object):
 			self.type = self.MOVIE_ORIG_NAME
 		elif type == "CoverName":
 			self.type = self.MOVIE_COVER_NAME
+		elif type == "RecordFileName":
+			self.type = self.MOVIE_REC_FILE_NAME
 		elif type == "RecordServiceName":
 			self.type = self.MOVIE_REC_SERVICE_NAME
 		elif type == "FileSize":
@@ -80,6 +83,7 @@ class MovieInfo2(Converter, object):
 		rating = ''
 		movieinfo = ''
 		moviename = ''
+		recname = ''
 		covername = ''
 		service = self.source.service
 #		info = self.source.info
@@ -205,6 +209,13 @@ class MovieInfo2(Converter, object):
 					else:
 						covername = filetext.split('/')[-2].strip()
 					return covername
+#MovieFileName
+				elif self.type == self.MOVIE_REC_FILE_NAME:
+					if filetext is not None:
+						recname = filetext.split('/')[-1].split('.')[0].strip()
+					else:
+						recname = _("No name")
+					return recname
 #MovieServiceName
 				elif self.type == self.MOVIE_REC_SERVICE_NAME:
 					rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)

@@ -12,7 +12,7 @@ class RendVolumeText(Renderer, VariableText):
 
 	def changed(self, what):
 		if not self.suspended:
-			self.text = str(eDVBVolumecontrol.getInstance().getVolume())
+			self.text = str(eDVBVolumecontrol.getInstance().getVolume()) + "%"
 
 	def pollme(self):
 		self.changed(None)
