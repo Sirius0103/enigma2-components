@@ -237,24 +237,23 @@ class ServiceName2(Converter, object):
 				elif type == 'DVB-T':
 					result += _("Terrestrial")
 				elif type == 'DVB-T2':
-					result += _("T2")
+					result += _("Terrestrial")
 				elif type == 'IP-TV':
-					result += _('Stream-tv')
+					result += _("Stream-tv")
 				else:
 					result += 'N/A'
 			elif f == 's':	# %s - system (dvb-s/s2/c/t)
 				if type == 'DVB-S':
 					x = self.tpdata.get('system', 0)
 					result += x in range(2) and {0:'DVB-S',1:'DVB-S2'}[x] or ''
-				if type == 'DVB-T':
+				elif type == 'DVB-T':
 					x = self.tpdata.get('system', 0)
 					result += x in range(2) and {0:'DVB-T',1:'DVB-T2'}[x] or ''
 				else:
-					result += 'N/A'
+					result += type
 			elif f == 'F':	# %F - frequency (dvb-s/s2/c/t) in KHz
 				if type in ('DVB-S','DVB-C','DVB-T'):
 					result += '%d'% round(self.tpdata.get('frequency', 0) / 1000.0)
-					
 			elif f == 'f':	# %f - fec_inner (dvb-s/s2/c/t)
 				if type in ('DVB-S','DVB-C'):
 					x = self.tpdata.get('fec_inner', 15)
@@ -271,7 +270,8 @@ class ServiceName2(Converter, object):
 					x = self.tpdata.get('orbital_position', 0)
 					result += x > 1800 and "%d.%d°W"%((3600-x)/10, (3600-x)%10) or "%d.%d°E"%(x/10, x%10)
 				elif type == 'DVB-T':
-					result += 'DVB-T'
+					x = self.tpdata.get('system', 0)
+					result += x in range(2) and {0:'DVB-T',1:'DVB-T2'}[x] or ''
 				elif type == 'DVB-C':
 					result += 'DVB-C'
 				elif type == 'Iptv':

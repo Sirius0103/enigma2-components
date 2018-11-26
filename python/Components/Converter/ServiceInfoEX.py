@@ -1,6 +1,6 @@
 # ServiceInfoEX
 # Copyright (c) 2boom 2013-18
-# v.1.4.4
+# v.1.4.5
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,6 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 # 25.11.2018 code optimization mod by Sirius
+# 26.11.2018 add terrestrial type mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -61,9 +62,11 @@ class ServiceInfoEX(Poll, Converter, object):
 	IS_STREAMTV = 33
 	IS_SATELLITE_S = 34
 	IS_SATELLITE_S2 = 35
-	volume = 36
-	volumedata = 37
-	vsize = 38
+	IS_TERRESTRIAL_T = 36
+	IS_TERRESTRIAL_T2 = 37
+	volume = 38
+	volumedata = 39
+	vsize = 40
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -138,6 +141,10 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.IS_CABLE
 		elif  type == "IsTerrestrial":
 			self.type = self.IS_TERRESTRIAL
+		elif  type == "IsTerrestrialT":
+			self.type = self.IS_TERRESTRIAL_T
+		elif  type == "IsTerrestrialT2":
+			self.type = self.IS_TERRESTRIAL_T2
 		elif  type == "IsStreamTV":
 			self.type = self.IS_STREAMTV
 		elif  type == "IsVolume":
@@ -354,6 +361,14 @@ class ServiceInfoEX(Poll, Converter, object):
 			if type == 'DVB-S' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 1:
 					return True
+		elif self.type == self.IS_TERRESTRIAL_T:
+			if type == 'DVB-T' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 0:
+					return True
+		elif self.type == self.IS_TERRESTRIAL_T2:
+			if type == 'DVB-T' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 1:
+					return True
 		return False
 	boolean = property(getBoolean)
 
@@ -365,4 +380,3 @@ class ServiceInfoEX(Poll, Converter, object):
 			Converter.changed(self, what)
 		elif what[0] == self.CHANGED_POLL:
 			self.downstream_elements.changed(what)
-

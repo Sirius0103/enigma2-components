@@ -114,6 +114,10 @@ class AnimatedWeatherPixmap(Renderer):
 			self.slideicon = total
 		self.timericon.stop()
 		self.instance.setScale(1)
-		self.instance.setPixmap(self.picsicon[self.slideicon - 1])
+#		self.instance.setPixmap(self.picsicon[self.slideicon - 1])
+		try:
+			self.instance.setPixmap(self.picsicon[self.slideicon - 1])
+		except:
+			pass
 		self.slideicon = self.slideicon - 1
 		self.timericon.start(self.pixdelay, True)
