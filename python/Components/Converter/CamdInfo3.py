@@ -56,7 +56,7 @@ class CamdInfo3(Poll, Converter, object):
 			except:
 				return None
 		# AAF & ATV
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart") and not fileExists("/etc/init.d/softcam") and not fileExists("/etc/init.d/cardserver"):
 			emu = ""
 			server = ""
 			for line in open("/etc/image-version"):
