@@ -1,8 +1,10 @@
 # 2boom 2011-16
-#  CamdInfo3 - Converter
+# CamdInfo3 - Converter
 # <widget source="session.CurrentService" render="Label" position="189,397" zPosition="4" size="350,20" noWrap="1" valign="center" halign="center" font="Regular;14" foregroundColor="clText" transparent="1"  backgroundColor="#20002450">
 #	<convert type="CamdInfo">Camd</convert>
 # </widget>
+# 
+# 25.11.2018 code optimization mod by Sirius
 
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
@@ -13,14 +15,13 @@ from Tools.Directories import fileExists
 from Poll import Poll
 import os
 
-
 class CamdInfo3(Poll, Converter, object):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
 		self.poll_interval = 2000
 		self.poll_enabled = True
-		
+
 	@cached
 	def getText(self):
 		service = self.source.service
@@ -34,18 +35,48 @@ class CamdInfo3(Poll, Converter, object):
 		nameser = []
 		if not info:
 			return ""
-		# Alternative SoftCam Manager 
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.py"): 
+		# Alternative SoftCam Manager
+		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"): 
 			if config.plugins.AltSoftcam.actcam.value != "none": 
 				return config.plugins.AltSoftcam.actcam.value 
 			else: 
 				return None
-		#  GlassSysUtil 
+		#PKT
+		elif fileExists("//usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
+			if config.plugins.emuman.cam.value:
+				return config.plugins.emuman.cam.value
+		# GlassSysUtil
 		elif fileExists("/tmp/ucm_cam.info"):
 			return open("/tmp/ucm_cam.info").read()
-		# egami
-		elif os.path.isfile("/etc/CurrentEGCamName"):
-			return open("/etc/CurrentEGCamName").read()
+		#HDMU
+		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
+			try:
+				for line in open("/etc/.emustart"):
+					return line.split()[0].split('/')[-1]
+			except:
+				return None
+		# AAF & ATV
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
+			emu = ""
+			server = ""
+			for line in open("/etc/image-version"):
+				if "=AAF" in line or "=openATV" in line:
+					for line in open("/etc/enigma2/settings"):
+						if line.find("config.softcam.actCam=") > -1:
+							emu = line.split("=")[-1].strip('\n')
+						if line.find("config.softcam.actCam2=") > -1:
+							server = line.split("=")[-1].strip('\n')
+							if server.find("no CAM 2 active") > -1:
+								server = ""
+		# VTI
+				elif "=vuplus" in line:
+					if fileExists("/tmp/.emu.info"):
+						for line in open("/tmp/.emu.info"):
+							emu = line.strip('\n')
+		# BlackHole
+				elif "version=" in line and fileExists("/etc/CurrentBhCamName"):
+					emu = open("/etc/CurrentBhCamName").read()
+			return "%s %s" % (emu, server)
 		# Pli
 		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
 			try:
@@ -69,69 +100,28 @@ class CamdInfo3(Poll, Converter, object):
 			elif serlist is not None:
 				return "%s" % serlist
 			return ""
-		elif fileExists("/etc/startcam.sh"):
-			try:
-				for line in open("/etc/startcam.sh"):
-					if "script" in line:
-						return "%s" % line.split("/")[-1].split()[0][:-3]
-			except:
-				camdlist = None
-		# domica 8120
-		elif fileExists("/etc/init.d/cam"):
-			if config.plugins.emuman.cam.value: 
-				return config.plugins.emuman.cam.value
-		#PKT
-		elif fileExists("//usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
-			if config.plugins.emuman.cam.value: 
-				return config.plugins.emuman.cam.value
-		#HDMU
-		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
-			try:
-				for line in open("/etc/.emustart"):
-					return line.split()[0].split('/')[-1]
-			except:
-				return None
-	
-		# AAF & ATV & VTI 
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
-			emu = ""
-			server = ""
-			for line in open("/etc/image-version"):
-				if "=AAF" in line or "=openATV" in line:
-					if config.softcam.actCam.value: 
-						emu = config.softcam.actCam.value
-					if config.softcam.actCam2.value: 
-						server = config.softcam.actCam2.value
-						if config.softcam.actCam2.value == "no CAM 2 active":
-							server = ""
-				elif "=vuplus" in line:
-					if fileExists("/tmp/.emu.info"):
-						for line in open("/tmp/.emu.info"):
-							emu = line.strip('\n')
-				# BlackHole	
-				elif "version=" in line and fileExists("/etc/CurrentBhCamName"):
-					emu = open("/etc/CurrentBhCamName").read()
-			return "%s %s" % (emu, server)
-		# Domica	
+		# Domica
 		elif fileExists("/etc/active_emu.list"):
 			try:
 				camdlist = open("/etc/active_emu.list", "r")
 			except:
 				return None
-		# Egami	
+		# Egami old
+		elif os.path.isfile("/etc/CurrentEGCamName"):
+			return open("/etc/CurrentEGCamName").read()
+		# Egami
 		elif fileExists("/tmp/egami.inf","r"):
 			for line in open("/tmp/egami.inf"):
 				item = line.split(":",1)
 				if item[0] == "Current emulator":
 					return item[1].strip()
-		
 		# OoZooN
 		elif fileExists("/tmp/cam.info"):
 			try:
 				camdlist = open("/tmp/cam.info", "r")
 			except:
 				return None
-		# Merlin2	
+		# Merlin2
 		elif fileExists("/etc/clist.list"):
 			try:
 				camdlist = open("/etc/clist.list", "r")
@@ -150,9 +140,17 @@ class CamdInfo3(Poll, Converter, object):
 				return cam
 			except:
 				return None
+		# Script
+		elif fileExists("/etc/startcam.sh"):
+			try:
+				for line in open("/etc/startcam.sh"):
+					if "script" in line:
+						return "%s" % line.split("/")[-1].split()[0][:-3]
+			except:
+				camdlist = None
 		else:
 			return None
-			
+
 		if serlist is not None:
 			try:
 				cardserver = ""
@@ -174,9 +172,9 @@ class CamdInfo3(Poll, Converter, object):
 				pass
 		else:
 			emu = " "
-			
+
 		return "%s %s" % (cardserver.split('\n')[0], emu.split('\n')[0])
-		
+
 	text = property(getText)
 
 	def changed(self, what):
