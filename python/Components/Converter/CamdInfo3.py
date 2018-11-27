@@ -57,31 +57,6 @@ class CamdInfo3(Poll, Converter, object):
 					return line.split()[0].split('/')[-1]
 			except:
 				return None
-		# OpenPli
-		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
-			for line in open("/etc/issue"):
-				if "openpli" in line:
-					try:
-						for line in open("/etc/init.d/softcam"):
-							if "echo" in line:
-								nameemu.append(line)
-						camdlist = "%s" % nameemu[1].split('"')[1]
-					except:
-						pass
-					try:
-						for line in open("/etc/init.d/cardserver"):
-							if "echo" in line:
-								nameser.append(line)
-						serlist = "%s" % nameser[1].split('"')[1]
-					except:
-						pass
-					if serlist is not None and camdlist is not None:
-						return ("%s %s" % (serlist, camdlist))
-					elif camdlist is not None:
-						return "%s" % camdlist
-					elif serlist is not None:
-						return "%s" % serlist
-					return ""
 		# OpenATV
 		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
 			for line in open("/etc/issue"):
@@ -145,6 +120,31 @@ class CamdInfo3(Poll, Converter, object):
 				return cam
 			except:
 				return None
+		# OpenPli
+		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
+			for line in open("/etc/issue"):
+				if "openpli" in line:
+					try:
+						for line in open("/etc/init.d/softcam"):
+							if "echo" in line:
+								nameemu.append(line)
+						camdlist = "%s" % nameemu[1].split('"')[1]
+					except:
+						pass
+					try:
+						for line in open("/etc/init.d/cardserver"):
+							if "echo" in line:
+								nameser.append(line)
+						serlist = "%s" % nameser[1].split('"')[1]
+					except:
+						pass
+					if serlist is not None and camdlist is not None:
+						return ("%s %s" % (serlist, camdlist))
+					elif camdlist is not None:
+						return "%s" % camdlist
+					elif serlist is not None:
+						return "%s" % serlist
+					return ""
 		# Script
 		elif fileExists("/etc/startcam.sh"):
 			try:

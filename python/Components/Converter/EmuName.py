@@ -38,7 +38,7 @@ class EmuName(Poll, Converter, object):
 		info = info2 = ""
 		nofile = False
 		camdname = cardname = camdlist = None
-		# Alternative SoftCam Manager 
+		# Alternative SoftCam Manager
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.py"):
 			if config.plugins.AltSoftcam.actcam.value != "none":
 				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
@@ -48,7 +48,7 @@ class EmuName(Poll, Converter, object):
 			if fileExists('/etc/issue'):
 				for line in open('/etc/issue'):
 					if 'openatv' in line.lower():
-						if config.softcam.actCam.value: 
+						if config.softcam.actCam.value:
 							camdname = StringIO(config.softcam.actCam.value)
 		# VTI
 		elif fileExists("/tmp/.emu.info"):
@@ -95,7 +95,7 @@ class EmuName(Poll, Converter, object):
 				cam = None
 				for x in camdl:
 					if x[1] == 1:
-						cam = x[2] 
+						cam = x[2]
 				camdname = cam
 				nofile = True
 			except:
