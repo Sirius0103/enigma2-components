@@ -39,7 +39,7 @@ class EmuName(Poll, Converter, object):
 		nofile = False
 		camdname = cardname = camdlist = None
 		# Alternative SoftCam Manager
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.py"):
+		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
 			if config.plugins.AltSoftcam.actcam.value != "none":
 				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
 			else: 
