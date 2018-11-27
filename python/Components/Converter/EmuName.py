@@ -1,6 +1,6 @@
 # EmuName
 # Copyright (c) 2boom & Taapat 2013-14
-# v.1.2
+# v.1.3
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+# 
+# 25.11.2018 code optimization mod by Sirius
 
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
@@ -42,7 +44,7 @@ class EmuName(Poll, Converter, object):
 				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
 			else: 
 				camdname = None
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart") and not fileExists("/etc/init.d/softcam") and not fileExists("/etc/init.d/cardserver"):
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
 			if fileExists('/etc/issue'):
 				for line in open('/etc/issue'):
 					if 'openatv' in line.lower():
