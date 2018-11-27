@@ -29,6 +29,8 @@ class CamdInfo3(Poll, Converter, object):
 		if not service:
 			return None
 		camd = ""
+		emu = ""
+		server = ""
 		serlist = None
 		camdlist = None
 		nameemu = []
@@ -55,12 +57,35 @@ class CamdInfo3(Poll, Converter, object):
 					return line.split()[0].split('/')[-1]
 			except:
 				return None
-		# AAF & ATV
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart") and not fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
-			emu = ""
-			server = ""
-			for line in open("/etc/image-version"):
-				if "=AAF" in line or "=openATV" in line:
+		# OpenPli
+		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
+			for line in open("/etc/issue"):
+				if "openpli" in line:
+					try:
+						for line in open("/etc/init.d/softcam"):
+							if "echo" in line:
+								nameemu.append(line)
+						camdlist = "%s" % nameemu[1].split('"')[1]
+					except:
+						pass
+					try:
+						for line in open("/etc/init.d/cardserver"):
+							if "echo" in line:
+								nameser.append(line)
+						serlist = "%s" % nameser[1].split('"')[1]
+					except:
+						pass
+					if serlist is not None and camdlist is not None:
+						return ("%s %s" % (serlist, camdlist))
+					elif camdlist is not None:
+						return "%s" % camdlist
+					elif serlist is not None:
+						return "%s" % serlist
+					return ""
+		# OpenATV
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
+			for line in open("/etc/issue"):
+				if "openatv" in line:
 					for line in open("/etc/enigma2/settings"):
 						if line.find("config.softcam.actCam=") > -1:
 							emu = line.split("=")[-1].strip('\n')
@@ -68,8 +93,11 @@ class CamdInfo3(Poll, Converter, object):
 							server = line.split("=")[-1].strip('\n')
 							if server.find("no CAM 2 active") > -1:
 								server = ""
+			return "%s %s" % (emu, server)
 		# VTI
-				elif "=vuplus" in line:
+		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
+			for line in open("/etc/image-version"):
+				if "=vuplus" in line:
 					if fileExists("/tmp/.emu.info"):
 						for line in open("/tmp/.emu.info"):
 							emu = line.strip('\n')
@@ -77,29 +105,6 @@ class CamdInfo3(Poll, Converter, object):
 				elif "version=" in line and fileExists("/etc/CurrentBhCamName"):
 					emu = open("/etc/CurrentBhCamName").read()
 			return "%s %s" % (emu, server)
-		# Pli
-		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
-			try:
-				for line in open("/etc/init.d/softcam"):
-					if "echo" in line:
-						nameemu.append(line)
-				camdlist = "%s" % nameemu[1].split('"')[1]
-			except:
-				pass
-			try:
-				for line in open("/etc/init.d/cardserver"):
-					if "echo" in line:
-						nameser.append(line)
-				serlist = "%s" % nameser[1].split('"')[1]
-			except:
-				pass
-			if serlist is not None and camdlist is not None:
-				return ("%s %s" % (serlist, camdlist))
-			elif camdlist is not None:
-				return "%s" % camdlist
-			elif serlist is not None:
-				return "%s" % serlist
-			return ""
 		# Domica
 		elif fileExists("/etc/active_emu.list"):
 			try:
