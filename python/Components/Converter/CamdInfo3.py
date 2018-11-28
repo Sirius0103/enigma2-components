@@ -127,13 +127,6 @@ class CamdInfo3(Poll, Converter, object):
 				return cam
 			except:
 				return None
-		#HDMU & HDF
-		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
-			try:
-				for line in open("/etc/.emustart"):
-					return line.split()[0].split('/')[-1]
-			except:
-				return None
 		# ATV & AAF
 		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
 			for line in open("/etc/issue"):
@@ -168,6 +161,13 @@ class CamdInfo3(Poll, Converter, object):
 			elif serlist is not None:
 				return "%s" % serlist
 			return ""
+		#HDMU & HDF
+		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
+			try:
+				for line in open("/etc/.emustart"):
+					return line.split()[0].split('/')[-1]
+			except:
+				return None
 		else:
 			return None
 

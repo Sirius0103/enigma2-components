@@ -100,12 +100,6 @@ class EmuName(Poll, Converter, object):
 				nofile = True
 			except:
 				camdname = None
-		#HDMU & HDF
-		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
-			try:
-				camdname = open("/etc/.emustart", "r")
-			except:
-				camdname = None
 		#ATV
 		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
 			if fileExists("/etc/issue"):
@@ -123,6 +117,12 @@ class EmuName(Poll, Converter, object):
 				cardname = open("/etc/init.d/cardserver", "r")
 			except:
 				cardname = None
+		#HDMU & HDF
+		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
+			try:
+				camdname = open("/etc/.emustart", "r")
+			except:
+				camdname = None
 
 		if cardname:
 			for line in cardname:
