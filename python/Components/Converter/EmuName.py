@@ -117,7 +117,7 @@ class EmuName(Poll, Converter, object):
 				cardname = open("/etc/init.d/cardserver", "r")
 			except:
 				cardname = None
-		#HDMU & HDF
+		#HDMU
 		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
 			try:
 				camdname = open("/etc/.emustart", "r")

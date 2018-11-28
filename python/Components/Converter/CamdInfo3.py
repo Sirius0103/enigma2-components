@@ -161,7 +161,7 @@ class CamdInfo3(Poll, Converter, object):
 			elif serlist is not None:
 				return "%s" % serlist
 			return ""
-		#HDMU & HDF
+		#HDMU
 		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
 			try:
 				for line in open("/etc/.emustart"):
