@@ -40,13 +40,13 @@ class EmuName(Poll, Converter, object):
 		camdname = cardname = camdlist = None
 		# Alternative SoftCam Manager
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
-			if config.plugins.AltSoftcam.actcam.value != "none":
+			if config.plugins.AltSoftcam.actcam.value is not None:
 				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
 			else:
 				camdname = None
 		# E-Panel
 		elif fileExists("//usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
-			if config.plugins.epanel.activeemu.value != "none":
+			if config.plugins.epanel.activeemu.value is not None:
 				camdname = StringIO(config.plugins.epanel.activeemu.value)
 			else:
 				camdname = None
@@ -100,10 +100,16 @@ class EmuName(Poll, Converter, object):
 				nofile = True
 			except:
 				camdname = None
+		#HDMU & HDF
+		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
+			try:
+				camdname = open("/etc/.emustart", "r")
+			except:
+				camdname = None
 		#ATV
 		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
-			if fileExists('/etc/issue'):
-				for line in open('/etc/issue'):
+			if fileExists("/etc/issue"):
+				for line in open("/etc/issue"):
 					if 'openatv' in line.lower():
 						if config.softcam.actCam.value:
 							camdname = StringIO(config.softcam.actCam.value)
@@ -116,12 +122,7 @@ class EmuName(Poll, Converter, object):
 			try:
 				cardname = open("/etc/init.d/cardserver", "r")
 			except:
-				cardname = None 
-		elif fileExists("/etc/.emustart"):
-			try:
-				camdname = open("/etc/.emustart", "r")
-			except:
-				camdname = None
+				cardname = None
 
 		if cardname:
 			for line in cardname:

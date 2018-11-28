@@ -1,6 +1,6 @@
 # RouteInfo
-# Copyright (c) 2boom 2012-13
-# v.0.8
+# Copyright (c) 2boom 2012-17
+# v.0.9
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -49,7 +49,7 @@ class RouteInfo(Converter, object):
 		for line in open("/proc/net/route"):
 			if self.type == self.Lan and line.split()[0] == "eth0" and line.split()[3] == "0003":
 				info = True
-			elif self.type == self.Wifi and (line.split()[0] == "wlan0" or line.split()[0] == "ra0") and line.split()[3] == "0003":
+			elif self.type == self.Wifi and (line.split()[0] == "wlan0" or line.split()[0] == "wlan3" or line.split()[0] == "ra0") and line.split()[3] == "0003":
 				info = True
 			elif self.type == self.Modem and line.split()[0] == "ppp0" and line.split()[3] == "0003":
 				info = True
@@ -63,7 +63,7 @@ class RouteInfo(Converter, object):
 		for line in open("/proc/net/route"):
 			if self.type == self.Info and line.split()[0] == "eth0" and line.split()[3] == "0003":
 				info = "lan"
-			elif self.type == self.Info and  (line.split()[0] == "wlan0" or line.split()[0] == "ra0") and line.split()[3] == "0003":
+			elif self.type == self.Info and  (line.split()[0] == "wlan0" or line.split()[0] == "wlan3" or line.split()[0] == "ra0") and line.split()[3] == "0003":
 				info = "wifi"
 			elif self.type == self.Info and line.split()[0] == "ppp0" and line.split()[3] == "0003":
 				info = "3g"
