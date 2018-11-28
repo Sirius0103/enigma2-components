@@ -138,6 +138,13 @@ class CamdInfo3(Poll, Converter, object):
 						if config.softcam.actCam2.value == "no CAM 2 active":
 							server = ""
 					return "%s %s" % (emu, server)
+		#HDMU
+		elif fileExists("/etc/image-version") and fileExists("/etc/.emustart"):
+			try:
+				for line in open("/etc/.emustart"):
+					return line.split()[0].split('/')[-1]
+			except:
+				return None
 		# Pli
 		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
 			try:
@@ -161,13 +168,6 @@ class CamdInfo3(Poll, Converter, object):
 			elif serlist is not None:
 				return "%s" % serlist
 			return ""
-		#HDMU
-		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
-			try:
-				for line in open("/etc/.emustart"):
-					return line.split()[0].split('/')[-1]
-			except:
-				return None
 		else:
 			return None
 

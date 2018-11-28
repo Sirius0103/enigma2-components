@@ -107,6 +107,12 @@ class EmuName(Poll, Converter, object):
 					if 'openatv' in line.lower():
 						if config.softcam.actCam.value:
 							camdname = StringIO(config.softcam.actCam.value)
+		#HDMU
+		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
+			try:
+				camdname = open("/etc/.emustart", "r")
+			except:
+				camdname = None
 		#Pli
 		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
 			try:
@@ -117,12 +123,6 @@ class EmuName(Poll, Converter, object):
 				cardname = open("/etc/init.d/cardserver", "r")
 			except:
 				cardname = None
-		#HDMU
-		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
-			try:
-				camdname = open("/etc/.emustart", "r")
-			except:
-				camdname = None
 
 		if cardname:
 			for line in cardname:
