@@ -12,12 +12,13 @@
 # v 0.4b 15/12/2012 added xATYPE mod by 2boom
 # v 0.4c 16/12/2012 added xALLTYPE mod by 2boom
 # v 0.5a 03/01/2013 speed opt. mod by 2boom
-# v 0.6 21/11/2018 fix video codec mod by Sirius
+# v 0.6 25/11/2018 fix video codec mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
 from Components.Element import cached
+from Tools.Directories import fileExists
 
 class ServiceInfo2(Poll, Converter, object):
 
@@ -93,13 +94,23 @@ class ServiceInfo2(Poll, Converter, object):
 			except:
 				return "N/A"
 		elif self.type == self.xVTYPE:
-			return ("MPEG2", "AVC", "H263", "VC1", "MPEG4-VC", "VC1-SM", "MPEG1", "HEVC", "VP8", "VP9", "XVID", "N/A 11", "N/A 12", "DIVX 3", "DIVX 4", "DIVX 5", "AVS", "N/A 17", "VP6", "N/A 19", "N/A 20", "SPARK", "")[info.getInfo(iServiceInformation.sVideoType)]
+			if fileExists("/etc/issue"):
+				for line in open("/etc/issue"):
+					if 'openpli' in line:
+						return ("MPEG2", "AVC", "H263", "VC1", "MPEG4-VC", "VC1-SM", "MPEG1", "HEVC", "VP8", "VP9", "XVID", "N/A 11", "N/A 12", "DIVX 3", "DIVX 4", "DIVX 5", "AVS", "N/A 17", "VP6", "N/A 19", "N/A 20", "SPARK", "")[info.getInfo(iServiceInformation.sVideoType)]
+					else:
+						return ("MPEG2", "MPEG4", "MPEG1", "MPEG4-II", "VC1", "VC1-SM", "")[info.getInfo(iServiceInformation.sVideoType)]
 		elif self.type == self.xALLTYPE:
 			audio = service.audioTracks()
-			try:
-				return "%s%s" % (("MPEG2/", "AVC/", "H263/", "VC1/", "MPEG4-VC/", "VC1-SM/", "MPEG1/", "HEVC/", "VP8/", "VP9/", "XVID/", "N/A 11/", "N/A 12/", "DIVX 3/", "DIVX 4/", "DIVX 5/", "AVS/", "N/A 17/", "VP6/", "N/A 19/", "N/A 20/", "SPARK/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
-			except:
-				return ""
+			if fileExists("/etc/issue"):
+				for line in open("/etc/issue"):
+					try:
+						if 'openpli' in line:
+							return "%s%s" % (("MPEG2/", "AVC/", "H263/", "VC1/", "MPEG4-VC/", "VC1-SM/", "MPEG1/", "HEVC/", "VP8/", "VP9/", "XVID/", "N/A 11/", "N/A 12/", "DIVX 3/", "DIVX 4/", "DIVX 5/", "AVS/", "N/A 17/", "VP6/", "N/A 19/", "N/A 20/", "SPARK/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
+						else:
+							return "%s%s" % (("MPEG2/", "MPEG4/", "MPEG1/", "MPEG4-II/", "VC1/", "VC1-SM/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
+					except:
+						return ""
 		elif self.type == self.xATYPE:
 			audio = service.audioTracks()
 			try:

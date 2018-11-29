@@ -22,6 +22,7 @@ from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
 from Components.config import config
 from Components.Element import cached
+from Tools.Directories import fileExists
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
@@ -217,7 +218,12 @@ class ServiceInfoEX(Poll, Converter, object):
 		if audio:
 			if audio.getCurrentTrack() > -1:
 				self.stream['atype'] = str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()).replace(",","")
-		self.stream['vtype'] = ('MPEG2', 'AVC', 'H263', 'VC1', 'MPEG4-VC', 'VC1-SM', 'MPEG1', 'HEVC', 'VP8', 'VP9', 'XVID', 'N/A 11', 'N/A 12', 'DIVX 3', 'DIVX 4', 'DIVX 5', 'AVS', 'N/A 17', 'VP6', 'N/A 19', 'N/A 20', 'SPARK', "")[info.getInfo(iServiceInformation.sVideoType)]
+		if fileExists("/etc/issue"):
+			for line in open("/etc/issue"):
+				if 'openpli' in line:
+					self.stream['vtype'] = ('MPEG2', 'AVC', 'H263', 'VC1', 'MPEG4-VC', 'VC1-SM', 'MPEG1', 'HEVC', 'VP8', 'VP9', 'XVID', 'N/A 11', 'N/A 12', 'DIVX 3', 'DIVX 4', 'DIVX 5', 'AVS', 'N/A 17', 'VP6', 'N/A 19', 'N/A 20', 'SPARK', "")[info.getInfo(iServiceInformation.sVideoType)]
+				else:
+					self.stream['vtype'] = ('MPEG2', 'MPEG4', 'MPEG1', 'MPEG4-II', 'VC1', 'VC1-SM', 'HVEC', "")[info.getInfo(iServiceInformation.sVideoType)]
 		self.stream['avtype'] = self.stream['vtype'] + '/' + self.stream['atype']
 		if self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000)) != "N/A":
 			self.stream['fps'] = self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000))
