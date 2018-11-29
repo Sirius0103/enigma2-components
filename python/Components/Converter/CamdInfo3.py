@@ -43,13 +43,13 @@ class CamdInfo3(Poll, Converter, object):
 			else:
 				return None
 		# E-Panel
-		elif fileExists("//usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
+		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
 			if config.plugins.epanel.activeemu.value is not None:
 				return config.plugins.epanel.activeemu.value
 			else:
 				return None
-		#PKT
-		elif fileExists("//usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
+		# PKT
+		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
 			if config.plugins.emuman.cam.value is not None:
 				return config.plugins.emuman.cam.value
 			else:
@@ -114,6 +114,13 @@ class CamdInfo3(Poll, Converter, object):
 				return open("/etc/clist.list").read()
 			except:
 				return None
+		# HDMU
+		elif fileExists("/etc/.emustart"):
+			try:
+				for line in open("/etc/.emustart"):
+					return line.split()[0].split('/')[-1]
+			except:
+				return None
 		# GP3
 		elif fileExists("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
 			try:
@@ -127,8 +134,8 @@ class CamdInfo3(Poll, Converter, object):
 				return cam
 			except:
 				return None
-		# ATV & AAF
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
+		# Pli & HDF & ATV & AAF
+		elif fileExists("/etc/issue"):
 			for line in open("/etc/issue"):
 				if 'openatv' in line or 'openaaf' in line:
 					if config.softcam.actCam.value:
@@ -138,36 +145,28 @@ class CamdInfo3(Poll, Converter, object):
 						if config.softcam.actCam2.value == "no CAM 2 active":
 							server = ""
 					return "%s %s" % (emu, server)
-		#HDMU
-		elif fileExists("/etc/image-version") and fileExists("/etc/.emustart"):
-			try:
-				for line in open("/etc/.emustart"):
-					return line.split()[0].split('/')[-1]
-			except:
-				return None
-		# Pli
-		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
-			try:
-				for line in open("/etc/init.d/softcam"):
-					if 'echo' in line:
-						nameemu.append(line)
-				camdlist = "%s" % nameemu[1].split('"')[1]
-			except:
-				pass
-			try:
-				for line in open("/etc/init.d/cardserver"):
-					if 'echo' in line:
-						nameser.append(line)
-				serlist = "%s" % nameser[1].split('"')[1]
-			except:
-				pass
-			if serlist is not None and camdlist is not None:
-				return ("%s %s" % (serlist, camdlist))
-			elif camdlist is not None:
-				return "%s" % camdlist
-			elif serlist is not None:
-				return "%s" % serlist
-			return ""
+				elif 'openpli' in line or 'openhdf' in line:
+					try:
+						for line in open("/etc/init.d/softcam"):
+							if 'echo' in line:
+								nameemu.append(line)
+						camdlist = "%s" % nameemu[1].split('"')[1]
+					except:
+						pass
+					try:
+						for line in open("/etc/init.d/cardserver"):
+							if 'echo' in line:
+								nameser.append(line)
+						serlist = "%s" % nameser[1].split('"')[1]
+					except:
+						pass
+					if serlist is not None and camdlist is not None:
+						return ("%s %s" % (serlist, camdlist))
+					elif camdlist is not None:
+						return "%s" % camdlist
+					elif serlist is not None:
+						return "%s" % serlist
+					return ""
 		else:
 			return None
 

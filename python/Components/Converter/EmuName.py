@@ -45,7 +45,7 @@ class EmuName(Poll, Converter, object):
 			else:
 				camdname = None
 		# E-Panel
-		elif fileExists("//usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
+		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
 			if config.plugins.epanel.activeemu.value is not None:
 				camdname = StringIO(config.plugins.epanel.activeemu.value)
 			else:
@@ -86,6 +86,12 @@ class EmuName(Poll, Converter, object):
 				camdname = open("/etc/clist.list", "r")
 			except:
 				camdname = None
+		# HDMU
+		elif fileExists("/etc/.emustart"):
+			try:
+				camdname = open("/etc/.emustart", "r")
+			except:
+				camdname = None
 		# GP3
 		elif fileExists("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
 			try:
@@ -100,29 +106,21 @@ class EmuName(Poll, Converter, object):
 				nofile = True
 			except:
 				camdname = None
-		#ATV
-		elif fileExists("/etc/image-version") and not fileExists("/etc/.emustart"):
-			if fileExists("/etc/issue"):
-				for line in open("/etc/issue"):
-					if 'openatv' in line.lower():
-						if config.softcam.actCam.value:
-							camdname = StringIO(config.softcam.actCam.value)
-		#HDMU
-		elif fileExists("/etc/.emustart") and fileExists("/etc/image-version"):
-			try:
-				camdname = open("/etc/.emustart", "r")
-			except:
-				camdname = None
-		#Pli
-		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
-			try:
-				camdname = open("/etc/init.d/softcam", "r")
-			except:
-				camdname = None
-			try:
-				cardname = open("/etc/init.d/cardserver", "r")
-			except:
-				cardname = None
+		# Pli & HDF & ATV & AAF
+		elif fileExists("/etc/issue"):
+			for line in open("/etc/issue"):
+				if 'openatv' in line or 'openaaf' in line:
+					if config.softcam.actCam.value:
+						camdname = StringIO(config.softcam.actCam.value)
+				elif 'openpli' in line or 'openhdf' in line:
+					try:
+						camdname = open("/etc/init.d/softcam", "r")
+					except:
+						camdname = None
+					try:
+						cardname = open("/etc/init.d/cardserver", "r")
+					except:
+						cardname = None
 
 		if cardname:
 			for line in cardname:
