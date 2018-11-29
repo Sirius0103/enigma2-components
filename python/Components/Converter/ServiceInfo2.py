@@ -99,7 +99,7 @@ class ServiceInfo2(Poll, Converter, object):
 					if 'openpli' in line:
 						return ("MPEG2", "AVC", "H263", "VC1", "MPEG4-VC", "VC1-SM", "MPEG1", "HEVC", "VP8", "VP9", "XVID", "N/A 11", "N/A 12", "DIVX 3", "DIVX 4", "DIVX 5", "AVS", "N/A 17", "VP6", "N/A 19", "N/A 20", "SPARK", "")[info.getInfo(iServiceInformation.sVideoType)]
 					else:
-						return ("MPEG2", "MPEG4", "MPEG1", "MPEG4-II", "VC1", "VC1-SM", "")[info.getInfo(iServiceInformation.sVideoType)]
+						return ("MPEG2", "MPEG4", "MPEG1", "MPEG4-II", "VC1", "VC1-SM", "HEVC", "")[info.getInfo(iServiceInformation.sVideoType)]
 		elif self.type == self.xALLTYPE:
 			audio = service.audioTracks()
 			if fileExists("/etc/issue"):
@@ -108,7 +108,7 @@ class ServiceInfo2(Poll, Converter, object):
 						if 'openpli' in line:
 							return "%s%s" % (("MPEG2/", "AVC/", "H263/", "VC1/", "MPEG4-VC/", "VC1-SM/", "MPEG1/", "HEVC/", "VP8/", "VP9/", "XVID/", "N/A 11/", "N/A 12/", "DIVX 3/", "DIVX 4/", "DIVX 5/", "AVS/", "N/A 17/", "VP6/", "N/A 19/", "N/A 20/", "SPARK/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
 						else:
-							return "%s%s" % (("MPEG2/", "MPEG4/", "MPEG1/", "MPEG4-II/", "VC1/", "VC1-SM/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
+							return "%s%s" % (("MPEG2/", "MPEG4/", "MPEG1/", "MPEG4-II/", "VC1/", "VC1-SM/", "HEVC/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
 					except:
 						return ""
 		elif self.type == self.xATYPE:

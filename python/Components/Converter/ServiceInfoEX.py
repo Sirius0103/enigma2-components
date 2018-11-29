@@ -223,7 +223,7 @@ class ServiceInfoEX(Poll, Converter, object):
 				if 'openpli' in line:
 					self.stream['vtype'] = ('MPEG2', 'AVC', 'H263', 'VC1', 'MPEG4-VC', 'VC1-SM', 'MPEG1', 'HEVC', 'VP8', 'VP9', 'XVID', 'N/A 11', 'N/A 12', 'DIVX 3', 'DIVX 4', 'DIVX 5', 'AVS', 'N/A 17', 'VP6', 'N/A 19', 'N/A 20', 'SPARK', "")[info.getInfo(iServiceInformation.sVideoType)]
 				else:
-					self.stream['vtype'] = ('MPEG2', 'MPEG4', 'MPEG1', 'MPEG4-II', 'VC1', 'VC1-SM', 'HVEC', "")[info.getInfo(iServiceInformation.sVideoType)]
+					self.stream['vtype'] = ('MPEG2', 'MPEG4', 'MPEG1', 'MPEG4-II', 'VC1', 'VC1-SM', 'HEVC', "")[info.getInfo(iServiceInformation.sVideoType)]
 		self.stream['avtype'] = self.stream['vtype'] + '/' + self.stream['atype']
 		if self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000)) != "N/A":
 			self.stream['fps'] = self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000))
