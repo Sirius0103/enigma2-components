@@ -16,13 +16,13 @@
 # 
 # 25.11.2018 code optimization mod by Sirius
 
+from Poll import Poll
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
 from Tools.Directories import fileExists
-from Poll import Poll
 from cStringIO import StringIO
 import os
 

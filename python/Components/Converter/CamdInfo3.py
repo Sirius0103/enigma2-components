@@ -5,13 +5,13 @@
 # 
 # 25.11.2018 code optimization mod by Sirius
 
+from Poll import Poll
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
 from Tools.Directories import fileExists
-from Poll import Poll
 import os
 
 class CamdInfo3(Poll, Converter, object):
@@ -142,7 +142,7 @@ class CamdInfo3(Poll, Converter, object):
 						emu = config.softcam.actCam.value
 					if config.softcam.actCam2.value:
 						server = config.softcam.actCam2.value
-						if config.softcam.actCam2.value == "no CAM 2 active":
+						if 'CAM 2' in server:
 							server = ""
 					return "%s %s" % (emu, server)
 				elif 'openpli' in line or 'openhdf' in line:
