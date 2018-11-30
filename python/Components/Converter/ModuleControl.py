@@ -1,7 +1,8 @@
 # Coded by Nikolasi
-# v1.1
+# v1.2
 # code otimization (by Sirius)
 # add ModuleSlot, rename NameSlot (by Sirius)
+# add Module name upper (by Sirius)
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
@@ -55,21 +56,21 @@ class ModuleControl(Poll, Converter, object):
 	def getFilename(self, state, slot):
 		name = ""
 		if state == 0:
-			name =  _("no module found") 
+			name =  _("no module found")
 		elif state == 1:
 			name = _("init modules")
 		elif state == 2:
-			name = eDVBCI_UI.getInstance().getAppName(slot)
+			name = eDVBCI_UI.getInstance().getAppName(slot).upper()
 		return name
 
 	def getSlotname(self, state, slot):
 		name = ""
 		if state == 0:
-			name = _("Slot %d") %(slot+1) + " - " + _("no module found") 
+			name = _("Slot %d") %(slot+1) + " - " + _("no module found")
 		elif state == 1:
 			name = _("Slot %d") %(slot+1) + " - " + _("init modules")
 		elif state == 2:
-			name = _("Slot %d") %(slot+1) + " - " + eDVBCI_UI.getInstance().getAppName(slot)
+			name = _("Slot %d") %(slot+1) + " - " + eDVBCI_UI.getInstance().getAppName(slot).upper()
 		return name
 
 	def getPiconname(self, state, slot):
@@ -101,7 +102,7 @@ class ModuleControl(Poll, Converter, object):
 				if state != -1:
 					name = self.getFilename(state, 0)
 				else:
-					name = _("no module found") 
+					name = _("no module found")
 			else:
 				name = _("no module found")
 			return name
@@ -111,7 +112,7 @@ class ModuleControl(Poll, Converter, object):
 				if state != -1:
 					name = self.getFilename(state, 1)
 				else:
-					name = _("no module found") 
+					name = _("no module found")
 			else:
 				name = _("no module found")
 			return name
@@ -121,7 +122,7 @@ class ModuleControl(Poll, Converter, object):
 				if state != -1:
 					name = self.getFilename(state, 2)
 				else:
-					name = _("no module found") 
+					name = _("no module found")
 			else:
 				name = _("no module found")
 			return name
@@ -131,7 +132,7 @@ class ModuleControl(Poll, Converter, object):
 				if state != -1:
 					name = self.getFilename(state, 3)
 				else:
-					name = _("no module found") 
+					name = _("no module found")
 			else:
 				name = _("no module found")
 			return name
