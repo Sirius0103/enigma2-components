@@ -18,7 +18,9 @@ from Poll import Poll
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
 from Components.Element import cached
-from Tools.Directories import fileExists
+
+#codec_data = {-1: 'N/A', 0: 'MPEG2', 1: 'MPEG4', 2: 'MPEG1', 3: 'MPEG4-II', 4: 'VC1', 5: 'VC1-SM', 6: 'HEVC'}
+codec_data = {-1: 'N/A', 0: 'MPEG2', 1: 'AVC', 2: 'H263', 3: 'VC1', 4: 'MPEG4-VC', 5: 'VC1-SM', 6: 'MPEG1', 7: 'HEVC', 8: 'VP8', 9: 'VP9', 10: 'XVID', 11: 'N/A 11', 12: 'N/A 12', 13: 'DIVX 3.11', 14: 'DIVX 4', 15: 'DIVX 5', 16: 'AVS', 17: 'N/A 17', 18: 'VP6', 19: 'N/A 19', 20: 'N/A 20', 21: 'SPARK'}
 
 class ServiceInfo2(Poll, Converter, object):
 
@@ -94,23 +96,13 @@ class ServiceInfo2(Poll, Converter, object):
 			except:
 				return "N/A"
 		elif self.type == self.xVTYPE:
-			if fileExists("/etc/issue"):
-				for line in open("/etc/issue"):
-					if 'openpli' in line:
-						return ("MPEG2", "AVC", "H263", "VC1", "MPEG4-VC", "VC1-SM", "MPEG1", "HEVC", "VP8", "VP9", "XVID", "N/A 11", "N/A 12", "DIVX 3", "DIVX 4", "DIVX 5", "AVS", "N/A 17", "VP6", "N/A 19", "N/A 20", "SPARK", "")[info.getInfo(iServiceInformation.sVideoType)]
-					else:
-						return ("MPEG2", "MPEG4", "MPEG1", "MPEG4-II", "VC1", "VC1-SM", "HEVC", "")[info.getInfo(iServiceInformation.sVideoType)]
+			return codec_data[info.getInfo(iServiceInformation.sVideoType)]
 		elif self.type == self.xALLTYPE:
 			audio = service.audioTracks()
-			if fileExists("/etc/issue"):
-				for line in open("/etc/issue"):
-					try:
-						if 'openpli' in line:
-							return "%s%s" % (("MPEG2/", "AVC/", "H263/", "VC1/", "MPEG4-VC/", "VC1-SM/", "MPEG1/", "HEVC/", "VP8/", "VP9/", "XVID/", "N/A 11/", "N/A 12/", "DIVX 3/", "DIVX 4/", "DIVX 5/", "AVS/", "N/A 17/", "VP6/", "N/A 19/", "N/A 20/", "SPARK/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
-						else:
-							return "%s%s" % (("MPEG2/", "MPEG4/", "MPEG1/", "MPEG4-II/", "VC1/", "VC1-SM/", "HEVC/", "")[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
-					except:
-						return ""
+			try:
+				return "%s/%s" % (codec_data[info.getInfo(iServiceInformation.sVideoType)], str(audio.getTrackInfo(audio.getCurrentTrack()).getDescription()))
+			except:
+				return ""
 		elif self.type == self.xATYPE:
 			audio = service.audioTracks()
 			try:
