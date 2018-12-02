@@ -73,6 +73,7 @@ class ServiceInfoEX(Poll, Converter, object):
 	volume = 38
 	volumedata = 39
 	vsize = 40
+	ttype = 41
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -159,7 +160,9 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.volumedata
 		elif type == "vsize":
 			self.type = self.vsize
-		else: 
+		elif type == "ttype":
+			self.type = self.ttype
+		else:
 			self.type = self.format
 			self.sfmt = type[:]
 		self.poll_interval = 1000
@@ -229,6 +232,17 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.stream['fps'] = self.getServiceInfoString(info, iServiceInformation.sFrameRate, lambda x: "%d" % ((x+500)/1000))
 		if self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x/1024)) != "N/A":
 			self.stream['tbps'] = self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x/1024))
+		self.tpdata = info.getInfoObject(iServiceInformation.sTransponderData)
+		if self.tpdata:
+			self.stream['ttype'] = self.tpdata.get('tuner_type', '')
+			if self.stream['ttype'] == 'DVB-S' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 1:
+					self.stream['ttype'] = 'DVB-S2'
+			elif self.stream['ttype'] == 'DVB-T' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 1:
+					self.stream['ttype'] = 'DVB-T2'
+		else:
+			self.stream['ttype'] = 'IP-TV'
 
 		if self.type == self.apid:
 			streaminfo = self.stream['apid']
@@ -268,6 +282,8 @@ class ServiceInfoEX(Poll, Converter, object):
 			streaminfo = _('Vol: %s') % config.audio.volume.value
 		elif self.type == self.volumedata:
 			streaminfo = '%s' % config.audio.volume.value
+		elif self.type == self.ttype:
+			streaminfo = self.stream['ttype']
 		elif self.type == self.vsize:
 			streaminfo = self.stream['xres'] + 'x' + self.getServiceInfoString(info, iServiceInformation.sVideoHeight) + ' ' + ('i', 'p', '')[info.getInfo(iServiceInformation.sProgressive)] + self.stream['fps']
 		elif self.type == self.format:
