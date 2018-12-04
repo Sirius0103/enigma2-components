@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# 25.11.2018 code optimization mod by Sirius
 # 26.11.2018 add terrestrial type mod by Sirius
+# 01.12.2018 fix video codec mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -24,10 +24,15 @@ from Components.config import config
 from Components.Element import cached
 from Tools.Directories import fileExists
 
-if fileExists("/etc/image-version"):
-	codec_data = {-1: ' ', 0: 'MPEG2', 1: 'MPEG4', 2: 'MPEG1', 3: 'MPEG4-II', 4: 'VC1', 5: 'VC1-SM', 6: 'HEVC'}
-else:
-	codec_data = {-1: ' ', 0: 'MPEG2', 1: 'AVC', 2: 'H263', 3: 'VC1', 4: 'MPEG4-VC', 5: 'VC1-SM', 6: 'MPEG1', 7: 'HEVC', 8: 'VP8', 9: 'VP9', 10: 'XVID', 11: 'N/A 11', 12: 'N/A 12', 13: 'DIVX 3', 14: 'DIVX 4', 15: 'DIVX 5', 16: 'AVS', 17: 'N/A 17', 18: 'VP6', 19: 'N/A 19', 20: 'N/A 20', 21: 'SPARK'}
+if fileExists("/etc/issue"):
+	image = ''
+	line = open(("/etc/issue"), "r").readlines()
+	for text in line:
+		image += text
+		if not 'openpli' in image:
+			codec_data = {-1: ' ', 0: 'MPEG2', 1: 'MPEG4', 2: 'MPEG1', 3: 'MPEG4-II', 4: 'VC1', 5: 'VC1-SM', 6: 'HEVC'}
+		else:
+			codec_data = {-1: ' ', 0: 'MPEG2', 1: 'AVC', 2: 'H263', 3: 'VC1', 4: 'MPEG4-VC', 5: 'VC1-SM', 6: 'MPEG1', 7: 'HEVC', 8: 'VP8', 9: 'VP9', 10: 'XVID', 11: 'N/A 11', 12: 'N/A 12', 13: 'DIVX 3', 14: 'DIVX 4', 15: 'DIVX 5', 16: 'AVS', 17: 'N/A 17', 18: 'VP6', 19: 'N/A 19', 20: 'N/A 20', 21: 'SPARK'}
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
