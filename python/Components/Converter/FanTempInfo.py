@@ -41,26 +41,26 @@ class FanTempInfo(Poll, Converter, object):
 
 	@cached
 	def getText(self):
-		info = 'N/A'
+		info = "N/A"
 		if self.type is self.FanInfo or self.type is self.TxtFanInfo:
-			if os.path.isfile("/proc/stb/fp/fan_speed"):
+			if os.path.exists("/proc/stb/fp/fan_speed"):
 				info = open("/proc/stb/fp/fan_speed").read().strip('\n')
-			elif os.path.isfile("/proc/stb/fp/fan_pwm"):
+			elif os.path.exists("/proc/stb/fp/fan_pwm"):
 				info = open("/proc/stb/fp/fan_pwm").read().strip('\n')
 			if self.type is self.TxtFanInfo:
 				info = "Fan: " + info
 			
 		elif self.type is self.TempInfo or self.type is self.TxtTempInfo:
-			if os.path.isfile("/proc/stb/sensors/temp0/value") and os.path.isfile("/proc/stb/sensors/temp0/unit"):
+			if os.path.exists("/proc/stb/sensors/temp0/value") and os.path.exists("/proc/stb/sensors/temp0/unit"):
 				info = "%s%s%s" % (open("/proc/stb/sensors/temp0/value").read().strip('\n'), unichr(176).encode("latin-1"), open("/proc/stb/sensors/temp0/unit").read().strip('\n'))
-			elif os.path.isfile("/proc/stb/fp/temp_sensor_avs"): 
+			elif os.path.exists("/proc/stb/fp/temp_sensor_avs"):
 				info = "%s%sC" % (open("/proc/stb/fp/temp_sensor_avs").read().strip('\n'), unichr(176).encode("latin-1"))
-			elif os.path.isfile("/proc/stb/fp/temp_sensor"): 
+			elif os.path.exists("/proc/stb/fp/temp_sensor"):
 				info = "%s%sC" % (open("/proc/stb/fp/temp_sensor").read().strip('\n'), unichr(176).encode("latin-1"))
-			elif os.path.exists('/sys/devices/virtual/thermal/thermal_zone0/temp'):
-				info = "%s%sC" % (open('/sys/devices/virtual/thermal/thermal_zone0/temp').read()[:2].strip('\n'), unichr(176).encode("latin-1"))
+			elif os.path.exists("/sys/devices/virtual/thermal/thermal_zone0/temp"):
+				info = "%s%sC" % (open("/sys/devices/virtual/thermal/thermal_zone0/temp").read()[:2].strip('\n'), unichr(176).encode("latin-1"))
 			if info.startswith('0'):
-				info = 'N/A'
+				info = "N/A"
 			if self.type is self.TxtTempInfo:
 				info = "Temp: " + info
 		return info
