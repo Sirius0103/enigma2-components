@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# 10.12.2018 code optimization mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
