@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 # Coders by Sirius
-# v1.2
-# code otimization (by Sirius)
+# v1.3
+# code otimization
+# add support TMBD
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
