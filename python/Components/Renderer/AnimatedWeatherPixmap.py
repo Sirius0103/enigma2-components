@@ -54,34 +54,21 @@ class AnimatedWeatherPixmap(Renderer):
 			sname = ''
 			ext = ''
 			name = ''
-		if (what[0] != self.CHANGED_CLEAR):
-			try:
-				ext = self.source.iconfilename
-				if ext != "":
-					sname = os.path.split(ext)[1]
-					sname = sname.replace('.gif', '')
-			except:
-				sname = self.source.text
+			if (what[0] != self.CHANGED_CLEAR):
+				try:
+					ext = self.source.iconfilename
+					if ext != "":
+						sname = os.path.split(ext)[1]
+						sname = sname.replace('.gif', '')
+				except:
+					sname = self.source.text
 			if sname == '1' or sname == '2' or sname == '3' or sname == '4':
 				name = '0'
 			elif sname == '9':
 				name = '8'
 			else:
 				name = self.txt_naim.get(sname, sname)
-#			if self.ftpcontrol == 1:
-#				if fileExists('/tmp/AnimatedWeatherPixmap'):
-#					self.runAnim(name)
-#				else:
-#					self.dovloud(name)
-#			else:
-#				self.runAnim(name)
 			self.runAnim(name)
-
-#	def dovloud(self, id):
-#		os.system('wget -q ftp://u5616:f4bca98e@frog.hostink.ru/public_ftp/AnimatedWeatherPixmap.tar.gz -O /tmp/AnimatedWeatherPixmap.tar.gz')
-#		os.system('tar xzvf /tmp/AnimatedWeatherPixmap.tar.gz -C /')
-#		os.system('rm -rf /tmp/AnimatedWeatherPixmap.tar.gz')
-#		self.runAnim(id)
 
 	def runAnim(self, id):
 		global total
