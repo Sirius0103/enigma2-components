@@ -16,7 +16,7 @@ class MovieInfo2(Converter, object):
 	MOVIE_FULL_DESCRIPTION = 0
 	MOVIE_SHORT_DESCRIPTION = 1 # meta description when available.. when not .eit short description
 	MOVIE_META_DESCRIPTION = 2 # just meta description when available
-	MOVIE_REC_FILESIZE = 3 # filesize of recording
+	MOVIE_FILESIZE = 3 # filesize of recording
 	MOVIE_SERVICE_NAME = 4 # name of recording service
 	MOVIE_FILE_NAME = 5 # name of recording file
 	MOVIE_ORIG_NAME = 6
@@ -63,7 +63,7 @@ class MovieInfo2(Converter, object):
 		elif type == "ServiceName":
 			self.type = self.MOVIE_SERVICE_NAME
 		elif type == "FileSize":
-			self.type = self.MOVIE_REC_FILESIZE
+			self.type = self.MOVIE_FILESIZE
 		else:
 			raise ElementError("'%s' is not <ShortDescription|MetaDescription|RecordServiceName|FileSize> for MovieInfo converter" % type)
 
@@ -252,7 +252,7 @@ class MovieInfo2(Converter, object):
 					rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
 					return ServiceReference(rec_ref_str).getServiceName()
 #FileSize
-				elif self.type == self.MOVIE_REC_FILESIZE:
+				elif self.type == self.MOVIE_FILESIZE:
 					if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
 						return _("Directory")
 					filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
