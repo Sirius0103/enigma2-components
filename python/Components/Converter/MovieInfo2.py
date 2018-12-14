@@ -84,11 +84,10 @@ class MovieInfo2(Converter, object):
 		rating = ''
 		movieinfo = ''
 		moviename = ''
-		recname = ''
+		origname = ''
 		covername = ''
-		service = self.source.service
-#		info = self.source.info
 		event = self.source.event
+		service = self.source.service
 
 		if service:
 			if isinstance(service, iPlayableServicePtr):
@@ -96,17 +95,17 @@ class MovieInfo2(Converter, object):
 				name = info.getName()
 				name2 = config.movielist.last_videodir.value
 				filename = '%s%s' % (name2, name)
-				filetext = filename.split('.')[0].strip() + '.txt'
+				filetext = filename.split('.')[0].strip()
 			else: # selection
 				info = service and self.source.info
 				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
 					name = service.getPath()
 					filename = '%s' % (name)
-					filetext = filename + filename.split('/')[-2].strip() + '.txt'
+					filetext = filename + filename.split('/')[-2].strip()
 				else:
 					name = service.getPath()
 					filename = '%s' % (name)
-					filetext = filename.split('.')[0].strip() + '.txt'
+					filetext = filename.split('.')[0].strip()
 			try:
 #ShortDescription
 				if self.type == self.MOVIE_SHORT_DESCRIPTION:
@@ -120,13 +119,13 @@ class MovieInfo2(Converter, object):
 						or service.getPath())
 #FullDescription
 				elif self.type == self.MOVIE_FULL_DESCRIPTION:
-					if fileExists(filetext):
-						fulldescription = open("%s" % filetext, "r").readlines()[2]\
-							+ open("%s" % filetext, "r").readlines()[3]\
-							+"\n"+ open("%s" % filetext, "r").readlines()[4]\
-							+"\n"+ open("%s" % filetext, "r").readlines()[6]\
-							+ open("%s" % filetext, "r").readlines()[1]\
-							+ open("%s" % filetext, "r").readlines()[5]
+					if fileExists(filetext + '.txt'):
+						fulldescription = open("%s" % filetext + '.txt', "r").readlines()[2]\
+							+ open("%s" % filetext + '.txt', "r").readlines()[3]\
+							+"\n"+ open("%s" % filetext + '.txt', "r").readlines()[4]\
+							+"\n"+ open("%s" % filetext + '.txt', "r").readlines()[6]\
+							+ open("%s" % filetext + '.txt', "r").readlines()[1]\
+							+ open("%s" % filetext + '.txt', "r").readlines()[5]
 						return fulldescription
 					elif fileExists(filename[:-2] + 'txt'):
 						fulldescription = open("%s" % filename[:-2] + 'txt', "r").readlines()[5]\
@@ -136,15 +135,14 @@ class MovieInfo2(Converter, object):
 							+ open("%s" % filename[:-2] + 'txt', "r").readlines()[0]\
 							+ open("%s" % filename[:-2] + 'txt', "r").readlines()[1]
 						return fulldescription
-						
 					else:
 						return ((event and (event.getExtendedDescription() or event.getShortDescription()))
 							or info.getInfoString(service, iServiceInformation.sDescription)
 							or service.getPath())
 #Description
 				elif self.type == self.MOVIE_DESCRIPTION:
-					if fileExists(filetext):
-						description = open("%s" % filetext, "r").readlines()[4]
+					if fileExists(filetext + '.txt'):
+						description = open("%s" % filetext + '.txt', "r").readlines()[4]
 						return description
 					elif fileExists(filename[:-2] + 'txt'):
 						description = open("%s" % filename[:-2] + 'txt', "r").readlines()[2]
@@ -155,8 +153,8 @@ class MovieInfo2(Converter, object):
 							or service.getPath())
 #Director
 				elif self.type == self.MOVIE_DIRECTOR:
-					if fileExists(filetext):
-						director = open("%s" % filetext, "r").readlines()[2]
+					if fileExists(filetext + '.txt'):
+						director = open("%s" % filetext + '.txt', "r").readlines()[2]
 					elif fileExists(filename[:-2] + 'txt'):
 						director = open("%s" % filename[:-2] + 'txt', "r").readlines()[5]
 					else:
@@ -164,8 +162,8 @@ class MovieInfo2(Converter, object):
 					return director
 #Actors
 				elif self.type == self.MOVIE_ACTORS:
-					if fileExists(filetext):
-						actors = open("%s" % filetext, "r").readlines()[3]
+					if fileExists(filetext + '.txt'):
+						actors = open("%s" % filetext + '.txt', "r").readlines()[3]
 					elif fileExists(filename[:-2] + 'txt'):
 						actors = open("%s" % filename[:-2] + 'txt', "r").readlines()[4]
 					else:
@@ -173,8 +171,8 @@ class MovieInfo2(Converter, object):
 					return actors
 #Coutry
 				elif self.type == self.MOVIE_COUNTRY:
-					if fileExists(filetext):
-						coutry = open("%s" % filetext, "r").readlines()[1]
+					if fileExists(filetext + '.txt'):
+						coutry = open("%s" % filetext + '.txt', "r").readlines()[1]
 					elif fileExists(filename[:-2] + 'txt'):
 						coutry = open("%s" % filename[:-2] + 'txt', "r").readlines()[0]
 					else:
@@ -182,8 +180,8 @@ class MovieInfo2(Converter, object):
 					return coutry
 #Genre
 				elif self.type == self.MOVIE_GENRE:
-					if fileExists(filetext):
-						genre = open("%s" % filetext, "r").readlines()[5]
+					if fileExists(filetext + '.txt'):
+						genre = open("%s" % filetext + '.txt', "r").readlines()[5]
 					elif fileExists(filename[:-2] + 'txt'):
 						genre = open("%s" % filename[:-2] + 'txt', "r").readlines()[1]
 					else:
@@ -191,8 +189,8 @@ class MovieInfo2(Converter, object):
 					return genre
 #Year
 				elif self.type == self.MOVIE_YEAR:
-					if fileExists(filetext):
-						year = open("%s" % filetext, "r").readlines()[6]
+					if fileExists(filetext + '.txt'):
+						year = open("%s" % filetext + '.txt', "r").readlines()[6]
 					elif fileExists(filename[:-2] + 'txt'):
 						year = open("%s" % filename[:-2] + 'txt', "r").readlines()[6]
 					else:
@@ -200,8 +198,8 @@ class MovieInfo2(Converter, object):
 					return year
 #Rating
 				elif self.type == self.MOVIE_RATING:
-					if fileExists(filetext):
-						ratingall = open("%s" % filetext, "r").readlines()[7]
+					if fileExists(filetext + '.txt'):
+						ratingall = open("%s" % filetext + '.txt', "r").readlines()[7]
 						rating = ratingall.split('Рейтинг:')[1].split('.')[0].strip()
 					elif fileExists(filename[:-2] + 'txt'):
 						ratingall = open("%s" % filename[:-2] + 'txt', "r").readlines()[3]
@@ -211,8 +209,8 @@ class MovieInfo2(Converter, object):
 					return rating
 #MovieInfo
 				elif self.type == self.MOVIE_INFO:
-					if fileExists(filetext):
-						movieinfo = open("%s" % filetext, "r").readlines()[7]
+					if fileExists(filetext + '.txt'):
+						movieinfo = open("%s" % filetext + '.txt', "r").readlines()[7]
 					elif fileExists(filename[:-2] + 'txt'):
 						movieinfo = open("%s" % filename[:-2] + 'txt', "r").readlines()[3]
 					else:
@@ -220,33 +218,33 @@ class MovieInfo2(Converter, object):
 					return movieinfo
 #MovieOrigName
 				elif self.type == self.MOVIE_ORIG_NAME:
-					if fileExists(filetext):
-						nameall = open("%s" % filetext, "r").readlines()[0]
-						moviename = nameall.split('Оригинальное название:')[1].strip()
+					if fileExists(filetext + '.txt'):
+						nameall = open("%s" % filetext + '.txt', "r").readlines()[0]
+						origname = nameall.split('Оригинальное название:')[1].strip()
 					elif fileExists(filename[:-2] + 'txt'):
 						nameall = open("%s" % filename[:-2] + 'txt', "r").readlines()[7]
-						moviename = nameall.split('Оригинальное название:')[1].strip()
+						origname = nameall.split('Оригинальное название:')[1].strip()
 					else:
-						moviename = _("No name")
-					return moviename
+						origname = _("No name")
+					return origname
 #MovieCoverName
 				elif self.type == self.MOVIE_COVER_NAME:
-					path1 = '/media/usb/covers/' + filetext.split('/')[-1].split('.')[0].strip() + '.jpg'
-					path2 = '/media/hdd/covers/' + filetext.split('/')[-1].split('.')[0].strip() + '.jpg'
-					path3 = '/media/sdb1/covers/' + filetext.split('/')[-1].split('.')[0].strip() + '.jpg'
-					path4 = '/media/sdb2/covers/' + filetext.split('/')[-1].split('.')[0].strip() + '.jpg'
+					path1 = '/media/usb/covers/' + filetext.split('/')[-1].strip() + '.jpg'
+					path2 = '/media/hdd/covers/' + filetext.split('/')[-1].strip() + '.jpg'
+					path3 = '/media/sdb1/covers/' + filetext.split('/')[-1].strip() + '.jpg'
+					path4 = '/media/sdb2/covers/' + filetext.split('/')[-1].strip() + '.jpg'
 					if fileExists(path1) or fileExists(path2) or fileExists(path3) or fileExists(path4):
-						covername = filetext.split('/')[-1].split('.')[0].strip()
+						covername = filetext.split('/')[-1].strip()
 					else:
 						covername = filetext.split('/')[-2].strip()
 					return covername
 #MovieFileName
 				elif self.type == self.MOVIE_FILE_NAME:
 					if filetext is not None:
-						recname = filetext.split('/')[-1].split('.')[0].strip()
+						moviename = filetext.split('/')[-1].strip()
 					else:
-						recname = _("No name")
-					return recname
+						moviename = _("No name")
+					return moviename
 #MovieServiceName
 				elif self.type == self.MOVIE_SERVICE_NAME:
 					rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
