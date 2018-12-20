@@ -103,9 +103,13 @@ class MovieInfo2(Converter, object):
 					namedir = config.movielist.last_videodir.value
 					filename = "%s%s" % (namedir, name)
 					covername = filename
-				if filename.endswith('/'): # DVD & BD
+				if filename.endswith('/') # DVD # /VIDEO_TS/VTS_01_0.VOB
 					filetext = filename + filename.split('/')[-2].strip()
 					filename = filename[:-1] + '.'
+				elif filename.endswith('.m2ts') and 'BDMV/STREAM/' in covername: # BD # /BDMV/STREAM/00001.m2ts
+					filetext = filename[:-22] + filename.split('/')[-2].strip()
+					filename = filename[:-23] + '.'
+					covername = filename[:-1]
 				else: # other files
 					filetext = filename.split('.')[0].strip()
 					filename = filename[:-2]
@@ -176,6 +180,7 @@ class MovieInfo2(Converter, object):
 						return ((event and (event.getExtendedDescription() or event.getShortDescription()))
 							or info.getInfoString(service, iServiceInformation.sDescription)
 							or service.getPath())
+#						return (covername + '---' + filename + '---' + filetext)
 #Director
 				elif self.type == self.MOVIE_DIRECTOR:
 					if fileExists(filename + 'txt'):
@@ -262,9 +267,9 @@ class MovieInfo2(Converter, object):
 					path6 = '/media/sdb1/covers/' + covername.split('/')[-1].split('.')[0].strip() + '.jpg'
 					path7 = '/media/sdb2/covers/' + covername.split('/')[-1].strip() + '.jpg'
 					path8 = '/media/sdb2/covers/' + covername.split('/')[-1].split('.')[0].strip() + '.jpg'
-					if fileExists(path1) or fileExists(path3) or fileExists(path5) or fileExists(path7):#.mkv.jpg
+					if fileExists(path1) or fileExists(path3) or fileExists(path5) or fileExists(path7): #.mkv.jpg
 						covername = covername.split('/')[-1].strip()
-					elif fileExists(path2) or fileExists(path4) or fileExists(path6) or fileExists(path8):#.jpg
+					elif fileExists(path2) or fileExists(path4) or fileExists(path6) or fileExists(path8): #.jpg
 						covername = covername.split('/')[-1].split('.')[0].strip()
 					else:
 						covername = covername.split('/')[-2].strip()
