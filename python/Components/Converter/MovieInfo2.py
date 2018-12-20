@@ -103,7 +103,7 @@ class MovieInfo2(Converter, object):
 					namedir = config.movielist.last_videodir.value
 					filename = "%s%s" % (namedir, name)
 					covername = filename
-				if filename.endswith('/') # DVD # /VIDEO_TS/VTS_01_0.VOB
+				if filename.endswith('/'): # DVD # /VIDEO_TS/VTS_01_0.VOB
 					filetext = filename + filename.split('/')[-2].strip()
 					filename = filename[:-1] + '.'
 				elif filename.endswith('.m2ts') and 'BDMV/STREAM/' in covername: # BD # /BDMV/STREAM/00001.m2ts
