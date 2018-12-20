@@ -78,7 +78,7 @@ class MovieCover(Renderer, Poll):
 		for path in self.searchPaths:
 			try:
 				name = ((path % self.path) + serviceName)
-				pngname = name.split('.')[0].strip() + '.jpg'
+				pngname = name + '.jpg'
 				if fileExists(pngname):
 					return pngname
 			except:
