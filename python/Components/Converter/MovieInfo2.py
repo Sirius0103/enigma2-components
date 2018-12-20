@@ -123,26 +123,27 @@ class MovieInfo2(Converter, object):
 					covername = filename = filetext = ''
 			else: # selection
 				info = service and self.source.info
-				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory: # folder
-					name = service.getPath()
-					filename = "%s" % (name)
-					covername = filename
-					filetext = filename + filename.split('/')[-2].strip()
-					filename = filename[:-1] + '.'
-				else: # files
-					name = service.getPath()
-					filename = "%s" % (name)
-					try:
+				try:
+					if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory: # folder
+						name = service.getPath()
+						filename = "%s" % (name)
+						covername = filename
+						filetext = filename + filename.split('/')[-2].strip()
+						filename = filename[:-1] + '.'
+					else: # files
+						name = service.getPath()
+						filename = "%s" % (name)
 						if '.ts' in filename and '/movie/' in filename: # rec files
 							filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
 							covername = filename
+							filename = filename[:-2]
 							filetext = filename.split('.')[0].strip()
 						else: # other files
 							filetext = filename.split('.')[0].strip()
 							covername = filename
 							filename = filename[:-2]
-					except:
-						covername = filename = filetext = ''
+				except:
+					covername = filename = filetext = ''
 			try:
 #ShortDescription
 				if self.type == self.MOVIE_SHORT_DESCRIPTION:
