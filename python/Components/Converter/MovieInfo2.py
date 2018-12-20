@@ -106,10 +106,10 @@ class MovieInfo2(Converter, object):
 				if filename.endswith('/'): # DVD # /VIDEO_TS/VTS_01_0.VOB
 					filetext = filename + filename.split('/')[-2].strip()
 					filename = filename[:-1] + '.'
-				elif filename.endswith('.m2ts') and 'BDMV/STREAM/' in covername: # BD # /BDMV/STREAM/00001.m2ts
-					filetext = filename[:-22] + filename.split('/')[-2].strip()
+				elif filename.endswith('.m2ts') and '/BDMV/STREAM/' in covername: # BD # /BDMV/STREAM/00001.m2ts
 					filename = filename[:-23] + '.'
 					covername = filename[:-1]
+					filetext = filename[:-1] + '/'+ filename.split('/')[-1].split('.')[0].strip()
 				else: # other files
 					filetext = filename.split('.')[0].strip()
 					filename = filename[:-2]
