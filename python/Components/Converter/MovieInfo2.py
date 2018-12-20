@@ -103,16 +103,24 @@ class MovieInfo2(Converter, object):
 					namedir = config.movielist.last_videodir.value
 					filename = "%s%s" % (namedir, name)
 					covername = filename
-				if filename.endswith('/'): # DVD # /VIDEO_TS/VTS_01_0.VOB
-					filetext = filename + filename.split('/')[-2].strip()
-					filename = filename[:-1] + '.'
-				elif filename.endswith('.m2ts') and '/BDMV/STREAM/' in covername: # BD # /BDMV/STREAM/00001.m2ts
-					filename = filename[:-23] + '.'
-					covername = filename[:-1]
-					filetext = filename[:-1] + '/'+ filename.split('/')[-1].split('.')[0].strip()
-				else: # other files
-					filetext = filename.split('.')[0].strip()
-					filename = filename[:-2]
+				try:
+					if filename.endswith('/'): # DVD
+						filetext = filename + filename.split('/')[-2].strip()
+						filename = filename[:-1] + '.'
+					elif filename.endswith('.ts') and '/movie/' in filename: # rec files
+						filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
+						covername = filename
+						filename = filename[:-2]
+						filetext = filename.split('.')[0].strip()
+					elif filename.endswith('.m2ts') and '/BDMV/STREAM/' in covername: # BD
+						filename = filename[:-23] + '.'
+						covername = filename[:-1]
+						filetext = filename[:-1] + '/'+ filename.split('/')[-1].split('.')[0].strip()
+					else: # other files
+						filetext = filename.split('.')[0].strip()
+						filename = filename[:-2]
+				except:
+					covername = filename = filetext = ''
 			else: # selection
 				info = service and self.source.info
 				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory: # folder
@@ -125,7 +133,7 @@ class MovieInfo2(Converter, object):
 					name = service.getPath()
 					filename = "%s" % (name)
 					try:
-						if '.ts' in filename.lower() and 'movie' in filename.lower():
+						if '.ts' in filename and '/movie/' in filename: # rec files
 							filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
 							covername = filename
 							filetext = filename.split('.')[0].strip()
@@ -180,7 +188,6 @@ class MovieInfo2(Converter, object):
 						return ((event and (event.getExtendedDescription() or event.getShortDescription()))
 							or info.getInfoString(service, iServiceInformation.sDescription)
 							or service.getPath())
-#						return (covername + '---' + filename + '---' + filetext)
 #Director
 				elif self.type == self.MOVIE_DIRECTOR:
 					if fileExists(filename + 'txt'):
