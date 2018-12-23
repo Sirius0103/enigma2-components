@@ -1,6 +1,6 @@
 # LabelDuoColors Render
 # Copyright (c) 2boom 2014
-# v.0.2-r0
+# v.0.2-r1
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# 22.12.2018 code optimization mod by Sirius
 
 from Components.VariableText import VariableText
 from Renderer import Renderer
@@ -58,8 +60,11 @@ class LabelDuoColors(VariableText, Renderer):
 		else:
 			self.text = ''
 			for i in range(len(self.source.text.split())):
-				if i % 2 is 0: 
-					self.tmptext += self.firstColor + ' ' + self.source.text.split()[i] + '  '
-				else:
-					self.tmptext += self.secondColor + self.source.text.split()[i] + '   '
+				try:
+					if i % 2 is 0: 
+						self.tmptext += self.firstColor + ' ' + self.source.text.split()[i] + '  '
+					else:
+						self.tmptext += self.secondColor + self.source.text.split()[i] + '   '
+				except:
+					pass
 			self.text = self.tmptext.strip()
