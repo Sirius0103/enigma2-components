@@ -111,65 +111,65 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.yres
 		elif type == "gamma":
 			self.type = self.gamma
-		elif  type == "atype":
+		elif type == "atype":
 			self.type = self.atype
-		elif  type == "vtype":
+		elif type == "vtype":
 			self.type = self.vtype
-		elif  type == "avtype":
+		elif type == "avtype":
 			self.type = self.avtype
-		elif  type == "fps":
+		elif type == "fps":
 			self.type = self.fps
-		elif  type == "tbps":
+		elif type == "tbps":
 			self.type = self.tbps
 		elif type == "vsize":
 			self.type = self.vsize
 		elif type == "ttype":
 			self.type = self.ttype
-		elif  type == "VideoWidth":
+		elif type == "VideoWidth":
 			self.type = self.XRES
-		elif  type == "VideoHeight":
+		elif type == "VideoHeight":
 			self.type = self.YRES
-		elif  type == "IsWidescreen":
+		elif type == "IsWidescreen":
 			self.type = self.IS_WIDESCREEN
-		elif  type == "HasTelext":
+		elif type == "HasTelext":
 			self.type = self.HAS_TELETEXT
-		elif  type == "IsMultichannel":
+		elif type == "IsMultichannel":
 			self.type = self.IS_MULTICHANNEL
-		elif  type == "IsCrypted":
+		elif type == "IsCrypted":
 			self.type = self.IS_CRYPTED
-		elif  type == "IsFta":
+		elif type == "IsFta":
 			self.type = self.IS_FTA
-		elif  type == "HasHBBTV":
+		elif type == "HasHBBTV":
 			self.type = self.HAS_HBBTV
-		elif  type == "SubservicesAvailable":
+		elif type == "SubservicesAvailable":
 			self.type = self.SUBSERVICES_AVAILABLE
-		elif  type == "AudioTracksAvailable":
+		elif type == "AudioTracksAvailable":
 			self.type = self.AUDIOTRACKS_AVAILABLE
-		elif  type == "SubtitlesAvailable":
+		elif type == "SubtitlesAvailable":
 			self.type = self.SUBTITLES_AVAILABLE
-		elif  type == "Editmode":
+		elif type == "Editmode":
 			self.type = self.EDITMODE
-		elif  type == "Framerate":
+		elif type == "Framerate":
 			self.type = self.FRAMERATE
-		elif  type == "IsSatellite":
+		elif type == "IsSatellite":
 			self.type = self.IS_SATELLITE
-		elif  type == "IsSatelliteS":
+		elif type == "IsSatelliteS":
 			self.type = self.IS_SATELLITE_S
-		elif  type == "IsSatelliteS2":
+		elif type == "IsSatelliteS2":
 			self.type = self.IS_SATELLITE_S2
-		elif  type == "IsCable":
+		elif type == "IsCable":
 			self.type = self.IS_CABLE
-		elif  type == "IsTerrestrial":
+		elif type == "IsTerrestrial":
 			self.type = self.IS_TERRESTRIAL
-		elif  type == "IsTerrestrialT":
+		elif type == "IsTerrestrialT":
 			self.type = self.IS_TERRESTRIAL_T
-		elif  type == "IsTerrestrialT2":
+		elif type == "IsTerrestrialT2":
 			self.type = self.IS_TERRESTRIAL_T2
-		elif  type == "IsStreamTV":
+		elif type == "IsStreamTV":
 			self.type = self.IS_STREAMTV
-		elif  type == "IsVolume":
+		elif type == "IsVolume":
 			self.type = self.volume
-		elif  type == "IsVolumeData":
+		elif type == "IsVolumeData":
 			self.type = self.volumedata
 		else:
 			self.type = self.format
@@ -200,7 +200,7 @@ class ServiceInfoEX(Poll, Converter, object):
 
 	@cached
 	def getText(self):
-		self.stream = { 'apid':"N/A", 'vpid':"N/A", 'sid':"N/A", 'onid':"N/A", 'tsid':"N/A", 'prcpid':"N/A", 'caids':"FTA", 'pmtpid':"N/A", 'txtpid':"N/A", 'xres':"", 'yres':"", 'atype':"", 'vtype':"", 'avtype':"", 'fps':"", 'tbps':"",}
+		self.stream = { 'apid':"N/A", 'vpid':"N/A", 'sid':"N/A", 'onid':"N/A", 'tsid':"N/A", 'prcpid':"N/A", 'caids':"FTA", 'pmtpid':"N/A", 'txtpid':"N/A", 'xres':" ", 'yres':" ", 'gamma':" ", 'atype':" ", 'vtype':" ", 'avtype':" ", 'fps':" ", 'tbps':" ", 'vsize':" ",}
 		streaminfo = ""
 		array_caids = []
 		service = self.source.service
