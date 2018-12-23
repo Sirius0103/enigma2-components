@@ -16,6 +16,7 @@
 #
 # 26.11.2018 add terrestrial type mod by Sirius
 # 01.12.2018 fix video codec mod by Sirius
+# 23.12.2018 add support for gamma values mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -32,6 +33,7 @@ if fileExists("/etc/issue"):
 			codec_data = {-1: ' ', 0: 'MPEG2', 1: 'MPEG4', 2: 'MPEG1', 3: 'MPEG4-II', 4: 'VC1', 5: 'VC1-SM', 6: 'HEVC', 7: ' '}
 		else:
 			codec_data = {-1: ' ', 0: 'MPEG2', 1: 'AVC', 2: 'H263', 3: 'VC1', 4: 'MPEG4-VC', 5: 'VC1-SM', 6: 'MPEG1', 7: 'HEVC', 8: 'VP8', 9: 'VP9', 10: 'XVID', 11: 'N/A 11', 12: 'N/A 12', 13: 'DIVX 3', 14: 'DIVX 4', 15: 'DIVX 5', 16: 'AVS', 17: 'N/A 17', 18: 'VP6', 19: 'N/A 19', 20: 'N/A 20', 21: 'SPARK'}
+gamma_data = {-1: ' ', 0: 'SDR', 1: 'HDR', 2: 'HDR10', 3: 'HLG', 5: ' '}
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
@@ -42,42 +44,43 @@ class ServiceInfoEX(Poll, Converter, object):
 	onid = 3
 	tsid = 4
 	prcpid = 5
-	caids = 6
-	pmtpid = 7
-	txtpid = 8
+	pmtpid = 6
+	txtpid = 7
+	caids = 8
 	xres = 9
 	yres = 10
-	atype = 11
-	vtype = 12
-	avtype = 13
-	fps = 14
-	tbps = 15
-	format = 16
-	XRES = 17
-	YRES = 18
-	IS_WIDESCREEN = 19
-	HAS_TELETEXT = 20
-	IS_MULTICHANNEL = 21
-	IS_CRYPTED = 22
-	SUBSERVICES_AVAILABLE = 23
-	AUDIOTRACKS_AVAILABLE = 24
-	SUBTITLES_AVAILABLE = 25
-	EDITMODE = 26
-	FRAMERATE = 27
-	IS_FTA = 28
-	HAS_HBBTV = 29
-	IS_SATELLITE = 30
-	IS_CABLE = 31
-	IS_TERRESTRIAL = 32
-	IS_STREAMTV = 33
-	IS_SATELLITE_S = 34
-	IS_SATELLITE_S2 = 35
-	IS_TERRESTRIAL_T = 36
-	IS_TERRESTRIAL_T2 = 37
-	volume = 38
-	volumedata = 39
-	vsize = 40
-	ttype = 41
+	gamma = 11
+	atype = 12
+	vtype = 13
+	avtype = 14
+	fps = 15
+	tbps = 16
+	vsize = 17
+	ttype = 18
+	format = 19
+	XRES = 20
+	YRES = 21
+	IS_WIDESCREEN = 22
+	HAS_TELETEXT = 23
+	IS_MULTICHANNEL = 24
+	IS_CRYPTED = 25
+	SUBSERVICES_AVAILABLE = 26
+	AUDIOTRACKS_AVAILABLE = 27
+	SUBTITLES_AVAILABLE = 28
+	EDITMODE = 29
+	FRAMERATE = 30
+	IS_FTA = 31
+	HAS_HBBTV = 32
+	IS_SATELLITE = 33
+	IS_CABLE = 34
+	IS_TERRESTRIAL = 35
+	IS_STREAMTV = 36
+	IS_SATELLITE_S = 37
+	IS_SATELLITE_S2 = 38
+	IS_TERRESTRIAL_T = 39
+	IS_TERRESTRIAL_T2 = 40
+	volume = 41
+	volumedata = 42
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -106,6 +109,8 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.xres
 		elif type == "yres":
 			self.type = self.yres
+		elif type == "gamma":
+			self.type = self.gamma
 		elif  type == "atype":
 			self.type = self.atype
 		elif  type == "vtype":
@@ -116,6 +121,10 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.fps
 		elif  type == "tbps":
 			self.type = self.tbps
+		elif type == "vsize":
+			self.type = self.vsize
+		elif type == "ttype":
+			self.type = self.ttype
 		elif  type == "VideoWidth":
 			self.type = self.XRES
 		elif  type == "VideoHeight":
@@ -162,10 +171,6 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.volume
 		elif  type == "IsVolumeData":
 			self.type = self.volumedata
-		elif type == "vsize":
-			self.type = self.vsize
-		elif type == "ttype":
-			self.type = self.ttype
 		else:
 			self.type = self.format
 			self.sfmt = type[:]
@@ -226,6 +231,7 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.stream['yres'] = self.getServiceInfoString(info, iServiceInformation.sVideoHeight) + ("i", "p", "")[info.getInfo(iServiceInformation.sProgressive)]
 		if self.getServiceInfoString(info, iServiceInformation.sVideoWidth) != "N/A":
 			self.stream['xres'] = self.getServiceInfoString(info, iServiceInformation.sVideoWidth)
+		self.stream['gamma'] = gamma_data[info.getInfo(iServiceInformation.sGamma)]
 		audio = service.audioTracks()
 		if audio:
 			if audio.getCurrentTrack() > -1:
@@ -272,6 +278,8 @@ class ServiceInfoEX(Poll, Converter, object):
 			streaminfo = self.stream['xres']
 		elif self.type == self.yres:
 			streaminfo = self.stream['yres']
+		elif self.type == self.gamma:
+			streaminfo = self.stream['gamma']
 		elif self.type == self.atype:
 			streaminfo = self.stream['atype']
 		elif self.type == self.vtype:
@@ -289,7 +297,7 @@ class ServiceInfoEX(Poll, Converter, object):
 		elif self.type == self.ttype:
 			streaminfo = self.stream['ttype']
 		elif self.type == self.vsize:
-			streaminfo = self.stream['xres'] + 'x' + self.getServiceInfoString(info, iServiceInformation.sVideoHeight) + ' ' + ('i', 'p', '')[info.getInfo(iServiceInformation.sProgressive)] + self.stream['fps']
+			streaminfo = self.stream['xres'] + 'x' + self.stream['yres'] + self.stream['fps'] + ' ' + self.stream['gamma']
 		elif self.type == self.format:
 			tmp = self.sfmt[:]
 			for param in tmp.split():
