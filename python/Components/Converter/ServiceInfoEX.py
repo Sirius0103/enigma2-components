@@ -290,14 +290,14 @@ class ServiceInfoEX(Poll, Converter, object):
 			streaminfo = self.stream['fps']
 		elif self.type == self.tbps:
 			streaminfo = self.stream['tbps']
+		elif self.type == self.ttype:
+			streaminfo = self.stream['ttype']
 		elif self.type == self.volume:
 			streaminfo = _('Vol: %s') % config.audio.volume.value
 		elif self.type == self.volumedata:
 			streaminfo = '%s' % config.audio.volume.value
-		elif self.type == self.ttype:
-			streaminfo = self.stream['ttype']
 		elif self.type == self.vsize:
-			streaminfo = self.stream['xres'] + 'x' + self.stream['yres'] + self.stream['fps'] + self.stream['gamma']
+			streaminfo = self.stream['xres'] + 'x' + self.stream['yres'] + self.stream['fps']
 		elif self.type == self.format:
 			tmp = self.sfmt[:]
 			for param in tmp.split():
