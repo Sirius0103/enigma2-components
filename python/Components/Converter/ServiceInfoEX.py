@@ -16,7 +16,7 @@
 #
 # 26.11.2018 add terrestrial type mod by Sirius
 # 01.12.2018 fix video codec mod by Sirius
-# 23.12.2018 add support for gamma values mod by Sirius
+# 25.12.2018 add support for gamma values mod by Sirius
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -231,10 +231,10 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.stream['yres'] = self.getServiceInfoString(info, iServiceInformation.sVideoHeight) + ("i", "p", "")[info.getInfo(iServiceInformation.sProgressive)]
 		if self.getServiceInfoString(info, iServiceInformation.sVideoWidth) != "N/A":
 			self.stream['xres'] = self.getServiceInfoString(info, iServiceInformation.sVideoWidth)
-		if not 'openpli' in image:
-			self.stream['gamma'] = ""
-		else:
+		try:
 			self.stream['gamma'] = gamma_data[info.getInfo(iServiceInformation.sGamma)]
+		except:
+			pass
 		audio = service.audioTracks()
 		if audio:
 			if audio.getCurrentTrack() > -1:
