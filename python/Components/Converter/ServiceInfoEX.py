@@ -407,11 +407,11 @@ class ServiceInfoEX(Poll, Converter, object):
 			if type == 'DVB-S' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 1:
 					return True
-		elif self.type == self.IS_SATELLITE_C:
+		elif self.type == self.IS_CABLE_C:
 			if type == 'DVB-C' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 0:
 					return True
-		elif self.type == self.IS_SATELLITE_C2:
+		elif self.type == self.IS_CABLE_C2:
 			if type == 'DVB-C' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 1:
 					return True
