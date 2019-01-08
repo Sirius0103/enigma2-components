@@ -50,7 +50,7 @@ class TunerBar(Converter, object):
 				string += chr(ord("A") + nim.slot) + '  '
 		for letter in string.split():
 			nimletter.append(letter)
-		fbc = len(nimletter)/4         
+		fbc = len(nimletter)/4
 		for count in range(0, len(nimletter)):
 			if count < fbc:
 				stringout += nimletter[count] + '  '

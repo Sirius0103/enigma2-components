@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# 26.11.2018 add terrestrial type mod by Sirius
+# 26.11.2018 add terrestrial and cable type mod by Sirius
 # 01.12.2018 fix video codec mod by Sirius
 # 25.12.2018 add support for gamma values mod by Sirius
 
@@ -77,10 +77,12 @@ class ServiceInfoEX(Poll, Converter, object):
 	IS_STREAMTV = 36
 	IS_SATELLITE_S = 37
 	IS_SATELLITE_S2 = 38
-	IS_TERRESTRIAL_T = 39
-	IS_TERRESTRIAL_T2 = 40
-	volume = 41
-	volumedata = 42
+	IS_CABLE_C = 39
+	IS_CABLE_C2 = 40
+	IS_TERRESTRIAL_T = 41
+	IS_TERRESTRIAL_T2 = 42
+	volume = 43
+	volumedata = 44
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -159,6 +161,10 @@ class ServiceInfoEX(Poll, Converter, object):
 			self.type = self.IS_SATELLITE_S2
 		elif type == "IsCable":
 			self.type = self.IS_CABLE
+		elif type == "IsCableC":
+			self.type = self.IS_CABLE_C
+		elif type == "IsCableC2":
+			self.type = self.IS_CABLE_C2
 		elif type == "IsTerrestrial":
 			self.type = self.IS_TERRESTRIAL
 		elif type == "IsTerrestrialT":
@@ -251,6 +257,9 @@ class ServiceInfoEX(Poll, Converter, object):
 			if self.stream['ttype'] == 'DVB-S' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 1:
 					self.stream['ttype'] = 'DVB-S2'
+			elif self.stream['ttype'] == 'DVB-C' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 1:
+					self.stream['ttype'] = 'DVB-C2'
 			elif self.stream['ttype'] == 'DVB-T' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 1:
 					self.stream['ttype'] = 'DVB-T2'
@@ -396,6 +405,14 @@ class ServiceInfoEX(Poll, Converter, object):
 					return True
 		elif self.type == self.IS_SATELLITE_S2:
 			if type == 'DVB-S' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 1:
+					return True
+		elif self.type == self.IS_SATELLITE_C:
+			if type == 'DVB-C' and service.streamed() is None:
+				if self.tpdata.get('system', 0) is 0:
+					return True
+		elif self.type == self.IS_SATELLITE_C2:
+			if type == 'DVB-C' and service.streamed() is None:
 				if self.tpdata.get('system', 0) is 1:
 					return True
 		elif self.type == self.IS_TERRESTRIAL_T:
