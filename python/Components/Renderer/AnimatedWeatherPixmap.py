@@ -24,6 +24,8 @@ class AnimatedWeatherPixmap(Renderer):
 			self.path = '/media/sdb1/AnimatedWeatherPixmap'
 		elif fileExists('/media/sdb2/AnimatedWeatherPixmap'):
 			self.path = '/media/sdb2/AnimatedWeatherPixmap'
+		elif fileExists('/usr/share/enigma2/AnimatedWeatherPixmap'):
+			self.path = '/usr/share/enigma2/AnimatedWeatherPixmap'
 		else:
 			self.path = None
 		self.pixdelay = 100
