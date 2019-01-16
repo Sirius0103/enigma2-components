@@ -2,7 +2,7 @@ from Components.VariableText import VariableText
 from enigma import eLabel, eDVBVolumecontrol, eTimer
 from Renderer import Renderer
 
-class RendVolumeText(Renderer, VariableText):
+class RendVolumeTextP(Renderer, VariableText):
 	def __init__(self):
 		Renderer.__init__(self)
 		VariableText.__init__(self)
@@ -12,7 +12,7 @@ class RendVolumeText(Renderer, VariableText):
 
 	def changed(self, what):
 		if not self.suspended:
-			self.text = str(eDVBVolumecontrol.getInstance().getVolume())
+			self.text = str(eDVBVolumecontrol.getInstance().getVolume()) + "%"
 
 	def pollme(self):
 		self.changed(None)

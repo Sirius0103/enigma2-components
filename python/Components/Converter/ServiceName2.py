@@ -22,6 +22,7 @@
 # Version: 2.0 (29.08.2015) custom provname fix - 2boom
 # Version: 2.1 (07.01.2019) add DVB-T2 DVB-C2 system - Sirius
 # Version: 2.2 (07.01.2019) remove iptv provname add iptv list /etc/enigma2/iptvprov.list - Vasiliks
+# Version: 2.3 (15.01.2019) add terrestrial description - ikrom
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
@@ -337,7 +338,21 @@ class ServiceName2(Converter, object):
 			if orbpos == 0xFFFF: #Cable
 				return _("Cable")
 			elif orbpos == 0xEEEE: #Terrestrial
-				return _("Terrestrial")
+#				return _("Terrestrial")
+				try:
+					nimfile = open('/proc/bus/nim_sockets')
+				except IOError:
+					return
+				current_slot = None
+				for line in nimfile:
+					if not line:
+						break
+					line = line.strip()
+					if line.startswith('NIM Socket'):
+						parts = line.split(' ')
+						current_slot = int(parts[2][:-1])
+				from Components.NimManager import nimmanager
+				return str(nimmanager.getTerrestrialDescription(current_slot))
 			else: #Satellite
 				orbpos = ref.getData(4) >> 16
 				if orbpos < 0: orbpos += 3600

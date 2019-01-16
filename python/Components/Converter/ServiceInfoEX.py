@@ -29,7 +29,7 @@ if fileExists("/etc/issue"):
 	image = ''
 	for text in open("/etc/issue"):
 		image += text
-		if not 'openpli' in image:
+		if not 'open' in image:
 			codec_data = {-1: ' ', 0: 'MPEG2', 1: 'MPEG4', 2: 'MPEG1', 3: 'MPEG4-II', 4: 'VC1', 5: 'VC1-SM', 6: 'HEVC', 7: ' '}
 		else:
 			gamma_data = {-1: ' ', 0: 'SDR', 1: 'HDR', 2: 'HDR10', 3: 'HLG', 4: ' '}
