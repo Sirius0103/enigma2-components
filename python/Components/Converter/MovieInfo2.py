@@ -101,20 +101,23 @@ class MovieInfo2(Converter, object):
 					name = info.getName()
 					namedir = config.movielist.last_videodir.value
 					covername = filename = "%s%s" % (namedir, name)
-				if filename.endswith('/'): # DVD
-					filetext = filename + filename.split('/')[-2].strip()
-					filename = filename[:-1] + '.'
-				elif '.ts' in filename and '/movie/' in filename: # rec files
-					covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
-					filetext = filename.split('.')[0].strip()
-					filename = filename[:-2]
-				elif '.m2ts' in filename and '/BDMV/STREAM/' in filename: # BD
-					filename = filename[:-23] + '.'
-					filetext = filename[:-1] + '/'+ filename.split('/')[-1].split('.')[0].strip()
-					covername = filename[:-1]
-				else: # other files
-					filetext = filename.split('.')[0].strip()
-					filename = filename[:-2]
+				try:
+					if filename.endswith('/'): # DVD
+						filetext = filename + filename.split('/')[-2].strip()
+						filename = filename[:-1] + '.'
+					elif '.ts' in filename and '/movie/' in filename: # rec files
+						covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
+						filetext = filename.split('.')[0].strip()
+						filename = filename[:-2]
+					elif '.m2ts' in filename and '/BDMV/STREAM/' in filename: # BD
+						filename = filename[:-23] + '.'
+						filetext = filename[:-1] + '/'+ filename.split('/')[-1].split('.')[0].strip()
+						covername = filename[:-1]
+					else: # other files
+						filetext = filename.split('.')[0].strip()
+						filename = filename[:-2]
+				except:
+					covername = filename = ''
 			else: # selection
 				info = service and self.source.info
 				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory: # folder
@@ -125,13 +128,17 @@ class MovieInfo2(Converter, object):
 				else: # files
 					name = service.getPath()
 					covername = filename = "%s" % (name)
-					if '.ts' in filename and '/movie/' in filename: # rec files
-						covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
-						filetext = filename.split('.')[0].strip()
-						filename = filename[:-2]
-					else: # other files
-						filetext = filename.split('.')[0].strip()
-						filename = filename[:-2]
+					try:
+						if '.ts' in filename and '/movie/' in filename: # rec files
+							covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
+							#covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
+							filetext = filename.split('.')[0].strip()
+							filename = filename[:-2]
+						else: # other files
+							filetext = filename.split('.')[0].strip()
+							filename = filename[:-2]
+					except:
+						covername = filename = ''
 			try:
 #ShortDescription
 				if self.type == self.MOVIE_SHORT_DESCRIPTION:
