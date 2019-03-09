@@ -131,7 +131,6 @@ class MovieInfo2(Converter, object):
 					try:
 						if '.ts' in filename and '/movie/' in filename: # rec files
 							covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
-							#covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
 							filetext = filename.split('.')[0].strip()
 							filename = filename[:-2]
 						else: # other files

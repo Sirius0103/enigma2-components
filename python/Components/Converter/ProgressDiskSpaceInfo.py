@@ -1,4 +1,7 @@
-# coders by Vlamo 2012 (version: 0.2)
+# Coded by Vlamo 2012
+# v0.3
+# code optimization (by Sirius)
+
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Poll import Poll
@@ -81,7 +84,8 @@ class ProgressDiskSpaceInfo(Poll, Converter):
 			if list[0] == 0:
 				text = _("%s: Not Available")%(entry[1])
 			elif self.shortFormat:
-				text = _("%s: %s in use: %s%%") % (entry[1], self.getSizeStr(list[0]), list[3])
+				text = _("%s:Free:%s") % (entry[1], self.getSizeStr(list[2]))
+#				text = _("%s: %s in use: %s%%") % (entry[1], self.getSizeStr(list[0]), list[3])
 			elif self.fullFormat:
 				text = _("%s: %s Free: %s Used: %s (%s%%)") % (entry[1], self.getSizeStr(list[0]), self.getSizeStr(list[2]), self.getSizeStr(list[1]), list[3])
 			else:

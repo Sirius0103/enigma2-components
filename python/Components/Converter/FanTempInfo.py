@@ -1,6 +1,6 @@
 # FanTempInfo Converter
 # Copyright (c) 2boom 2012-18
-# v.0.6-r1
+# v.0.7
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -16,6 +16,7 @@
 #
 # 10.12.2018 code optimization mod by Sirius
 # 05.01.2019 fix error AX HD 51 mod by Sirius
+# 09.03.2019 fix Hisilicon CPU mod by ikrom
 
 from Poll import Poll
 from Components.Converter.Converter import Converter
@@ -51,6 +52,8 @@ class FanTempInfo(Poll, Converter, object):
 					info = open("/proc/stb/fp/fan_speed").read().strip('\n')
 				elif os.path.exists("/proc/stb/fp/fan_pwm"):
 					info = open("/proc/stb/fp/fan_pwm").read().strip('\n')
+				else:
+					info = "N/A"
 			except:
 				info = "N/A"
 			if self.type is self.TxtFanInfo:
@@ -65,6 +68,15 @@ class FanTempInfo(Poll, Converter, object):
 					info = "%s%sC" % (open("/proc/stb/fp/temp_sensor").read().strip('\n'), unichr(176).encode("latin-1"))
 				elif os.path.exists("/sys/devices/virtual/thermal/thermal_zone0/temp"):
 					info = "%s%sC" % (open("/sys/devices/virtual/thermal/thermal_zone0/temp").read()[:2].strip('\n'), unichr(176).encode("latin-1"))
+				elif os.path.exists("/proc/hisi/msp/pm_cpu"):
+					for line in open("/proc/hisi/msp/pm_cpu").readlines():
+						line = [x.strip() for x in line.strip().split(':')]
+						if line[0] in "Tsensor":
+							info = line[1].split('=')
+							info = line[1].split(' ')
+							info = info[2] + str('\xc2\xb0') + 'C'
+				else:
+					info = "N/A"
 			except:
 				info = "N/A"
 			if info.startswith('0'):

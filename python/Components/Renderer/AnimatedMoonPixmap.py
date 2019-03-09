@@ -9,30 +9,29 @@ from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, 
 from enigma import ePixmap, eTimer
 import os
 
-class AnimatedWeatherPixmap(Renderer):
+class AnimatedMoonPixmap(Renderer):
 	__module__ = __name__
 #	searchPaths = ('/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
 
 	def __init__(self):
 		Renderer.__init__(self)
-#		self.path = 'AnimatedWeatherPixmap'
-		if fileExists('/usr/share/enigma2/AnimatedWeatherPixmap'):
-			self.path = '/usr/share/enigma2/AnimatedWeatherPixmap'
-		elif fileExists('/media/hdd/AnimatedWeatherPixmap'):
-			self.path = '/media/hdd/AnimatedWeatherPixmap'
-		elif fileExists('/media/usb/AnimatedWeatherPixmap'):
-			self.path = '/media/usb/AnimatedWeatherPixmap'
-		elif fileExists('/media/sdb1/AnimatedWeatherPixmap'):
-			self.path = '/media/sdb1/AnimatedWeatherPixmap'
-		elif fileExists('/media/sdb2/AnimatedWeatherPixmap'):
-			self.path = '/media/sdb2/AnimatedWeatherPixmap'
+#		self.path = 'AnimatedMoonPixmap'
+		if fileExists('/usr/share/enigma2/AnimatedMoonPixmap'):
+			self.path = '/usr/share/enigma2/AnimatedMoonPixmap'
+		elif fileExists('/media/hdd/AnimatedMoonPixmap'):
+			self.path = '/media/hdd/AnimatedMoonPixmap'
+		elif fileExists('/media/usb/AnimatedMoonPixmap'):
+			self.path = '/media/usb/AnimatedMoonPixmap'
+		elif fileExists('/media/sdb1/AnimatedMoonPixmap'):
+			self.path = '/media/sdb1/AnimatedMoonPixmap'
+		elif fileExists('/media/sdb2/AnimatedMoonPixmap'):
+			self.path = '/media/sdb2/AnimatedMoonPixmap'
 		else:
 			self.path = None
 		self.pixdelay = 100
 		self.control = 1
 		self.ftpcontrol = 0
 		self.slideicon = None
-		self.txt_naim = {'8': '9', '1': '0', '2': '0', '3': '0', '4': '0', '17': '0', '35': '0', '16': '14', '42': '14', '43': '14', '40': '18', '24': '23', '29': '27', '33': '27' ,'30': '28' ,'34': '28' ,'38': '37' ,'25': '44'}
 
 	def applySkin(self, desktop, parent):
 		attribs = []
@@ -65,13 +64,7 @@ class AnimatedWeatherPixmap(Renderer):
 						sname = sname.replace('.gif', '')
 				except:
 					sname = self.source.text
-			if sname == '1' or sname == '2' or sname == '3' or sname == '4':
-				name = '0'
-			elif sname == '9':
-				name = '8'
-			else:
-				name = self.txt_naim.get(sname, sname)
-			self.runAnim(name)
+			self.runAnim(sname)
 
 	def runAnim(self, id):
 		global total
