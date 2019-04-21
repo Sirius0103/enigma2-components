@@ -351,8 +351,11 @@ class ServiceName2(Converter, object):
 					if line.startswith('NIM Socket'):
 						parts = line.split(' ')
 						current_slot = int(parts[2][:-1])
-				from Components.NimManager import nimmanager
-				return str(nimmanager.getTerrestrialDescription(current_slot))
+				try:
+					from Components.NimManager import nimmanager
+					return str(nimmanager.getTerrestrialDescription(current_slot))
+				except:
+					return _("Terrestrial")
 			else: #Satellite
 				orbpos = ref.getData(4) >> 16
 				if orbpos < 0: orbpos += 3600
