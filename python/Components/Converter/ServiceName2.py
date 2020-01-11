@@ -23,6 +23,7 @@
 # Version: 2.1 (07.01.2019) add DVB-T2 DVB-C2 system - Sirius
 # Version: 2.2 (07.01.2019) remove iptv provname add iptv list /etc/enigma2/iptvprov.list - Vasiliks
 # Version: 2.3 (15.01.2019) add terrestrial description - ikrom
+# Version: 2.4 (11.01.2020) fix terrestrial description - ikrom
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
@@ -342,15 +343,16 @@ class ServiceName2(Converter, object):
 				try:
 					nimfile = open('/proc/bus/nim_sockets')
 				except IOError:
-					return
+					pass
 				current_slot = None
+				txt = ''
 				for line in nimfile:
-					if not line:
-						break
-					line = line.strip()
-					if line.startswith('NIM Socket'):
-						parts = line.split(' ')
-						current_slot = int(parts[2][:-1])
+					txt += line.strip() + '\n'
+				nims = txt.split('NIM Socket')
+				for item in nims:
+					if item.__contains__('DVB-T'):
+						lines = item.split('\n')
+						current_slot = int(lines[0].strip().replace(':',''))
 				try:
 					from Components.NimManager import nimmanager
 					return str(nimmanager.getTerrestrialDescription(current_slot))
