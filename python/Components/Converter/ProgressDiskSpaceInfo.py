@@ -114,7 +114,7 @@ class ProgressDiskSpaceInfo(Poll, Converter):
 	range = 100
 
 	def getHddTemp(self):
-		textvalue = _("No info")
+		textvalue = "No info"
 		info = "0"
 		try:
 			out_line = popen("hddtemp -n -q /dev/sda").readline()
@@ -125,7 +125,7 @@ class ProgressDiskSpaceInfo(Poll, Converter):
 		return textvalue
 
 	def getLoadAvg(self):
-		textvalue = _("No info")
+		textvalue = "No info"
 		info = "0"
 		try:
 			out_line = popen("cat /proc/loadavg").readline()
@@ -141,10 +141,10 @@ class ProgressDiskSpaceInfo(Poll, Converter):
 			check = 0
 			fd = open("/proc/meminfo")
 			for line in fd:
-				if value + _("Total") in line:
+				if value + "Total" in line:
 					check += 1
 					result[0] = int(line.split()[1]) * 1024		# size
-				elif value + _("Free") in line:
+				elif value + "Free" in line:
 					check += 1
 					result[2] = int(line.split()[1]) * 1024		# avail
 				if check > 1:
