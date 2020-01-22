@@ -137,15 +137,7 @@ class CamdInfo3(Poll, Converter, object):
 		# Pli & HDF & ATV & AAF
 		elif fileExists("/etc/issue"):
 			for line in open("/etc/issue"):
-				if 'openatv' in line or 'openaaf' in line:
-					if config.softcam.actCam.value is not None:
-						emu = config.softcam.actCam.value
-					if config.softcam.actCam2.value is not None:
-						server = config.softcam.actCam2.value
-						if 'CAM 2' in server:
-							server = ""
-					return "%s %s" % (emu, server)
-				elif 'openpli' in line or 'openhdf' in line:
+				if 'open' in line:
 					try:
 						for line in open("/etc/init.d/softcam"):
 							if 'echo' in line:

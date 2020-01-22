@@ -23,7 +23,6 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
 from Tools.Directories import fileExists
-#from cStringIO import StringIO
 import os
 
 class EmuName(Poll, Converter, object):
@@ -42,14 +41,12 @@ class EmuName(Poll, Converter, object):
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
 			if config.plugins.AltSoftcam.actcam.value is not None:
 				camdname = config.plugins.AltSoftcam.actcam.value
-#				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
 			else:
 				camdname = None
 		# E-Panel
 		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
 			if config.plugins.epanel.activeemu.value is not None:
 				camdname = config.plugins.epanel.activeemu.value
-#				camdname = StringIO(config.plugins.epanel.activeemu.value)
 			else:
 				camdname = None
 		# VTI
@@ -111,11 +108,7 @@ class EmuName(Poll, Converter, object):
 		# Pli & HDF & ATV & AAF
 		elif fileExists("/etc/issue"):
 			for line in open("/etc/issue"):
-				if 'openatv' in line or 'openaaf' in line:
-					if config.softcam.actCam.value is not None:
-						camdname = config.softcam.actCam.value
-#						camdname = StringIO(config.softcam.actCam.value)
-				elif 'openpli' in line or 'openhdf' in line:
+				if 'open' in line:
 					try:
 						camdname = open("/etc/init.d/softcam", "r")
 					except:
@@ -124,6 +117,8 @@ class EmuName(Poll, Converter, object):
 						cardname = open("/etc/init.d/cardserver", "r")
 					except:
 						cardname = None
+		else:
+			camdname = cardname = camdlist = None
 
 		if cardname:
 			for line in cardname:
@@ -143,8 +138,7 @@ class EmuName(Poll, Converter, object):
 		if camdlist:
 			info = 'unknow'
 			if nofile:
-				if nofile:
-					line = camdlist
+				line = camdlist
 			else:
 				for line in camdlist:
 					if 'mgcamd' in line.lower() and 'oscam' in line.lower():
