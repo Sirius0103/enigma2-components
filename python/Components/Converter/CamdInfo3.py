@@ -3,7 +3,7 @@
 # 
 #	<convert type="CamdInfo3">Camd</convert>
 # 
-# 25.11.2018 code optimization mod by Sirius
+# 20.01.2020 code optimization mod by Sirius
 
 from Poll import Poll
 from enigma import iServiceInformation
@@ -138,9 +138,9 @@ class CamdInfo3(Poll, Converter, object):
 		elif fileExists("/etc/issue"):
 			for line in open("/etc/issue"):
 				if 'openatv' in line or 'openaaf' in line:
-					if config.softcam.actCam.value:
+					if config.softcam.actCam.value is not None:
 						emu = config.softcam.actCam.value
-					if config.softcam.actCam2.value:
+					if config.softcam.actCam2.value is not None:
 						server = config.softcam.actCam2.value
 						if 'CAM 2' in server:
 							server = ""

@@ -1,6 +1,6 @@
 # EmuName
 # Copyright (c) 2boom & Taapat 2013-14
-# v.1.3
+# v.1.4
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 # 
-# 25.11.2018 code optimization mod by Sirius
+# 20.01.2020 code optimization mod by Sirius
 
 from Poll import Poll
 from enigma import iServiceInformation
@@ -23,7 +23,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
 from Tools.Directories import fileExists
-from cStringIO import StringIO
+#from cStringIO import StringIO
 import os
 
 class EmuName(Poll, Converter, object):
@@ -41,13 +41,15 @@ class EmuName(Poll, Converter, object):
 		# Alternative SoftCam Manager
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
 			if config.plugins.AltSoftcam.actcam.value is not None:
-				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
+				camdname = config.plugins.AltSoftcam.actcam.value
+#				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
 			else:
 				camdname = None
 		# E-Panel
 		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
 			if config.plugins.epanel.activeemu.value is not None:
-				camdname = StringIO(config.plugins.epanel.activeemu.value)
+				camdname = config.plugins.epanel.activeemu.value
+#				camdname = StringIO(config.plugins.epanel.activeemu.value)
 			else:
 				camdname = None
 		# VTI
@@ -110,8 +112,9 @@ class EmuName(Poll, Converter, object):
 		elif fileExists("/etc/issue"):
 			for line in open("/etc/issue"):
 				if 'openatv' in line or 'openaaf' in line:
-					if config.softcam.actCam.value:
-						camdname = StringIO(config.softcam.actCam.value)
+					if config.softcam.actCam.value is not None:
+						camdname = config.softcam.actCam.value
+#						camdname = StringIO(config.softcam.actCam.value)
 				elif 'openpli' in line or 'openhdf' in line:
 					try:
 						camdname = open("/etc/init.d/softcam", "r")
