@@ -44,11 +44,11 @@ class EmuName(Poll, Converter, object):
 			else:
 				camdname = None
 		# E-Panel
-		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
-			if config.plugins.epanel.activeemu.value is not None:
-				camdname = config.plugins.epanel.activeemu.value
-			else:
-				camdname = None
+#		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
+#			if config.plugins.epanel.activeemu.value is not None:
+#				camdname = config.plugins.epanel.activeemu.value
+#			else:
+#				camdname = None
 		# VTI
 		elif fileExists("/tmp/.emu.info"):
 			try:
@@ -106,17 +106,15 @@ class EmuName(Poll, Converter, object):
 			except:
 				camdname = None
 		# Pli & HDF & ATV & AAF
-		elif fileExists("/etc/issue"):
-			for line in open("/etc/issue"):
-				if 'open' in line:
-					try:
-						camdname = open("/etc/init.d/softcam", "r")
-					except:
-						camdname = None
-					try:
-						cardname = open("/etc/init.d/cardserver", "r")
-					except:
-						cardname = None
+		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
+			try:
+				camdname = open("/etc/init.d/softcam", "r")
+			except:
+				camdname = None
+			try:
+				cardname = open("/etc/init.d/cardserver", "r")
+			except:
+				cardname = None
 		else:
 			camdname = cardname = camdlist = None
 
