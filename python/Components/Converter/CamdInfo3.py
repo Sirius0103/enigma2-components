@@ -1,9 +1,23 @@
-# 2boom 2011-16
-# CamdInfo3 - Converter
+# CamdInfo3
+# Copyright (c) 2boom 2011-16
+# v.1.1
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 # 
 #	<convert type="CamdInfo3">Camd</convert>
 # 
-# 20.01.2020 code optimization mod by Sirius
+# 25.01.2020 code optimization mod by Sirius
 
 from Poll import Poll
 from enigma import iServiceInformation
@@ -28,31 +42,32 @@ class CamdInfo3(Poll, Converter, object):
 		if not service:
 			return None
 		camd = ""
-		emu = ""
-		server = ""
-		serlist = None
-		camdlist = None
+		emu = server = ""
+		serlist = camdlist = None
 		nameemu = []
 		nameser = []
 		if not info:
 			return ""
 		# Alternative SoftCam Manager
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
-			if config.plugins.AltSoftcam.actcam.value is not None:
-				return config.plugins.AltSoftcam.actcam.value
-			else:
+			try:
+				if config.plugins.AltSoftcam.actcam.value is not None:
+					return config.plugins.AltSoftcam.actcam.value
+			except:
 				return None
 		# E-Panel
 #		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
-#			if config.plugins.epanel.activeemu.value is not None:
-				return config.plugins.epanel.activeemu.value
-#			else:
+#			try:
+#				if config.plugins.epanel.activeemu.value is not None:
+#					return config.plugins.epanel.activeemu.value
+#			except:
 #				return None
 		# PKT
 		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
-			if config.plugins.emuman.cam.value is not None:
-				return config.plugins.emuman.cam.value
-			else:
+			try:
+				if config.plugins.emuman.cam.value is not None:
+					return config.plugins.emuman.cam.value
+			except:
 				return None
 		# GlassSysUtil
 		elif fileExists("/tmp/ucm_cam.info"):
@@ -134,7 +149,7 @@ class CamdInfo3(Poll, Converter, object):
 				return cam
 			except:
 				return None
-		# Pli & HDF & ATV & AAF
+		# Pli & ATV
 		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
 			try:
 				for line in open("/etc/init.d/softcam"):

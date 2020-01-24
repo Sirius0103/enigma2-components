@@ -1,6 +1,7 @@
 # EmuName
 # Copyright (c) 2boom & Taapat 2013-14
 # v.1.4
+# 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 # 
-# 20.01.2020 code optimization mod by Sirius
+# 25.01.2020 code optimization mod by Sirius
 
 from Poll import Poll
 from enigma import iServiceInformation
@@ -23,6 +24,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
 from Tools.Directories import fileExists
+from cStringIO import StringIO
 import os
 
 class EmuName(Poll, Converter, object):
@@ -34,20 +36,22 @@ class EmuName(Poll, Converter, object):
 
 	@cached
 	def getText(self):
-		info = info2 = ""
+		info = info2 = ''
 		nofile = False
 		camdname = cardname = camdlist = None
 		# Alternative SoftCam Manager
 		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
-			if config.plugins.AltSoftcam.actcam.value is not None:
-				camdname = config.plugins.AltSoftcam.actcam.value
-			else:
+			try:
+				if config.plugins.AltSoftcam.actcam.value is not None:
+					camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
+			except:
 				camdname = None
 		# E-Panel
 #		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
-#			if config.plugins.epanel.activeemu.value is not None:
-#				camdname = config.plugins.epanel.activeemu.value
-#			else:
+#			try:
+#				if config.plugins.epanel.activeemu.value is not None:
+#					camdname = StringIO(config.plugins.epanel.activeemu.value)
+#			except:
 #				camdname = None
 		# VTI
 		elif fileExists("/tmp/.emu.info"):
@@ -91,21 +95,7 @@ class EmuName(Poll, Converter, object):
 				camdname = open("/etc/.emustart", "r")
 			except:
 				camdname = None
-		# GP3
-		elif fileExists("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
-			try:
-				from Plugins.Bp.geminimain.plugin import GETCAMDLIST
-				from Plugins.Bp.geminimain.lib import libgeminimain
-				camdl = libgeminimain.getPyList(GETCAMDLIST)
-				cam = None
-				for x in camdl:
-					if x[1] == 1:
-						cam = x[2]
-				camdname = cam
-				nofile = True
-			except:
-				camdname = None
-		# Pli & HDF & ATV & AAF
+		# Pli & ATV
 		elif fileExists("/etc/init.d/softcam") or fileExists("/etc/init.d/cardserver"):
 			try:
 				camdname = open("/etc/init.d/softcam", "r")
