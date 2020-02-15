@@ -264,9 +264,9 @@ class CaidInfo2(Poll, Converter, object):
 				return False
 			if self.type == self.BETA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[:4] == "02"\
-						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[:4] == "22"\
-						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[:4] == "62":
+					if ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[:2] == "02"\
+						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[:2] == "22"\
+						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[:2] == "62":
 						return True
 				return False
 			if self.type == self.NAGRA:
@@ -286,15 +286,16 @@ class CaidInfo2(Poll, Converter, object):
 				return False
 			if self.type == self.DRE:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "7B" or ("%0.4X" % int(caid))[:2] == "4A" :
+					if ("%0.4X" % int(caid))[:2] == "7B"\
+						or ("%0.4X" % int(caid))[:2] == "4A" :
 						return True
 				return False
 			if self.type == self.VRM:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "56"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[:4] == "02"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[:4] == "22"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[:4] == "62":
+						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[:2] == "02"\
+						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[:2] == "22"\
+						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[:2] == "62":
 						return True
 				return False
 			self.poll_interval = self.my_interval
@@ -335,7 +336,9 @@ class CaidInfo2(Poll, Converter, object):
 						return True
 					return False
 				if self.type == self.BETA_C:
-					if caid == "17":
+					if caid == "17" and caid == "02"\
+						or caid == "17" and caid == "22"\
+						or caid == "17" and caid == "62":
 						return True
 					return False
 				if self.type == self.NAGRA_C:
@@ -351,11 +354,15 @@ class CaidInfo2(Poll, Converter, object):
 						return True
 					return False
 				if self.type == self.DRE_C:
-					if caid == "4A" or caid == "7B":
+					if caid == "4A"\
+						or caid == "7B":
 						return True
 					return False
 				if self.type == self.VRM_C:
-					if caid == "56":
+					if caid == "56"\
+						or caid == "17" and not caid == "02"\
+						or caid == "17" and not caid == "22"\
+						or caid == "17" and not caid == "62":
 						return True
 					return False
 				#oscam
