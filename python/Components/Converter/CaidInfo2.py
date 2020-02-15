@@ -1,8 +1,21 @@
+# CaidInfo2
+# Coded by bigroma & 2boom
+# v.1.3
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#  CaidInfo2 - Converter
-#  ver 1.2.5 02.08.2016
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
 #
-#  Coded by bigroma & 2boom
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+# 
+# 15.02.2020 add Verimatrix Crypt mod by Sirius
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
@@ -26,39 +39,40 @@ class CaidInfo2(Poll, Converter, object):
 	CONAX = 8
 	CRW = 9
 	DRE = 10
-	IRD = 11
-	NAGRA = 12
-	NDS = 13
-	SECA = 14
-	VIA = 15
-	PWR = 16
-	TAN = 17
-	BETA_C = 18
-	CONAX_C = 19
-	CRW_C = 20
-	DRE_C = 21
-	IRD_C = 22
-	NAGRA_C = 23
-	NDS_C = 24
-	SECA_C = 25
-	VIA_C = 26
-	PWR_C = 27
-	TAN_C = 28	
-	BISS = 29
-	BISS_C = 30
-	EXS = 31
-	EXS_C = 32
-	HOST = 33
-	DELAY = 34
-	FORMAT = 35
-	CRYPT2 = 36
-	CRD = 37
-	CRDTXT = 38
-	SHORT = 39
-	IS_FTA = 40
-	IS_CRYPTED = 41
+	EXS = 11
+	IRD = 12
+	NAGRA = 13
+	NDS = 14
+	SECA = 15
+	VIA = 16
+	PWR = 17
+	TAN = 18
+	BISS = 19
+	VRM = 20
+	BETA_C = 21
+	CONAX_C = 22
+	CRW_C = 23
+	DRE_C = 24
+	EXS_C = 25
+	IRD_C = 26
+	NAGRA_C = 27
+	NDS_C = 28
+	SECA_C = 29
+	VIA_C = 30
+	PWR_C = 31
+	TAN_C = 32
+	BISS_C = 33
+	VRM_C = 34
+	HOST = 35
+	DELAY = 36
+	FORMAT = 37
+	CRYPT2 = 38
+	CRD = 39
+	CRDTXT = 40
+	SHORT = 41
+	IS_FTA = 42
+	IS_CRYPTED = 43
 	my_interval = 1000
-
 
 	def __init__(self, type):
 		Poll.__init__(self)
@@ -105,6 +119,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.PWR
 		elif type == "TanCrypt":
 			self.type = self.TAN
+		elif type == "BisCrypt":
+			self.type = self.BISS
+		elif type == "VrmCrypt":
+			self.type = self.VRM
 		elif type == "BetaEcm":
 			self.type = self.BETA_C
 		elif type == "ConaxEcm":
@@ -129,10 +147,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.PWR_C
 		elif type == "TanEcm":
 			self.type = self.TAN_C
-		elif type == "BisCrypt":
-			self.type = self.BISS
 		elif type == "BisEcm":
 			self.type = self.BISS_C
+		elif type == "VrmEcm":
+			self.type = self.VRM_C
 		elif type == "Crd":
 			self.type = self.CRD
 		elif type == "CrdTxt":
@@ -150,39 +168,39 @@ class CaidInfo2(Poll, Converter, object):
 			self.sfmt = type[:]
 
 		self.systemTxtCaids = {
-			"26" : "BiSS",
 			"01" : "Seca Mediaguard",
-			"06" : "Irdeto",
-			"17" : "BetaCrypt",
 			"05" : "Viaccess",
-			"18" : "Nagravision",
+			"06" : "Irdeto",
 			"09" : "NDS-Videoguard",
 			"0B" : "Conax",
 			"0D" : "Cryptoworks",
-			"4A" : "DRE-Crypt",
-			"27" : "ExSet",
 			"0E" : "PowerVu",
+			"17" : "BetaCrypt",
+			"18" : "Nagravision",
 			"22" : "Codicrypt",
-			"07" : "DigiCipher",
+			"26" : "BiSS",
+			"27" : "ExSet",
+			"4A" : "DRE-Crypt",
+			"55" : "BulCrypt",
 			"56" : "Verimatrix",
 			"7B" : "DRE-Crypt",
 			"A1" : "Rosscrypt"}
 
 		self.systemCaids = {
-			"26" : "BiSS",
 			"01" : "SEC",
-			"06" : "IRD",
-			"17" : "BET",
 			"05" : "VIA",
-			"18" : "NAG",
+			"06" : "IRD",
 			"09" : "NDS",
 			"0B" : "CON",
 			"0D" : "CRW",
-			"27" : "EXS",
-			"7B" : "DRE",
-			"4A" : "DRE",
 			"0E" : "PWR",
-			"10" : "TAN" }
+			"10" : "TAN",
+			"17" : "BET",
+			"18" : "NAG",
+			"26" : "BiSS",
+			"27" : "EXS",
+			"4A" : "DRE",
+			"7B" : "DRE"}
 
 	@cached
 	def getBoolean(self):
@@ -207,9 +225,19 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == "01":
 						return True
 				return False
-			if self.type == self.BETA:
+			if self.type == self.VIA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "17":
+					if ("%0.4X" % int(caid))[:2] == "05":
+						return True
+				return False
+			if self.type == self.IRD:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "06":
+						return True
+				return False
+			if self.type == self.NDS:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "09":
 						return True
 				return False
 			if self.type == self.CONAX:
@@ -222,35 +250,6 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == "0D":
 						return True
 				return False
-			if self.type == self.DRE:
-				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "7B" or ("%0.4X" % int(caid))[:2] == "4A" :
-						return True
-				return False
-			if self.type == self.EXS:
-				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "27":
-						return True
-			if self.type == self.NAGRA:
-				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "18":
-						return True
-				return False
-			if self.type == self.NDS:
-				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "09":
-						return True
-				return False
-			if self.type == self.IRD:
-				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "06":
-						return True
-				return False
-			if self.type == self.VIA:
-				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "05":
-						return True
-				return False
 			if self.type == self.PWR:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "0E":
@@ -261,9 +260,34 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == "10":
 						return True
 				return False
+			if self.type == self.BETA:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "17":
+						return True
+				return False
+			if self.type == self.NAGRA:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "18":
+						return True
+				return False
 			if self.type == self.BISS:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "26":
+						return True
+				return False
+			if self.type == self.EXS:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "27":
+						return True
+				return False
+			if self.type == self.DRE:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "7B" or ("%0.4X" % int(caid))[:2] == "4A" :
+						return True
+				return False
+			if self.type == self.VRM:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "56":
 						return True
 				return False
 			self.poll_interval = self.my_interval
@@ -275,8 +299,16 @@ class CaidInfo2(Poll, Converter, object):
 					if caid == "01":
 						return True
 					return False
-				if self.type == self.BETA_C:
-					if caid == "17":
+				if self.type == self.VIA_C:
+					if caid == "05":
+						return True
+					return False
+				if self.type == self.IRD_C:
+					if caid == "06":
+						return True
+					return False
+				if self.type == self.NDS_C:
+					if caid == "09":
 						return True
 					return False
 				if self.type == self.CONAX_C:
@@ -287,30 +319,6 @@ class CaidInfo2(Poll, Converter, object):
 					if caid == "0D":
 						return True
 					return False
-				if self.type == self.DRE_C:
-					if caid == "4A" or caid == "7B":
-						return True
-					return False
-				if self.type == self.EXS_C:
-					if caid == "27":
-						return True
-					return False
-				if self.type == self.NAGRA_C:
-					if caid == "18":
-						return True
-					return False
-				if self.type == self.NDS_C:
-					if caid == "09":
-						return True
-					return False
-				if self.type == self.IRD_C:
-					if caid == "06":
-						return True
-					return False
-				if self.type == self.VIA_C:
-					if caid == "05":
-						return True
-					return False
 				if self.type == self.PWR_C:
 					if caid == "0E":
 						return True
@@ -319,8 +327,28 @@ class CaidInfo2(Poll, Converter, object):
 					if caid == "10":
 						return True
 					return False
+				if self.type == self.BETA_C:
+					if caid == "17":
+						return True
+					return False
+				if self.type == self.NAGRA_C:
+					if caid == "18":
+						return True
+					return False
 				if self.type == self.BISS_C:
 					if caid == "26":
+						return True
+					return False
+				if self.type == self.EXS_C:
+					if caid == "27":
+						return True
+					return False
+				if self.type == self.DRE_C:
+					if caid == "4A" or caid == "7B":
+						return True
+					return False
+				if self.type == self.VRM_C:
+					if caid == "56":
 						return True
 					return False
 				#oscam
@@ -416,7 +444,7 @@ class CaidInfo2(Poll, Converter, object):
 						protocol = ecm_info.get("protocol", "")
 						#port
 						port = ecm_info.get("port", "")
-						# source	
+						# source
 						source = ecm_info.get("source", "")
 						# server
 						server = ecm_info.get("server", "")
@@ -654,5 +682,3 @@ class CaidInfo2(Poll, Converter, object):
 
 	def changed(self, what):
 		Converter.changed(self, (self.CHANGED_POLL,))
-
-
