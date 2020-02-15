@@ -175,6 +175,7 @@ class CaidInfo2(Poll, Converter, object):
 			"0B" : "Conax",
 			"0D" : "Cryptoworks",
 			"0E" : "PowerVu",
+			"10" : "Tandberg",
 			"17" : "BetaCrypt",
 			"18" : "Nagravision",
 			"22" : "Codicrypt",
@@ -199,6 +200,7 @@ class CaidInfo2(Poll, Converter, object):
 			"18" : "NAG",
 			"26" : "BiSS",
 			"27" : "EXS",
+			"56" : "VRM",
 			"4A" : "DRE",
 			"7B" : "DRE"}
 
