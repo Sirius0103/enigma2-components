@@ -37,46 +37,45 @@ class CaidInfo2(Poll, Converter, object):
 	CRYPT = 6
 
 	SECA = 7
-	VIA = 8
-	IRD = 9
-	NDS = 10
-	CONAX = 11
-	CRW = 12
-	PWR = 13
-	TAN = 14
-	BETA = 15
-	NAGRA = 16
-	BISS = 17
-	EXS = 18
-	DRE = 19
-	BUL = 20
-	VRM = 21
+	SECA_C = 8
+	VIA = 9
+	VIA_C = 10
+	IRD = 11
+	IRD_C =12
+	NDS = 13
+	NDS_C = 14
+	CONAX = 15
+	CONAX_C = 16
+	CRW = 17
+	CRW_C = 18
+	PWR = 19
+	PWR_C = 20
+	TAN = 21
+	TAN_C = 22
+	BETA = 23
+	BETA_C = 24
+	NAGRA = 25
+	NAGRA_C = 26
+	BISS = 27
+	BISS_C = 28
+	EXS = 29
+	EXS_C = 30
+	DRE = 31
+	DRE_C = 32
+	BUL = 33
+	BUL_C = 34
+	VRM = 35
+	VRM_C = 36
 
-	SECA_C = 25
-	VIA_C = 26
-	IRD_C =27
-	NDS_C = 28
-	CONAX_C = 29
-	CRW_C = 30
-	PWR_C = 32
-	TAN_C = 33
-	BETA_C = 34
-	NAGRA_C = 35
-	BISS_C = 36
-	EXS_C = 37
-	DRE_C = 38
-	BUL_C = 39
-	VRM_C = 40
-
-	HOST = 45
-	DELAY = 46
-	FORMAT = 47
-	CRYPT2 = 48
-	CRD = 49
-	CRDTXT = 50
-	SHORT = 51
-	IS_FTA = 52
-	IS_CRYPTED = 53
+	HOST = 40
+	DELAY = 41
+	FORMAT = 42
+	CRYPT2 = 43
+	CRD = 44
+	CRDTXT = 45
+	SHORT = 46
+	IS_FTA = 47
+	IS_CRYPTED = 48
 	my_interval = 1000
 
 	def __init__(self, type):
@@ -103,63 +102,62 @@ class CaidInfo2(Poll, Converter, object):
 
 		elif type == "SecaCrypt":
 			self.type = self.SECA
-		elif type == "ViaCrypt":
-			self.type = self.VIA
-		elif type == "IrdCrypt":
-			self.type = self.IRD
-		elif type == "NdsCrypt":
-			self.type = self.NDS
-		elif type == "ConaxCrypt":
-			self.type = self.CONAX
-		elif type == "CrwCrypt":
-			self.type = self.CRW
-		elif type == "PwuCrypt":
-			self.type = self.PWR
-		elif type == "TanCrypt":
-			self.type = self.TAN
-		elif type == "BetaCrypt":
-			self.type = self.BETA
-		elif type == "NagraCrypt":
-			self.type = self.NAGRA
-		elif type == "BisCrypt":
-			self.type = self.BISS
-		elif type == "ExsCrypt":
-			self.type = self.EXS
-		elif type == "DreamCrypt":
-			self.type = self.DRE
-		elif type == "BulEcm":
-			self.type = self.BUL
-		elif type == "VrmCrypt":
-			self.type = self.VRM
-
 		elif type == "SecaEcm":
 			self.type = self.SECA_C
+		elif type == "ViaCrypt":
+			self.type = self.VIA
 		elif type == "ViaEcm":
 			self.type = self.VIA_C
+		elif type == "IrdCrypt":
+			self.type = self.IRD
 		elif type == "IrdEcm":
 			self.type = self.IRD_C
+		elif type == "NdsCrypt":
+			self.type = self.NDS
 		elif type == "NdsEcm":
 			self.type = self.NDS_C
+		elif type == "ConaxCrypt":
+			self.type = self.CONAX
 		elif type == "ConaxEcm":
 			self.type = self.CONAX_C
+		elif type == "CrwCrypt":
+			self.type = self.CRW
 		elif type == "CrwEcm":
 			self.type = self.CRW_C
+		elif type == "PwuCrypt":
+			self.type = self.PWR
 		elif type == "PwuEcm":
 			self.type = self.PWR_C
+		elif type == "TanCrypt":
+			self.type = self.TAN
 		elif type == "TanEcm":
 			self.type = self.TAN_C
+		elif type == "BetaCrypt":
+			self.type = self.BETA
 		elif type == "BetaEcm":
 			self.type = self.BETA_C
+		elif type == "NagraCrypt":
+			self.type = self.NAGRA
 		elif type == "NagraEcm":
 			self.type = self.NAGRA_C
+		elif type == "BisCrypt":
+			self.type = self.BISS
 		elif type == "BisEcm":
 			self.type = self.BISS_C
+		elif type == "ExsCrypt":
+			self.type = self.EXS
 		elif type == "ExsEcm":
 			self.type = self.EXS_C
+		elif type == "DreamCrypt":
+			self.type = self.DRE
 		elif type == "DreamEcm":
 			self.type = self.DRE_C
+		elif type == "BulCrypt":
+			self.type = self.BUL
 		elif type == "BulEcm":
 			self.type = self.BUL_C
+		elif type == "VrmCrypt":
+			self.type = self.VRM
 		elif type == "VrmEcm":
 			self.type = self.VRM_C
 
@@ -178,6 +176,24 @@ class CaidInfo2(Poll, Converter, object):
 		else:
 			self.type = self.FORMAT
 			self.sfmt = type[:]
+
+		self.systemCaids = {
+			"01" : "SEC",
+			"05" : "VIA",
+			"06" : "IRD",
+			"09" : "NDS",
+			"0B" : "CON",
+			"0D" : "CRW",
+			"0E" : "PWR",
+			"10" : "TAN",
+			"17" : "BET",
+			"18" : "NAG",
+			"26" : "BiSS",
+			"27" : "EXS",
+			"4A" : "DRE",
+			"55" : "BUL",
+			"56" : "VRM",
+			"7B" : "DRE"}
 
 		self.systemTxtCaids = {
 			"01" : "Seca Mediaguard",
@@ -198,24 +214,6 @@ class CaidInfo2(Poll, Converter, object):
 			"56" : "Verimatrix",
 			"7B" : "DRE-Crypt",
 			"A1" : "Rosscrypt"}
-
-		self.systemCaids = {
-			"01" : "SEC",
-			"05" : "VIA",
-			"06" : "IRD",
-			"09" : "NDS",
-			"0B" : "CON",
-			"0D" : "CRW",
-			"0E" : "PWR",
-			"10" : "TAN",
-			"17" : "BET",
-			"18" : "NAG",
-			"26" : "BiSS",
-			"27" : "EXS",
-			"55" : "BUL",
-			"56" : "VRM",
-			"4A" : "DRE",
-			"7B" : "DRE"}
 
 	@cached
 	def getBoolean(self):
@@ -278,6 +276,7 @@ class CaidInfo2(Poll, Converter, object):
 			if self.type == self.BETA:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "02"\
+						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "04"\
 						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "22"\
 						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "62":
 						return True
@@ -314,6 +313,7 @@ class CaidInfo2(Poll, Converter, object):
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "56"\
 						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "02"\
+						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "04"\
 						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "22"\
 						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "62":
 						return True
@@ -358,6 +358,7 @@ class CaidInfo2(Poll, Converter, object):
 					return False
 				if self.type == self.BETA_C:
 					if caid == "17" and caid_b == "02"\
+						or caid == "17" and caid_b == "04"\
 						or caid == "17" and caid_b == "22"\
 						or caid == "17" and caid_b == "62":
 						return True
@@ -388,6 +389,7 @@ class CaidInfo2(Poll, Converter, object):
 				if self.type == self.VRM_C:
 					if caid == "56"\
 						or caid == "17" and not caid_b == "02"\
+						or caid == "17" and not caid_b == "04"\
 						or caid == "17" and not caid_b == "22"\
 						or caid == "17" and not caid_b == "62":
 						return True
