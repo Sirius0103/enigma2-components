@@ -1,6 +1,6 @@
 # CaidInfo2
 # Coded by bigroma & 2boom
-# v.1.3
+# v.1.4
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 # 
 # 15.02.2020 add Verimatrix Crypt mod by Sirius
+# 18.02.2020 add DigiCipher, Codicrypt, X-Crypt, Cryptoguard, BulCrypt, Rosscrypt mod by Sirius
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
@@ -35,47 +36,55 @@ class CaidInfo2(Poll, Converter, object):
 	IS_NET = 4
 	IS_EMU = 5
 	CRYPT = 6
-
 	SECA = 7
 	SECA_C = 8
 	VIA = 9
 	VIA_C = 10
 	IRD = 11
 	IRD_C =12
-	NDS = 13
-	NDS_C = 14
-	CONAX = 15
-	CONAX_C = 16
-	CRW = 17
-	CRW_C = 18
-	PWR = 19
-	PWR_C = 20
-	TAN = 21
-	TAN_C = 22
-	BETA = 23
-	BETA_C = 24
-	NAGRA = 25
-	NAGRA_C = 26
-	BISS = 27
-	BISS_C = 28
-	EXS = 29
-	EXS_C = 30
-	DRE = 31
-	DRE_C = 32
-	BUL = 33
-	BUL_C = 34
-	VRM = 35
-	VRM_C = 36
-
-	HOST = 40
-	DELAY = 41
-	FORMAT = 42
-	CRYPT2 = 43
-	CRD = 44
-	CRDTXT = 45
-	SHORT = 46
-	IS_FTA = 47
-	IS_CRYPTED = 48
+	DIGI = 13
+	DIGI_C = 14
+	NDS = 15
+	NDS_C = 16
+	CONAX = 17
+	CONAX_C = 18
+	CRW = 19
+	CRW_C = 20
+	PWR = 21
+	PWR_C = 22
+	TAN = 23
+	TAN_C = 24
+	BETA = 25
+	BETA_C = 26
+	NAGRA = 27
+	NAGRA_C = 28
+	CODI = 29
+	CODI_C = 30
+	BISS = 31
+	BISS_C = 32
+	EXS = 33
+	EXS_C = 34
+	XCR = 35
+	XCR_C = 36
+	DRE = 37
+	DRE_C = 38
+	GUARD = 39
+	GUARD_C = 40
+	BUL = 41
+	BUL_C = 42
+	VRM = 43
+	VRM_C = 44
+	ROSS = 45
+	ROSS_C = 46
+	HOST = 47
+	DELAY = 48
+	FORMAT = 49
+	CRYPT2 = 50
+	CRD = 51
+	CRDTXT = 52
+	SHORT = 53
+	IS_FTA = 54
+	IS_CRYPTED = 55
 	my_interval = 1000
 
 	def __init__(self, type):
@@ -99,7 +108,6 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.CRYPT
 		elif type == "CryptInfo2":
 			self.type = self.CRYPT2
-
 		elif type == "SecaCrypt":
 			self.type = self.SECA
 		elif type == "SecaEcm":
@@ -112,6 +120,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.IRD
 		elif type == "IrdEcm":
 			self.type = self.IRD_C
+		elif type == "DigiCrypt":
+			self.type = self.DIGI
+		elif type == "DigiEcm":
+			self.type = self.DIGI_C
 		elif type == "NdsCrypt":
 			self.type = self.NDS
 		elif type == "NdsEcm":
@@ -140,6 +152,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.NAGRA
 		elif type == "NagraEcm":
 			self.type = self.NAGRA_C
+		elif type == "CodiCrypt":
+			self.type = self.CODI
+		elif type == "CodiEcm":
+			self.type = self.CODI_C
 		elif type == "BisCrypt":
 			self.type = self.BISS
 		elif type == "BisEcm":
@@ -148,10 +164,18 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.EXS
 		elif type == "ExsEcm":
 			self.type = self.EXS_C
+		elif type == "XcrCrypt":
+			self.type = self.XCR
+		elif type == "XcrEcm":
+			self.type = self.XCR_C
 		elif type == "DreamCrypt":
 			self.type = self.DRE
 		elif type == "DreamEcm":
 			self.type = self.DRE_C
+		elif type == "GuardCrypt":
+			self.type = self.GUARD
+		elif type == "GuardEcm":
+			self.type = self.GUARD_C
 		elif type == "BulCrypt":
 			self.type = self.BUL
 		elif type == "BulEcm":
@@ -160,7 +184,10 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.VRM
 		elif type == "VrmEcm":
 			self.type = self.VRM_C
-
+		elif type == "RossCrypt":
+			self.type = self.ROSS
+		elif type == "RossEcm":
+			self.type = self.ROSS_C
 		elif type == "Crd":
 			self.type = self.CRD
 		elif type == "CrdTxt":
@@ -177,29 +204,22 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.FORMAT
 			self.sfmt = type[:]
 
-		self.systemCaids = {
-			"01" : "SEC",
-			"05" : "VIA",
-			"06" : "IRD",
-			"09" : "NDS",
-			"0B" : "CON",
-			"0D" : "CRW",
-			"0E" : "PWR",
-			"10" : "TAN",
-			"17" : "BET",
-			"18" : "NAG",
-			"26" : "BiSS",
-			"27" : "EXS",
-			"4A" : "DRE",
-			"55" : "BUL",
-			"56" : "VRM",
-			"7B" : "DRE"}
+#		self.systemCaids = {
+#			"01" : "Mediaguard",
+#			"05" : "Viaccess",
+#			"06" : "Irdeto",
+#			"09" : "Videoguard",
+#			"0B" : "Conax",
+#			"0D" : "Cryptoworks",
+#			"17" : "BetaCrypt",
+#			"18" : "Nagravision"}
 
 		self.systemTxtCaids = {
-			"01" : "Seca Mediaguard",
+			"01" : "Mediaguard",
 			"05" : "Viaccess",
 			"06" : "Irdeto",
-			"09" : "NDS-Videoguard",
+			"07" : "DigiCipher",
+			"09" : "Videoguard",
 			"0B" : "Conax",
 			"0D" : "Cryptoworks",
 			"0E" : "PowerVu",
@@ -248,6 +268,11 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == "06":
 						return True
 				return False
+			if self.type == self.DIGI:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "07":
+						return True
+				return False
 			if self.type == self.NDS:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "09":
@@ -276,7 +301,6 @@ class CaidInfo2(Poll, Converter, object):
 			if self.type == self.BETA:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "02"\
-						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "04"\
 						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "22"\
 						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "62":
 						return True
@@ -284,6 +308,11 @@ class CaidInfo2(Poll, Converter, object):
 			if self.type == self.NAGRA:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "18":
+						return True
+				return False
+			if self.type == self.CODI:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "22":
 						return True
 				return False
 			if self.type == self.BISS:
@@ -296,11 +325,22 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == "27":
 						return True
 				return False
+			if self.type == self.XCR:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "D0"\
+						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "D1":
+						return True
+				return False
 			if self.type == self.DRE:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "7B"\
-						or ("%0.4X" % int(caid))[:2] == "4A"\
+					if ("%0.4X" % int(caid))[:2] == "7B" and ("%0.4X" % int(caid))[2:] == "E1"\
+						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "E0"\
 						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "E1":
+						return True
+				return False
+			if self.type == self.GUARD:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "EA":
 						return True
 				return False
 			if self.type == self.BUL:
@@ -313,98 +353,121 @@ class CaidInfo2(Poll, Converter, object):
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == "56"\
 						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "02"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "04"\
 						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "22"\
 						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "62":
+						return True
+				return False
+			if self.type == self.ROSS:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == "A1":
 						return True
 				return False
 			self.poll_interval = self.my_interval
 			self.poll_enabled = True
 			ecm_info = self.ecmfile()
 			if ecm_info:
-				caid = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
+				caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
 				caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
 				if self.type == self.SECA_C:
-					if caid == "01":
+					if caid_a == "01":
 						return True
 					return False
 				if self.type == self.VIA_C:
-					if caid == "05":
+					if caid_a == "05":
 						return True
 					return False
 				if self.type == self.IRD_C:
-					if caid == "06":
+					if caid_a == "06":
+						return True
+					return False
+				if self.type == self.DIGI_C:
+					if caid_a == "07":
 						return True
 					return False
 				if self.type == self.NDS_C:
-					if caid == "09":
+					if caid_a == "09":
 						return True
 					return False
 				if self.type == self.CONAX_C:
-					if caid == "0B":
+					if caid_a == "0B":
 						return True
 					return False
 				if self.type == self.CRW_C:
-					if caid == "0D":
+					if caid_a == "0D":
 						return True
 					return False
 				if self.type == self.PWR_C:
-					if caid == "0E":
+					if caid_a == "0E":
 						return True
 					return False
 				if self.type == self.TAN_C:
-					if caid == "10":
+					if caid_a == "10":
 						return True
 					return False
 				if self.type == self.BETA_C:
-					if caid == "17" and caid_b == "02"\
-						or caid == "17" and caid_b == "04"\
-						or caid == "17" and caid_b == "22"\
-						or caid == "17" and caid_b == "62":
+					if caid_a == "17" and caid_b == "02"\
+						or caid_a == "17" and caid_b == "22"\
+						or caid_a == "17" and caid_b == "62":
 						return True
 					return False
 				if self.type == self.NAGRA_C:
-					if caid == "18":
+					if caid_a == "18":
+						return True
+					return False
+				if self.type == self.CODI_C:
+					if caid_a == "22":
 						return True
 					return False
 				if self.type == self.BISS_C:
-					if caid == "26":
+					if caid_a == "26":
 						return True
 					return False
 				if self.type == self.EXS_C:
-					if caid == "27":
+					if caid_a == "27":
+						return True
+					return False
+				if self.type == self.XCR_C:
+					if caid_a == "4A" and caid_b == "D0"\
+						or caid_a == "4A" and caid_b == "D1":
 						return True
 					return False
 				if self.type == self.DRE_C:
-					if caid == "7B"\
-						or caid == "4A" and caid_b == "E0"\
-						or caid == "4A" and caid_b == "E1":
+					if caid_a == "7B" and caid_b == "E1"\
+						or caid_a == "4A" and caid_b == "E0"\
+						or caid_a == "4A" and caid_b == "E1":
+						return True
+					return False
+				if self.type == self.GUARD_C:
+					if caid_a == "4A" and caid_b == "EA":
 						return True
 					return False
 				if self.type == self.BUL_C:
-					if caid == "55"\
-						or caid == "4A" and caid_b == "EE":
+					if caid_a == "55"\
+						or caid_a == "4A" and caid_b == "EE":
 						return True
 					return False
 				if self.type == self.VRM_C:
-					if caid == "56"\
-						or caid == "17" and not caid_b == "02"\
-						or caid == "17" and not caid_b == "04"\
-						or caid == "17" and not caid_b == "22"\
-						or caid == "17" and not caid_b == "62":
+					if caid_a == "56"\
+						or caid_a == "17" and not caid_b == "02"\
+						or caid_a == "17" and not caid_b == "22"\
+						or caid_a == "17" and not caid_b == "62":
 						return True
 					return False
-				#oscam
+				if self.type == self.ROSS_C:
+					if caid_a == "A1":
+						return True
+					return False
+				# oscam
 				reader = ecm_info.get("reader", None)
-				#cccam	
+				# cccam
 				using = ecm_info.get("using", "")
-				#mgcamd
+				# mgcamd
 				source = ecm_info.get("source", "")
 				if self.type == self.CRD:
-					#oscam
+				# oscam
 					if source == "sci":
 						return True
-					#wicardd
+				# wicardd
 					if source != "cache" and source != "net" and source != "emu":
 						return True
 					return False
@@ -420,7 +483,6 @@ class CaidInfo2(Poll, Converter, object):
 							return True
 				else:
 					return False
-
 		return False
 
 	boolean = property(getBoolean)
@@ -454,23 +516,23 @@ class CaidInfo2(Poll, Converter, object):
 					self.poll_interval = self.my_interval
 					self.poll_enabled = True
 					ecm_info = self.ecmfile()
-					# crypt2
+			# crypt2
 					if ecm_info:
-						# caid
+			# caid
 						caid = "%0.4X" % int(ecm_info.get("caid", ""),16)
 						if self.type == self.CAID:
 							return caid
-						# crypt
+			# crypt
 						if self.type == self.CRYPT:
 							return "%s" % self.systemTxtCaids.get(caid[:2].upper())
-						#pid
+			# pid
 						try:
 							pid = "%0.4X" % int(ecm_info.get("pid", ""),16)
 						except:
 							pid = ""
 						if self.type == self.PID:
 							return pid
-						# oscam
+			# oscam
 						try:
 							prov = "%0.6X" % int(ecm_info.get("prov", ""),16)
 						except:
@@ -483,28 +545,28 @@ class CaidInfo2(Poll, Converter, object):
 							ecm_time = ecm_info.get("ecm time", "").replace(".","").lstrip("0") + " msec"
 						if self.type == self.DELAY:
 							return ecm_time
-						#protocol
+			# protocol
 						protocol = ecm_info.get("protocol", "")
-						#port
+			# port
 						port = ecm_info.get("port", "")
-						# source
+			# source	
 						source = ecm_info.get("source", "")
-						# server
+			# server
 						server = ecm_info.get("server", "")
-						# hops
+			# hops
 						hops = ecm_info.get("hops", "")
-						#system
+			# system
 						system = ecm_info.get("system", "")
-						#provider
+			# provider
 						provider = ecm_info.get("provider", "")
-						# reader
+			# reader
 						reader = ecm_info.get("reader", "")
 						if self.type == self.CRDTXT:
 							info_card = "False"
-							#oscam
+			# oscam
 							if source == "sci":
 								info_card = "True"
-							#wicardd
+			# wicardd
 							if source != "cache" and source != "net" and source.find("emu") == -1:
 								info_card = "True"
 							return info_card
@@ -517,40 +579,40 @@ class CaidInfo2(Poll, Converter, object):
 								if param != '':
 									if param[0] != '%':
 										textvalue+=param
-									#server
+			# server
 									elif param == "%S":
 										textvalue+=server
-									#hops
+			# hops
 									elif param == "%H":
 										textvalue+=hops
-									#system
+			# system
 									elif param == "%SY":
 										textvalue+=system
-									#provider
+			# provider
 									elif param == "%PV":
 										textvalue+=provider
-									#port
+			# port
 									elif param == "%SP":
 										textvalue+=port
-									#protocol
+			# protocol
 									elif param == "%PR":
 										textvalue+=protocol
-									#caid
+			# caid
 									elif param == "%C":
 										textvalue+=caid
-									#Pid
+			# pid
 									elif param == "%P":
 										textvalue+=pid
-									#prov
+			# prov
 									elif param == "%p":
 										textvalue+=prov
-									#sOurce
+			# source
 									elif param == "%O":
 										textvalue+=source
-									#Reader
+			# reader
 									elif param == "%R":
 										textvalue+=reader
-									#ECM Time
+			# ecm time
 									elif param == "%T":
 										textvalue+=ecm_time
 									elif param == "%t":
@@ -566,7 +628,7 @@ class CaidInfo2(Poll, Converter, object):
 						if self.type == self.ALL:
 							if source == "emu":
 								textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids.get(caid[:2]), prov, caid)
-							#new oscam ecm.info with port parametr
+			# new oscam ecm.info with port parametr
 							elif reader != "" and source == "net" and port != "": 
 								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s:%s) - %s" % (source, prov, caid, reader, protocol, server, port, ecm_time.replace('msec','ms'))
 							elif reader != "" and source == "net": 
@@ -625,13 +687,13 @@ class CaidInfo2(Poll, Converter, object):
 			if ecm:
 				for line in ecm:
 					x = line.lower().find("msec")
-					#ecm time for mgcamd and oscam
+			# ecm time for mgcamd and oscam
 					if x != -1:
 						info["ecm time"] = line[0:x+4]
 					else:
 						item = line.split(":", 1)
 						if len(item) > 1:
-							#wicard block
+			# wicard block
 							if item[0] == "Provider":
 								item[0] = "prov"
 								item[1] = item[1].strip()[2:]
@@ -665,7 +727,7 @@ class CaidInfo2(Poll, Converter, object):
 								item[1] = item[1].strip("\n")
 							elif item[0][:2] == 'cw'or item[0] =='ChID' or item[0] == "Service": 
 								pass
-							#mgcamd new_oscam block
+			# mgcamd new_oscam block
 							elif item[0] == "source":
 								if item[1].strip()[:3] == "net":
 									it_tmp = item[1].strip().split(" ")
@@ -677,7 +739,7 @@ class CaidInfo2(Poll, Converter, object):
 								y = item[1].find(",")
 								if y != -1:
 									item[1] = item[1][:y]
-							#old oscam block
+			# old oscam block
 							elif item[0] == "reader":
 								if item[1].strip() == "emu":
 									item[0] = "source"
@@ -688,7 +750,7 @@ class CaidInfo2(Poll, Converter, object):
 								else:
 									info["source"] = "net"
 									item[0] = "server"
-							#cccam block
+			# cccam block
 							elif item[0] == "provid":
 								item[0] = "prov"
 							elif item[0] == "using":
