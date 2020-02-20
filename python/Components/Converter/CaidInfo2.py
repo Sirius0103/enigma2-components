@@ -265,7 +265,6 @@ class CaidInfo2(Poll, Converter, object):
 		info = service and service.info()
 		if not info:
 			return False
-
 		caids = info.getInfoObject(iServiceInformation.sCAIDs)
 		if self.type is self.IS_FTA:
 			if caids:
@@ -278,117 +277,117 @@ class CaidInfo2(Poll, Converter, object):
 		if caids:
 			if self.type == self.SECA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "01":
+					if ("%0.4X" % int(caid))[:2] == '01':
 						return True
 				return False
 			if self.type == self.VIA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "05":
+					if ("%0.4X" % int(caid))[:2] == '05':
 						return True
 				return False
 			if self.type == self.IRD:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "06":
+					if ("%0.4X" % int(caid))[:2] == '06':
 						return True
 				return False
 			if self.type == self.DIGI:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "07":
+					if ("%0.4X" % int(caid))[:2] == '07':
 						return True
 				return False
 			if self.type == self.NDS:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "09":
+					if ("%0.4X" % int(caid))[:2] == '09':
 						return True
 				return False
 			if self.type == self.CONAX:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "0B":
+					if ("%0.4X" % int(caid))[:2] == '0B':
 						return True
 				return False
 			if self.type == self.CRW:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "0D":
+					if ("%0.4X" % int(caid))[:2] == '0D':
 						return True
 				return False
 			if self.type == self.PWR:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "0E":
+					if ("%0.4X" % int(caid))[:2] == '0E':
 						return True
 				return False
 			if self.type == self.TAN:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "10":
+					if ("%0.4X" % int(caid))[:2] == '10':
 						return True
 				return False
 			if self.type == self.BETA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "02"\
-						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "22"\
-						or ("%0.4X" % int(caid))[:2] == "17" and ("%0.4X" % int(caid))[2:] == "62":
+					if ("%0.4X" % int(caid))[:2] == '17' and ("%0.4X" % int(caid))[2:] == '02'\
+						or ("%0.4X" % int(caid))[:2] == '17' and ("%0.4X" % int(caid))[2:] == '22'\
+						or ("%0.4X" % int(caid))[:2] == '17' and ("%0.4X" % int(caid))[2:] == '62':
 						return True
 				return False
 			if self.type == self.NAGRA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "18":
+					if ("%0.4X" % int(caid))[:2] == '18':
 						return True
 				return False
 			if self.type == self.CODI:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "22":
+					if ("%0.4X" % int(caid))[:2] == '22':
 						return True
 				return False
 			if self.type == self.BISS:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "26":
+					if ("%0.4X" % int(caid))[:2] == '26':
 						return True
 				return False
 			if self.type == self.EXS:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "27":
+					if ("%0.4X" % int(caid))[:2] == '27':
 						return True
 				return False
 			if self.type == self.XCR:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "D0"\
-						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "D1":
+					if ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'D0'\
+						or ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'D1':
 						return True
 				return False
 			if self.type == self.DRE:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "7B" and ("%0.4X" % int(caid))[2:] == "E1"\
-						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "E0"\
-						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "E1"\
-						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "70":
+					if ("%0.4X" % int(caid))[:2] == '7B' and ("%0.4X" % int(caid))[2:] == 'E1'\
+						or ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'E0'\
+						or ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'E1'\
+						or ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == '70':
 						return True
 				return False
 			if self.type == self.GUARD:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "EA":
+					if ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'EA':
 						return True
 				return False
 			if self.type == self.BUL:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "55"\
-						or ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "EE":
+					if ("%0.4X" % int(caid))[:2] == '55'\
+						or ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'EE':
 						return True
 				return False
 			if self.type == self.PANA:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "4A" and ("%0.4X" % int(caid))[2:] == "FC":
+					if ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'FC':
 						return True
 				return False
 			if self.type == self.VRM:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "56"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "02"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "22"\
-						or ("%0.4X" % int(caid))[:2] == "17" and not ("%0.4X" % int(caid))[2:] == "62":
+					if ("%0.4X" % int(caid))[:2] == '56'\
+						or ("%0.4X" % int(caid))[:2] == '17' and not ("%0.4X" % int(caid))[2:] == '02'\
+						or ("%0.4X" % int(caid))[:2] == '17' and not ("%0.4X" % int(caid))[2:] == '22'\
+						or ("%0.4X" % int(caid))[:2] == '17' and not ("%0.4X" % int(caid))[2:] == '62':
 						return True
 				return False
 			if self.type == self.ROSS:
 				for caid in caids:
-					if ("%0.4X" % int(caid))[:2] == "A1":
+					if ("%0.4X" % int(caid))[:2] == 'A1':
 						return True
 				return False
 			self.poll_interval = self.my_interval
@@ -398,97 +397,97 @@ class CaidInfo2(Poll, Converter, object):
 				caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
 				caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
 				if self.type == self.SECA_C:
-					if caid_a == "01":
+					if caid_a == '01':
 						return True
 					return False
 				if self.type == self.VIA_C:
-					if caid_a == "05":
+					if caid_a == '05':
 						return True
 					return False
 				if self.type == self.IRD_C:
-					if caid_a == "06":
+					if caid_a == '06':
 						return True
 					return False
 				if self.type == self.DIGI_C:
-					if caid_a == "07":
+					if caid_a == '07':
 						return True
 					return False
 				if self.type == self.NDS_C:
-					if caid_a == "09":
+					if caid_a == '09':
 						return True
 					return False
 				if self.type == self.CONAX_C:
-					if caid_a == "0B":
+					if caid_a == '0B':
 						return True
 					return False
 				if self.type == self.CRW_C:
-					if caid_a == "0D":
+					if caid_a == '0D':
 						return True
 					return False
 				if self.type == self.PWR_C:
-					if caid_a == "0E":
+					if caid_a == '0E':
 						return True
 					return False
 				if self.type == self.TAN_C:
-					if caid_a == "10":
+					if caid_a == '10':
 						return True
 					return False
 				if self.type == self.BETA_C:
-					if caid_a == "17" and caid_b == "02"\
-						or caid_a == "17" and caid_b == "22"\
-						or caid_a == "17" and caid_b == "62":
+					if caid_a == '17' and caid_b == '02'\
+						or caid_a == '17' and caid_b == '22'\
+						or caid_a == '17' and caid_b == '62':
 						return True
 					return False
 				if self.type == self.NAGRA_C:
-					if caid_a == "18":
+					if caid_a == '18':
 						return True
 					return False
 				if self.type == self.CODI_C:
-					if caid_a == "22":
+					if caid_a == '22':
 						return True
 					return False
 				if self.type == self.BISS_C:
-					if caid_a == "26":
+					if caid_a == '26':
 						return True
 					return False
 				if self.type == self.EXS_C:
-					if caid_a == "27":
+					if caid_a == '27':
 						return True
 					return False
 				if self.type == self.XCR_C:
-					if caid_a == "4A" and caid_b == "D0"\
-						or caid_a == "4A" and caid_b == "D1":
+					if caid_a == '4A' and caid_b == 'D0'\
+						or caid_a == '4A' and caid_b == 'D1':
 						return True
 					return False
 				if self.type == self.DRE_C:
-					if caid_a == "7B" and caid_b == "E1"\
-						or caid_a == "4A" and caid_b == "E0"\
-						or caid_a == "4A" and caid_b == "E1"\
-						or caid_a == "4A" and caid_b == "70":
+					if caid_a == '7B' and caid_b == 'E1'\
+						or caid_a == '4A' and caid_b == 'E0'\
+						or caid_a == '4A' and caid_b == 'E1'\
+						or caid_a == '4A' and caid_b == '70':
 						return True
 					return False
 				if self.type == self.GUARD_C:
-					if caid_a == "4A" and caid_b == "EA":
+					if caid_a == '4A' and caid_b == 'EA':
 						return True
 					return False
 				if self.type == self.BUL_C:
-					if caid_a == "55"\
-						or caid_a == "4A" and caid_b == "EE":
+					if caid_a == '55'\
+						or caid_a == '4A' and caid_b == 'EE':
 						return True
 					return False
 				if self.type == self.PANA_C:
-					if caid_a == "4A" and caid_b == "FC":
+					if caid_a == '4A' and caid_b == 'FC':
 						return True
 					return False
 				if self.type == self.VRM_C:
-					if caid_a == "56"\
-						or caid_a == "17" and not caid_b == "02"\
-						or caid_a == "17" and not caid_b == "22"\
-						or caid_a == "17" and not caid_b == "62":
+					if caid_a == '56'\
+						or caid_a == '17' and not caid_b == '02'\
+						or caid_a == '17' and not caid_b == '22'\
+						or caid_a == '17' and not caid_b == '62':
 						return True
 					return False
 				if self.type == self.ROSS_C:
-					if caid_a == "A1":
+					if caid_a == 'A1':
 						return True
 					return False
 				# oscam
@@ -499,21 +498,21 @@ class CaidInfo2(Poll, Converter, object):
 				source = ecm_info.get("source", "")
 				if self.type == self.CRD:
 				# oscam
-					if source == "sci":
+					if source == 'sci':
 						return True
 				# wicardd
-					if source != "cache" and source != "net" and source != "emu":
+					if source != 'cache' and source != 'net' and source != 'emu':
 						return True
 					return False
 				source = ecm_info.get("source", "")
 				if self.type == self.IS_EMU:
-					return using == "emu" or source == "emu" or source == "card" or reader == "emu" or source.find("card") > -1 or source.find("emu") > -1 or source.find("biss") > -1 or source.find("cache") > -1
+					return using == 'emu' or source == 'emu' or source == 'card' or reader == 'emu' or source.find('card') > -1 or source.find('emu') > -1 or source.find('biss') > -1 or source.find('cache') > -1
 				source = ecm_info.get("source", "")
 				if self.type == self.IS_NET:
-					if using == "CCcam":
+					if using == 'CCcam':
 						return 1
 					else:
-						if source != "cache" and source == "net" and source.find("emu") == -1:
+						if source != 'cache' and source == 'net' and source.find('emu') == -1:
 							return True
 				else:
 					return False
@@ -523,192 +522,185 @@ class CaidInfo2(Poll, Converter, object):
 
 	@cached
 	def getText(self):
-		textvalue = ""
-		server = ""
+		textvalue = ''
+		server = ''
 		service = self.source.service
 		if service:
-			if self.type == self.CRYPT2:
+			ecm_info = self.ecmfile()
+			info = service and service.info()
+			if info.getInfoObject(iServiceInformation.sCAIDs):
 				self.poll_interval = self.my_interval
 				self.poll_enabled = True
-				info = service and service.info()
 				if info:
-					if not info.getInfoObject(iServiceInformation.sCAIDs):
-						return 'fta'
-				ecm_info = self.ecmfile()
-				if fileExists("/tmp/ecm.info"):
-					try:
+					if self.type == self.CRYPT2:
+						if not info.getInfoObject(iServiceInformation.sCAIDs):
+							return "fta"
+						if fileExists("/tmp/ecm.info"):
+							try:
+								caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
+								caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
+								if caid_a == '4A':
+									return "%s" % self.systemTxtCaids_b.get(caid_b)
+								elif caid_a == '17' and caid_b == '02' or caid_a == '17' and caid_b == '22' or caid_a == '17' and caid_b == '62':
+									return "BetaCrypt"
+								elif caid_a == '17' and not caid_b == '02' or caid_a == '17' and not caid_b == '22' or caid_a == '17' and not caid_b == '62':
+									return "Verimatrix"
+								return "%s" % self.systemTxtCaids_a.get(caid_a)
+							except:
+								return "nondecode"
+						else:
+							return "nondecode"
+				if ecm_info:
+				# caid
+					caid = "%0.4X" % int(ecm_info.get("caid", ""),16)
+					if self.type == self.CAID:
+						return caid
+				# crypt
+					if self.type == self.CRYPT:
 						caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
 						caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
-						if caid_a == "4A":
-							return "%s" % self.systemTxtCaids_b.get(caid_b)
-						elif caid_a == "17" and caid_b == "02" or caid_a == "17" and caid_b == "22" or caid_a == "17" and caid_b == "62":
-							return "BetaCrypt"
-						elif caid_a == "17" and not caid_b == "02" or caid_a == "17" and not caid_b == "22" or caid_a == "17" and not caid_b == "62":
-							return "Verimatrix"
-						return "%s" % self.systemTxtCaids_a.get(caid_a)
+						if caid_a == '4A':
+							return "%s" % self.systemTxtCaids_b.get(caid_b).upper()
+						elif caid_a == '17' and caid_b == '02' or caid_a == '17' and caid_b == '22' or caid_a == '17' and caid_b == '62':
+							return "BETACRYPT"
+						elif caid_a == '17' and not caid_b == '02' or caid_a == '17' and not caid_b == '22' or caid_a == '17' and not caid_b == '62':
+							return "VERIMATRIX"
+						return "%s" % self.systemTxtCaids_a.get(caid_a).upper()
+				# pid
+					try:
+						pid = "%0.4X" % int(ecm_info.get("pid", ""),16)
 					except:
-						return 'nondecode'
-				else:
-					return 'nondecode'
-		if service:
-			info = service and service.info()
-			if info:
-				if info.getInfoObject(iServiceInformation.sCAIDs):
-					self.poll_interval = self.my_interval
-					self.poll_enabled = True
-					ecm_info = self.ecmfile()
-			# crypt 2
-					if ecm_info:
-			# caid
-						caid = "%0.4X" % int(ecm_info.get("caid", ""),16)
-						if self.type == self.CAID:
-							return caid
-			# crypt
-						if self.type == self.CRYPT:
-							caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
-							caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
-							if caid_a == "4A":
-								return "%s" % self.systemTxtCaids_b.get(caid_b).upper()
-							elif caid_a == "17" and caid_b == "02" or caid_a == "17" and caid_b == "22" or caid_a == "17" and caid_b == "62":
-								return "BETACRYPT"
-							elif caid_a == "17" and not caid_b == "02" or caid_a == "17" and not caid_b == "22" or caid_a == "17" and not caid_b == "62":
-								return "VERIMATRIX"
-							return "%s" % self.systemTxtCaids_a.get(caid_a).upper()
-			# pid
-						try:
-							pid = "%0.4X" % int(ecm_info.get("pid", ""),16)
-						except:
-							pid = ""
-						if self.type == self.PID:
-							return pid
-			# oscam
-						try:
-							prov = "%0.6X" % int(ecm_info.get("prov", ""),16)
-						except:
-							prov = ecm_info.get("prov", "")
-						if self.type == self.PROV:
-							return prov
-						if ecm_info.get("ecm time", "").find("msec") > -1:
-							ecm_time = ecm_info.get("ecm time", "")
-						else:
-							ecm_time = ecm_info.get("ecm time", "").replace(".","").lstrip("0") + " msec"
-						if self.type == self.DELAY:
-							return ecm_time
-			# protocol
-						protocol = ecm_info.get("protocol", "")
-			# port
-						port = ecm_info.get("port", "")
-			# source	
-						source = ecm_info.get("source", "")
-			# server
-						server = ecm_info.get("server", "")
-			# hops
-						hops = ecm_info.get("hops", "")
-			# system
-						system = ecm_info.get("system", "")
-			# provider
-						provider = ecm_info.get("provider", "")
-			# reader
-						reader = ecm_info.get("reader", "")
-						if self.type == self.CRDTXT:
-							info_card = "False"
-			# oscam
-							if source == "sci":
-								info_card = "True"
-			# wicardd
-							if source != "cache" and source != "net" and source.find("emu") == -1:
-								info_card = "True"
-							return info_card
-						if self.type == self.HOST:
-							return server
-						if self.type == self.FORMAT:
-							textvalue = ""
-							params = self.sfmt.split(" ")
-							for param in params:
-								if param != '':
-									if param[0] != '%':
-										textvalue+=param
-			# server
-									elif param == "%S":
-										textvalue+=server
-			# hops
-									elif param == "%H":
-										textvalue+=hops
-			# system
-									elif param == "%SY":
-										textvalue+=system
-			# provider
-									elif param == "%PV":
-										textvalue+=provider
-			# port
-									elif param == "%SP":
-										textvalue+=port
-			# protocol
-									elif param == "%PR":
-										textvalue+=protocol
-			# caid
-									elif param == "%C":
-										textvalue+=caid
-			# pid
-									elif param == "%P":
-										textvalue+=pid
-			# prov
-									elif param == "%p":
-										textvalue+=prov
-			# source
-									elif param == "%O":
-										textvalue+=source
-			# reader
-									elif param == "%R":
-										textvalue+=reader
-			# ecm time
-									elif param == "%T":
-										textvalue+=ecm_time
-									elif param == "%t":
-										textvalue+="\t"
-									elif param == "%n":
-										textvalue+="\n"
-									elif param[1:].isdigit():
-										textvalue=textvalue.ljust(len(textvalue)+int(param[1:]))
-									if len(textvalue) > 0:
-										if textvalue[-1] != "\t" and textvalue[-1] != "\n":
-											textvalue+=" "
-							return textvalue[:-1]
-						if self.type == self.ALL:
-							if source == "emu":
-								textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
-			# new oscam ecm.info with port parametr
-							elif reader != "" and source == "net" and port != "":
-								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s:%s) - %s" % (source, prov, caid, reader, protocol, server, port, ecm_time.replace('msec','ms'))
-							elif reader != "" and source == "net": 
-								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s) - %s" % (source, prov, caid, reader, protocol, server, ecm_time.replace('msec','ms'))
-							elif reader != "" and source != "net": 
-								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (local) - %s" % (source, prov, caid, reader, protocol, ecm_time.replace('msec','ms'))
-							elif server == "" and port == "" and protocol != "":
-								textvalue = "%s - Prov: %s, Caid: %s, %s - %s" % (source, prov, caid, protocol, ecm_time.replace('msec','ms'))
-							elif server == "" and port == "" and protocol == "":
-								textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
-							else:
-								try:
-									textvalue = "%s - Prov: %s, Caid: %s, %s (%s:%s) - %s" % (source, prov, caid, protocol, server, port, ecm_time.replace('msec','ms'))
-								except:
-									pass
-						if self.type == self.SHORT:
-							if source == "emu":
-								textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
-							elif server == "" and port == "":
-								textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
-							else:
-								try:
-									textvalue = "%s - Prov: %s, Caid: %s, %s:%s - %s" % (source, prov, caid, server, port, ecm_time.replace('msec','ms'))
-								except:
-									pass
+						pid = ""
+					if self.type == self.PID:
+						return pid
+				# oscam
+					try:
+						prov = "%0.6X" % int(ecm_info.get("prov", ""),16)
+					except:
+						prov = ecm_info.get("prov", "")
+					if self.type == self.PROV:
+						return prov
+					if ecm_info.get("ecm time", "").find("msec") > -1:
+						ecm_time = ecm_info.get("ecm time", "")
 					else:
-						if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
-							textvalue = _("No parse cannot emu")
+						ecm_time = ecm_info.get("ecm time", "").replace(".","").lstrip("0") + " msec"
+					if self.type == self.DELAY:
+						return ecm_time
+				# protocol
+					protocol = ecm_info.get("protocol", "")
+				# port
+					port = ecm_info.get("port", "")
+				# source
+					source = ecm_info.get("source", "")
+				# server
+					server = ecm_info.get("server", "")
+				# hops
+					hops = ecm_info.get("hops", "")
+				# system
+					system = ecm_info.get("system", "")
+				# provider
+					provider = ecm_info.get("provider", "")
+				# reader
+					reader = ecm_info.get("reader", "")
+					if self.type == self.CRDTXT:
+						info_card = 'False'
+				# oscam
+						if source == 'sci':
+							info_card = 'True'
+				# wicardd
+						if source != 'cache' and source != 'net' and source.find('emu') == -1:
+							info_card = 'True'
+						return info_card
+					if self.type == self.HOST:
+						return server
+					if self.type == self.FORMAT:
+						textvalue = ''
+						params = self.sfmt.split(" ")
+						for param in params:
+							if param != '':
+								if param[0] != '%':
+									textvalue+=param
+				# server
+								elif param == '%S':
+									textvalue+=server
+				# hops
+								elif param == '%H':
+									textvalue+=hops
+				# system
+								elif param == '%SY':
+									textvalue+=system
+				# provider
+								elif param == '%PV':
+									textvalue+=provider
+				# port
+								elif param == '%SP':
+									textvalue+=port
+				# protocol
+								elif param == '%PR':
+									textvalue+=protocol
+				# caid
+								elif param == '%C':
+									textvalue+=caid
+				# pid
+								elif param == '%P':
+									textvalue+=pid
+				# prov
+								elif param == '%p':
+									textvalue+=prov
+				# source
+								elif param == '%O':
+									textvalue+=source
+				# reader
+								elif param == '%R':
+									textvalue+=reader
+				# ecm time
+								elif param == '%T':
+									textvalue+=ecm_time
+								elif param == '%t':
+									textvalue+="\t"
+								elif param == '%n':
+									textvalue+="\n"
+								elif param[1:].isdigit():
+									textvalue=textvalue.ljust(len(textvalue)+int(param[1:]))
+								if len(textvalue) > 0:
+									if textvalue[-1] != "\t" and textvalue[-1] != "\n":
+										textvalue+=" "
+						return textvalue[:-1]
+					if self.type == self.ALL:
+						if source == "emu":
+							textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
+				# new oscam ecm.info with port parametr
+						elif reader != '' and source == 'net' and port != '':
+							textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s:%s) - %s" % (source, prov, caid, reader, protocol, server, port, ecm_time.replace('msec','ms'))
+						elif reader != '' and source == 'net': 
+							textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s) - %s" % (source, prov, caid, reader, protocol, server, ecm_time.replace('msec','ms'))
+						elif reader != '' and source != 'net': 
+							textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (local) - %s" % (source, prov, caid, reader, protocol, ecm_time.replace('msec','ms'))
+						elif server == '' and port == '' and protocol != '':
+							textvalue = "%s - Prov: %s, Caid: %s, %s - %s" % (source, prov, caid, protocol, ecm_time.replace('msec','ms'))
+						elif server == '' and port == '' and protocol == '':
+							textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
+						else:
+							try:
+								textvalue = "%s - Prov: %s, Caid: %s, %s (%s:%s) - %s" % (source, prov, caid, protocol, server, port, ecm_time.replace('msec','ms'))
+							except:
+								pass
+					if self.type == self.SHORT:
+						if source == 'emu':
+							textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
+						elif server == '' and port == '':
+							textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
+						else:
+							try:
+								textvalue = "%s - Prov: %s, Caid: %s, %s:%s - %s" % (source, prov, caid, server, port, ecm_time.replace('msec','ms'))
+							except:
+								pass
 				else:
 					if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
-						textvalue = _("Free-to-air")
+						textvalue = _("No parse cannot emu")
+			else:
+				if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
+					textvalue = _("Free-to-air")
 		return textvalue
 
 	text = property(getText)
@@ -736,101 +728,101 @@ class CaidInfo2(Poll, Converter, object):
 			if ecm:
 				for line in ecm:
 					x = line.lower().find("msec")
-			# ecm time for mgcamd and oscam
+				# ecm time for mgcamd and oscam
 					if x != -1:
-						info["ecm time"] = line[0:x+4]
+						info['ecm time'] = line[0:x+4]
 					else:
 						item = line.split(":", 1)
 						if len(item) > 1:
-			# wicard block
-							if item[0] == "Provider":
-								item[0] = "prov"
+				# wicard block
+							if item[0] == 'Provider':
+								item[0] = 'prov'
 								item[1] = item[1].strip()[2:]
-							elif item[0] == "ECM PID":
-								item[0] = "pid"
-							elif item[0] == "response time":
-								info["source"] = "net"
+							elif item[0] == 'ECM PID':
+								item[0] = 'pid'
+							elif item[0] == 'response time':
+								info['source'] = "net"
 								it_tmp = item[1].strip().split(" ")
-								info["ecm time"] = "%s msec" % it_tmp[0]
-								info["reader"] = it_tmp[-1].strip('R0[').strip(']')
-								y = it_tmp[-1].find('[')
+								info['ecm time'] = "%s msec" % it_tmp[0]
+								info['reader'] = it_tmp[-1].strip("R0[").strip("]")
+								y = it_tmp[-1].find("[")
 								if y !=-1:
-									info["server"] = it_tmp[-1][:y]
-									info["protocol"] = it_tmp[-1][y+1:-1]
-								y = it_tmp[-1].find('(')
+									info['server'] = it_tmp[-1][:y]
+									info['protocol'] = it_tmp[-1][y+1:-1]
+								y = it_tmp[-1].find("(")
 								if y !=-1:
-									info["server"] = it_tmp[-1].split("(")[-1].split(":")[0]
-									info["port"] = it_tmp[-1].split("(")[-1].split(":")[-1].rstrip(")")
-									info["reader"] = it_tmp[-2]
+									info['server'] = it_tmp[-1].split("(")[-1].split(":")[0]
+									info['port'] = it_tmp[-1].split("(")[-1].split(":")[-1].rstrip(")")
+									info['reader'] = it_tmp[-2]
 								elif y == -1:
-									item[0] = "source"
-									item[1] = "sci"
-								if it_tmp[-1].find('emu') >-1 or it_tmp[-1].find('EMU') >-1 or it_tmp[-1].find('cache') > -1 or it_tmp[-1].find('card') > -1 or it_tmp[-1].find('biss') > -1:
-									item[0] = "source"
-									item[1] = "emu"
-							elif item[0] == "hops":
+									item[0] = 'source'
+									item[1] = 'sci'
+								if it_tmp[-1].find("emu") >-1 or it_tmp[-1].find("EMU") >-1 or it_tmp[-1].find("cache") > -1 or it_tmp[-1].find("card") > -1 or it_tmp[-1].find("biss") > -1:
+									item[0] = 'source'
+									item[1] = 'emu'
+							elif item[0] == 'hops':
 								item[1] = item[1].strip("\n")
-							elif item[0] == "system":
+							elif item[0] == 'system':
 								item[1] = item[1].strip("\n")
-							elif item[0] == "provider":
+							elif item[0] == 'provider':
 								item[1] = item[1].strip("\n")
-							elif item[0][:2] == 'cw'or item[0] =='ChID' or item[0] == "Service":
+							elif item[0][:2] == 'cw'or item[0] =='ChID' or item[0] == 'Service':
 								pass
-			# mgcamd new_oscam block
-							elif item[0] == "source":
-								if item[1].strip()[:3] == "net":
+				# mgcamd new_oscam block
+							elif item[0] == 'source':
+								if item[1].strip()[:3] == 'net':
 									it_tmp = item[1].strip().split(" ")
-									info["protocol"] = it_tmp[1][1:]
-									info["server"] = it_tmp[-1].split(":",1)[0]
-									info["port"] = it_tmp[-1].split(':',1)[1][:-1]
-									item[1] = "net"
-							elif item[0] == "prov":
+									info['protocol'] = it_tmp[1][1:]
+									info['server'] = it_tmp[-1].split(":",1)[0]
+									info['port'] = it_tmp[-1].split(":",1)[1][:-1]
+									item[1] = 'net'
+							elif item[0] == 'prov':
 								y = item[1].find(",")
 								if y != -1:
 									item[1] = item[1][:y]
-			# old oscam block
-							elif item[0] == "reader":
-								if item[1].strip() == "emu":
-									item[0] = "source"
-							elif item[0] == "from":
-								if item[1].strip() == "local":
-									item[1] = "sci"
-									item[0] = "source"
+				# old oscam block
+							elif item[0] == 'reader':
+								if item[1].strip() == 'emu':
+									item[0] = 'source'
+							elif item[0] == 'from':
+								if item[1].strip() == 'local':
+									item[1] = 'sci'
+									item[0] = 'source'
 								else:
-									info["source"] = "net"
-									item[0] = "server"
-			# cccam block
-							elif item[0] == "provid":
-								item[0] = "prov"
-							elif item[0] == "using":
-								if item[1].strip() == "emu" or item[1].strip() == "sci":
-									item[0] = "source"
+									info['source'] = 'net'
+									item[0] = 'server'
+				# cccam block
+							elif item[0] == 'provid':
+								item[0] = 'prov'
+							elif item[0] == 'using':
+								if item[1].strip() == 'emu' or item[1].strip() == 'sci':
+									item[0] = 'source'
 								else:
-									info["source"] = "net"
-									item[0] = "protocol"
-							elif item[0] == "address":
+									info['source'] = 'net'
+									item[0] = 'protocol'
+							elif item[0] == 'address':
 								tt = item[1].find(":")
 								if tt != -1:
-									info["server"] = item[1][:tt].strip()
-									item[0] = "port"
+									info['server'] = item[1][:tt].strip()
+									item[0] = 'port'
 									item[1] = item[1][tt+1:]
 							info[item[0].strip().lower()] = item[1].strip()
 						else:
-							if not info.has_key("caid"):
-								x = line.lower().find("caid")
+							if not info.has_key('caid'):
+								x = line.lower().find('caid')
 								if x != -1:
 									y = line.find(",")
 									if y != -1:
-										info["caid"] = line[x+5:y]
-							if not info.has_key("pid"):
-								x = line.lower().find("pid")
+										info['caid'] = line[x+5:y]
+							if not info.has_key('pid'):
+								x = line.lower().find('pid')
 								if x != -1:
 									y = line.find(" =")
 									z = line.find(" *")
 									if y != -1:
-										info["pid"] = line[x+4:y]
+										info['pid'] = line[x+4:y]
 									elif z != -1:
-										info["pid"] = line[x+4:z]
+										info['pid'] = line[x+4:z]
 				ecmf.close()
 		return info
 
