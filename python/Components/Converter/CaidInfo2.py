@@ -528,13 +528,11 @@ class CaidInfo2(Poll, Converter, object):
 		if service:
 			ecm_info = self.ecmfile()
 			info = service and service.info()
-			if info.getInfoObject(iServiceInformation.sCAIDs):
-				self.poll_interval = self.my_interval
-				self.poll_enabled = True
-				if info:
-					if self.type == self.CRYPT2:
-						if not info.getInfoObject(iServiceInformation.sCAIDs):
-							return "fta"
+			self.poll_interval = self.my_interval
+			self.poll_enabled = True
+			if info:
+				if self.type == self.CRYPT2:
+					if info.getInfoObject(iServiceInformation.sCAIDs):
 						if fileExists("/tmp/ecm.info"):
 							try:
 								caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
@@ -550,157 +548,161 @@ class CaidInfo2(Poll, Converter, object):
 								return "nondecode"
 						else:
 							return "nondecode"
-				if ecm_info:
-				# caid
-					caid = "%0.4X" % int(ecm_info.get("caid", ""),16)
-					if self.type == self.CAID:
-						return caid
-				# crypt
-					if self.type == self.CRYPT:
-						caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
-						caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
-						if caid_a == '4A':
-							return "%s" % self.systemTxtCaids_b.get(caid_b).upper()
-						elif caid_a == '17' and caid_b == '02' or caid_a == '17' and caid_b == '22' or caid_a == '17' and caid_b == '62':
-							return "BETACRYPT"
-						elif caid_a == '17' and not caid_b == '02' or caid_a == '17' and not caid_b == '22' or caid_a == '17' and not caid_b == '62':
-							return "VERIMATRIX"
-						return "%s" % self.systemTxtCaids_a.get(caid_a).upper()
-				# pid
-					try:
-						pid = "%0.4X" % int(ecm_info.get("pid", ""),16)
-					except:
-						pid = ""
-					if self.type == self.PID:
-						return pid
-				# oscam
-					try:
-						prov = "%0.6X" % int(ecm_info.get("prov", ""),16)
-					except:
-						prov = ecm_info.get("prov", "")
-					if self.type == self.PROV:
-						return prov
-					if ecm_info.get("ecm time", "").find("msec") > -1:
-						ecm_time = ecm_info.get("ecm time", "")
 					else:
-						ecm_time = ecm_info.get("ecm time", "").replace(".","").lstrip("0") + " msec"
-					if self.type == self.DELAY:
-						return ecm_time
-				# protocol
-					protocol = ecm_info.get("protocol", "")
-				# port
-					port = ecm_info.get("port", "")
-				# source
-					source = ecm_info.get("source", "")
-				# server
-					server = ecm_info.get("server", "")
-				# hops
-					hops = ecm_info.get("hops", "")
-				# system
-					system = ecm_info.get("system", "")
-				# provider
-					provider = ecm_info.get("provider", "")
-				# reader
-					reader = ecm_info.get("reader", "")
-					if self.type == self.CRDTXT:
-						info_card = 'False'
-				# oscam
-						if source == 'sci':
-							info_card = 'True'
-				# wicardd
-						if source != 'cache' and source != 'net' and source.find('emu') == -1:
-							info_card = 'True'
-						return info_card
-					if self.type == self.HOST:
-						return server
-					if self.type == self.FORMAT:
-						textvalue = ''
-						params = self.sfmt.split(" ")
-						for param in params:
-							if param != '':
-								if param[0] != '%':
-									textvalue+=param
-				# server
-								elif param == '%S':
-									textvalue+=server
-				# hops
-								elif param == '%H':
-									textvalue+=hops
-				# system
-								elif param == '%SY':
-									textvalue+=system
-				# provider
-								elif param == '%PV':
-									textvalue+=provider
-				# port
-								elif param == '%SP':
-									textvalue+=port
-				# protocol
-								elif param == '%PR':
-									textvalue+=protocol
+						return "fta"
+			if info:
+				if ecm_info:
+					if info.getInfoObject(iServiceInformation.sCAIDs):
 				# caid
-								elif param == '%C':
-									textvalue+=caid
+						caid = "%0.4X" % int(ecm_info.get("caid", ""),16)
+						if self.type == self.CAID:
+							return caid
+				# crypt
+						if self.type == self.CRYPT:
+							caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
+							caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]
+							if caid_a == '4A':
+								return "%s" % self.systemTxtCaids_b.get(caid_b).upper()
+							elif caid_a == '17' and caid_b == '02' or caid_a == '17' and caid_b == '22' or caid_a == '17' and caid_b == '62':
+								return "BETACRYPT"
+							elif caid_a == '17' and not caid_b == '02' or caid_a == '17' and not caid_b == '22' or caid_a == '17' and not caid_b == '62':
+								return "VERIMATRIX"
+							return "%s" % self.systemTxtCaids_a.get(caid_a).upper()
 				# pid
-								elif param == '%P':
-									textvalue+=pid
-				# prov
-								elif param == '%p':
-									textvalue+=prov
+						try:
+							pid = "%0.4X" % int(ecm_info.get("pid", ""),16)
+						except:
+							pid = ""
+						if self.type == self.PID:
+							return pid
+				# oscam
+						try:
+							prov = "%0.6X" % int(ecm_info.get("prov", ""),16)
+						except:
+							prov = ecm_info.get("prov", "")
+						if self.type == self.PROV:
+							return prov
+						if ecm_info.get("ecm time", "").find("msec") > -1:
+							ecm_time = ecm_info.get("ecm time", "")
+						else:
+							ecm_time = ecm_info.get("ecm time", "").replace(".","").lstrip("0") + " msec"
+						if self.type == self.DELAY:
+							return ecm_time
+				# protocol
+						protocol = ecm_info.get("protocol", "")
+				# port
+						port = ecm_info.get("port", "")
 				# source
-								elif param == '%O':
-									textvalue+=source
+						source = ecm_info.get("source", "")
+				# server
+						server = ecm_info.get("server", "")
+				# hops
+						hops = ecm_info.get("hops", "")
+				# system
+						system = ecm_info.get("system", "")
+				# provider
+						provider = ecm_info.get("provider", "")
 				# reader
-								elif param == '%R':
-									textvalue+=reader
+						reader = ecm_info.get("reader", "")
+						if self.type == self.CRDTXT:
+							info_card = 'False'
+				# oscam
+							if source == 'sci':
+								info_card = 'True'
+				# wicardd
+							if source != 'cache' and source != 'net' and source.find('emu') == -1:
+								info_card = 'True'
+							return info_card
+						if self.type == self.HOST:
+							return server
+						if self.type == self.FORMAT:
+							textvalue = ''
+							params = self.sfmt.split(" ")
+							for param in params:
+								if param != '':
+									if param[0] != '%':
+										textvalue+=param
+				# server
+									elif param == '%S':
+										textvalue+=server
+				# hops
+									elif param == '%H':
+										textvalue+=hops
+				# system
+									elif param == '%SY':
+										textvalue+=system
+				# provider
+									elif param == '%PV':
+										textvalue+=provider
+				# port
+									elif param == '%SP':
+										textvalue+=port
+				# protocol
+									elif param == '%PR':
+										textvalue+=protocol
+				# caid
+									elif param == '%C':
+										textvalue+=caid
+				# pid
+									elif param == '%P':
+										textvalue+=pid
+				# prov
+									elif param == '%p':
+										textvalue+=prov
+				# source
+									elif param == '%O':
+										textvalue+=source
+				# reader
+									elif param == '%R':
+										textvalue+=reader
 				# ecm time
-								elif param == '%T':
-									textvalue+=ecm_time
-								elif param == '%t':
-									textvalue+="\t"
-								elif param == '%n':
-									textvalue+="\n"
-								elif param[1:].isdigit():
-									textvalue=textvalue.ljust(len(textvalue)+int(param[1:]))
-								if len(textvalue) > 0:
-									if textvalue[-1] != "\t" and textvalue[-1] != "\n":
-										textvalue+=" "
-						return textvalue[:-1]
-					if self.type == self.ALL:
-						if source == "emu":
-							textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
+									elif param == '%T':
+										textvalue+=ecm_time
+									elif param == '%t':
+										textvalue+="\t"
+									elif param == '%n':
+										textvalue+="\n"
+									elif param[1:].isdigit():
+										textvalue=textvalue.ljust(len(textvalue)+int(param[1:]))
+									if len(textvalue) > 0:
+										if textvalue[-1] != "\t" and textvalue[-1] != "\n":
+											textvalue+=" "
+							return textvalue[:-1]
+						if self.type == self.ALL:
+							if source == "emu":
+								textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
 				# new oscam ecm.info with port parametr
-						elif reader != '' and source == 'net' and port != '':
-							textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s:%s) - %s" % (source, prov, caid, reader, protocol, server, port, ecm_time.replace('msec','ms'))
-						elif reader != '' and source == 'net': 
-							textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s) - %s" % (source, prov, caid, reader, protocol, server, ecm_time.replace('msec','ms'))
-						elif reader != '' and source != 'net': 
-							textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (local) - %s" % (source, prov, caid, reader, protocol, ecm_time.replace('msec','ms'))
-						elif server == '' and port == '' and protocol != '':
-							textvalue = "%s - Prov: %s, Caid: %s, %s - %s" % (source, prov, caid, protocol, ecm_time.replace('msec','ms'))
-						elif server == '' and port == '' and protocol == '':
-							textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
-						else:
-							try:
-								textvalue = "%s - Prov: %s, Caid: %s, %s (%s:%s) - %s" % (source, prov, caid, protocol, server, port, ecm_time.replace('msec','ms'))
-							except:
-								pass
-					if self.type == self.SHORT:
-						if source == 'emu':
-							textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
-						elif server == '' and port == '':
-							textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
-						else:
-							try:
-								textvalue = "%s - Prov: %s, Caid: %s, %s:%s - %s" % (source, prov, caid, server, port, ecm_time.replace('msec','ms'))
-							except:
-								pass
+							elif reader != '' and source == 'net' and port != '':
+								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s:%s) - %s" % (source, prov, caid, reader, protocol, server, port, ecm_time.replace('msec','ms'))
+							elif reader != '' and source == 'net': 
+								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (%s) - %s" % (source, prov, caid, reader, protocol, server, ecm_time.replace('msec','ms'))
+							elif reader != '' and source != 'net': 
+								textvalue = "%s - Prov: %s, Caid: %s, Reader: %s, %s (local) - %s" % (source, prov, caid, reader, protocol, ecm_time.replace('msec','ms'))
+							elif server == '' and port == '' and protocol != '':
+								textvalue = "%s - Prov: %s, Caid: %s, %s - %s" % (source, prov, caid, protocol, ecm_time.replace('msec','ms'))
+							elif server == '' and port == '' and protocol == '':
+								textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
+							else:
+								try:
+									textvalue = "%s - Prov: %s, Caid: %s, %s (%s:%s) - %s" % (source, prov, caid, protocol, server, port, ecm_time.replace('msec','ms'))
+								except:
+									pass
+						if self.type == self.SHORT:
+							if source == 'emu':
+								textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
+							elif server == '' and port == '':
+								textvalue = "%s - Prov: %s, Caid: %s - %s" % (source, prov, caid, ecm_time.replace('msec','ms'))
+							else:
+								try:
+									textvalue = "%s - Prov: %s, Caid: %s, %s:%s - %s" % (source, prov, caid, server, port, ecm_time.replace('msec','ms'))
+								except:
+									pass
+					else:
+						if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
+							textvalue = _("No parse cannot emu")
 				else:
 					if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
-						textvalue = _("No parse cannot emu")
-			else:
-				if self.type == self.ALL or self.type == self.SHORT or (self.type == self.FORMAT and (self.sfmt.count("%") > 3 )):
-					textvalue = _("Free-to-air")
+						textvalue = _("Free-to-air")
 		return textvalue
 
 	text = property(getText)
