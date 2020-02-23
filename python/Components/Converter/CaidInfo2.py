@@ -30,12 +30,12 @@ old_ecm_mtime = None
 
 class CaidInfo2(Poll, Converter, object):
 	CAID = 0
-	PID = 1
-	PROV = 2
-	ALL = 3
-	IS_NET = 4
-	IS_EMU = 5
-	CRYPT = 6
+	CAID2 = 1
+	PID = 2
+	PROV = 3
+	ALL = 4
+	IS_NET = 5
+	IS_EMU = 6
 	SECA = 7
 	SECA_C = 8
 	VIA = 9
@@ -81,12 +81,13 @@ class CaidInfo2(Poll, Converter, object):
 	HOST = 49
 	DELAY = 50
 	FORMAT = 51
-	CRYPT2 = 52
-	CRD = 53
-	CRDTXT = 54
-	SHORT = 55
-	IS_FTA = 56
-	IS_CRYPTED = 57
+	CRYPT = 52
+	CRYPT2 = 53
+	CRD = 54
+	CRDTXT = 55
+	SHORT = 56
+	IS_FTA = 57
+	IS_CRYPTED = 58
 	my_interval = 1000
 
 	def __init__(self, type):
@@ -94,6 +95,8 @@ class CaidInfo2(Poll, Converter, object):
 		Converter.__init__(self, type)
 		if type == "CAID":
 			self.type = self.CAID
+		elif type == "CAID2":
+			self.type = self.CAID2
 		elif type == "PID":
 			self.type = self.PID
 		elif type == "ProvID":
@@ -530,6 +533,21 @@ class CaidInfo2(Poll, Converter, object):
 			info = service and service.info()
 			self.poll_interval = self.my_interval
 			self.poll_enabled = True
+			if info:
+				if self.type == self.CAID2:
+					if info.getInfoObject(iServiceInformation.sCAIDs):
+						value = info.getInfo(iServiceInformation.sCAIDs)
+						if value == -3:
+							caids = info.getInfoObject(iServiceInformation.sCAIDs)
+							if caids and len(caids) > 0:
+								caid_s = ""
+								for caid in caids:
+									caid_s += ("%0.4X " % int(caid))
+								return "%s" % caid_s
+							else:
+								return ""
+					else:
+						return "fta"
 			if info:
 				if self.type == self.CRYPT2:
 					if info.getInfoObject(iServiceInformation.sCAIDs):
