@@ -536,6 +536,7 @@ class CaidInfo2(Poll, Converter, object):
 			if info:
 				if self.type == self.CAID2:
 					if info.getInfoObject(iServiceInformation.sCAIDs):
+				# caid
 						value = info.getInfo(iServiceInformation.sCAIDs)
 						if value == -3:
 							caids = info.getInfoObject(iServiceInformation.sCAIDs)
@@ -548,9 +549,9 @@ class CaidInfo2(Poll, Converter, object):
 								return ""
 					else:
 						return "fta"
-			if info:
 				if self.type == self.CRYPT2:
 					if info.getInfoObject(iServiceInformation.sCAIDs):
+				# crypt
 						if fileExists("/tmp/ecm.info"):
 							try:
 								caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
@@ -568,7 +569,6 @@ class CaidInfo2(Poll, Converter, object):
 							return "nondecode"
 					else:
 						return "fta"
-			if info:
 				if ecm_info:
 					if info.getInfoObject(iServiceInformation.sCAIDs):
 				# caid
