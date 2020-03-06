@@ -601,8 +601,9 @@ class CaidInfo2(Poll, Converter, object):
 							return "nondecode"
 					else:
 						return "fta"
-				if ecm_info:
-					if info.getInfoObject(iServiceInformation.sCAIDs):
+			if info:
+				if info.getInfoObject(iServiceInformation.sCAIDs):
+					if ecm_info:
 				# caid
 						caid = "%0.4X" % int(ecm_info.get("caid", ""),16)
 						if self.type == self.CAID:
@@ -719,7 +720,7 @@ class CaidInfo2(Poll, Converter, object):
 											textvalue+=" "
 							return textvalue[:-1]
 						if self.type == self.ALL:
-							if source == "emu":
+							if source == 'emu':
 								textvalue = "%s - %s (Prov: %s, Caid: %s)" % (source, self.systemTxtCaids_a.get(caid[:2]), prov, caid)
 				# new oscam ecm.info with port parametr
 							elif reader != '' and source == 'net' and port != '':
