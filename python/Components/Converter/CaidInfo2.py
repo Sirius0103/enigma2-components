@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 # 
-# 15.02.2020 add Verimatrix Crypt mod by Sirius
-# 20.02.2020 add DigiCipher, Codicrypt, X-Crypt, Cryptoguard, BulCrypt, Panaccess, Rosscrypt mod by Sirius
+# 20.02.2020 add BulCrypt, Cryptoguard, Verimatrix Crypt, Rosscrypt mod by Sirius
+# 05.03.2020 add DigiCipher, AlphaCrypt, OmniCrypt, CodiCrypt, X-Crypt, Panaccess mod by Sirius
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
@@ -31,63 +31,67 @@ old_ecm_mtime = None
 class CaidInfo2(Poll, Converter, object):
 	CAID = 0
 	CAID2 = 1
-	PID = 2
-	PROV = 3
-	ALL = 4
-	IS_NET = 5
-	IS_EMU = 6
-	SECA = 7
-	SECA_C = 8
-	VIA = 9
-	VIA_C = 10
-	IRD = 11
-	IRD_C =12
-	DIGI = 13
-	DIGI_C = 14
-	NDS = 15
-	NDS_C = 16
-	CONAX = 17
-	CONAX_C = 18
-	CRW = 19
-	CRW_C = 20
-	PWR = 21
-	PWR_C = 22
-	TAN = 23
-	TAN_C = 24
-	BETA = 25
-	BETA_C = 26
-	NAGRA = 27
-	NAGRA_C = 28
-	CODI = 29
-	CODI_C = 30
-	BISS = 31
-	BISS_C = 32
-	EXS = 33
-	EXS_C = 34
-	XCR = 35
-	XCR_C = 36
-	DRE = 37
-	DRE_C = 38
-	GUARD = 39
-	GUARD_C = 40
-	BUL = 41
-	BUL_C = 42
-	PANA = 43
-	PANA_C = 44
-	VRM = 45
-	VRM_C = 46
-	ROSS = 47
-	ROSS_C = 48
-	HOST = 49
-	DELAY = 50
-	FORMAT = 51
-	CRYPT = 52
-	CRYPT2 = 53
-	CRD = 54
-	CRDTXT = 55
-	SHORT = 56
-	IS_FTA = 57
-	IS_CRYPTED = 58
+	CRYPT = 2
+	CRYPT2 = 3
+	PID = 4
+	PROV = 5
+	HOST = 6
+	DELAY = 7
+	CRD = 8
+	CRDTXT = 9
+	IS_NET = 10
+	IS_EMU = 11
+	IS_FTA = 12
+	IS_CRYPTED = 13
+	SECA = 14
+	SECA_C = 15
+	VIA = 16
+	VIA_C = 17
+	IRD = 18
+	IRD_C =19
+	DIGI = 20
+	DIGI_C = 21
+	NDS = 22
+	NDS_C = 23
+	CONAX = 24
+	CONAX_C = 25
+	CRW = 26
+	CRW_C = 27
+	PWR = 28
+	PWR_C = 29
+	TAN = 30
+	TAN_C = 31
+	BETA = 32
+	BETA_C = 33
+	NAGRA = 34
+	NAGRA_C = 35
+	CODI = 36
+	CODI_C = 37
+	BISS = 38
+	BISS_C = 39
+	EXS = 40
+	EXS_C = 41
+	ACR = 42
+	ACR_C = 43
+	XCR = 44
+	XCR_C = 45
+	OCR = 46
+	OCR_C = 47
+	DRE = 48
+	DRE_C = 49
+	GUARD = 50
+	GUARD_C = 51
+	BUL = 52
+	BUL_C = 53
+	PANA = 54
+	PANA_C = 55
+	VRM = 56
+	VRM_C = 57
+	ROSS = 58
+	ROSS_C = 59
+	FORMAT = 60
+	SHORT = 61
+	ALL = 62
 	my_interval = 1000
 
 	def __init__(self, type):
@@ -169,10 +173,18 @@ class CaidInfo2(Poll, Converter, object):
 			self.type = self.EXS
 		elif type == "ExsEcm":
 			self.type = self.EXS_C
+		elif type == "AcrCrypt":
+			self.type = self.ACR
+		elif type == "AcrEcm":
+			self.type = self.ACR_C
 		elif type == "XcrCrypt":
 			self.type = self.XCR
 		elif type == "XcrEcm":
 			self.type = self.XCR_C
+		elif type == "OcrCrypt":
+			self.type = self.OCR
+		elif type == "OcrEcm":
+			self.type = self.OCR_C
 		elif type == "DreamCrypt":
 			self.type = self.DRE
 		elif type == "DreamEcm":
@@ -234,7 +246,7 @@ class CaidInfo2(Poll, Converter, object):
 			"0E" : "PowerVu",
 			"10" : "Tandberg",
 			"18" : "Nagravision",
-			"22" : "Codicrypt",
+			"22" : "CodiCrypt",
 			"26" : "BiSS",
 			"27" : "ExSet",
 			"4B" : "Topvell",
@@ -242,12 +254,14 @@ class CaidInfo2(Poll, Converter, object):
 			"55" : "BulCrypt",
 			"56" : "Verimatrix",
 			"7B" : "DRE-Crypt",
-			"A1" : "Rosscrypt"}
+			"A1" : "RossCrypt"}
 
 		self.systemTxtCaids_b = {
 			"02" : "BetaCrypt",
 			"22" : "BetaCrypt",
 			"62" : "BetaCrypt",
+			"20" : "AlphaCrypt",
+			"BF" : "Skypilot",
 			"D0" : "X-Crypt",
 			"D1" : "X-Crypt",
 			"D4" : "OmniCrypt",
@@ -350,10 +364,20 @@ class CaidInfo2(Poll, Converter, object):
 					if ("%0.4X" % int(caid))[:2] == '27':
 						return True
 				return False
+			if self.type == self.ACR:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == '20':
+						return True
+				return False
 			if self.type == self.XCR:
 				for caid in caids:
 					if ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'D0'\
 						or ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'D1':
+						return True
+				return False
+			if self.type == self.OCR:
+				for caid in caids:
+					if ("%0.4X" % int(caid))[:2] == '4A' and ("%0.4X" % int(caid))[2:] == 'D4':
 						return True
 				return False
 			if self.type == self.DRE:
@@ -457,9 +481,17 @@ class CaidInfo2(Poll, Converter, object):
 					if caid_a == '27':
 						return True
 					return False
+				if self.type == self.ACR_C:
+					if caid_a == '4A' and caid_b == '20':
+						return True
+					return False
 				if self.type == self.XCR_C:
 					if caid_a == '4A' and caid_b == 'D0'\
 						or caid_a == '4A' and caid_b == 'D1':
+						return True
+					return False
+				if self.type == self.OCR_C:
+					if caid_a == '4A' and caid_b == 'D4':
 						return True
 					return False
 				if self.type == self.DRE_C:
