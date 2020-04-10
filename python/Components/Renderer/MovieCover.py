@@ -7,7 +7,7 @@
 from Renderer import Renderer
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
-from enigma import ePixmap, eServiceCenter, loadPic, eTimer, ePicLoad
+from enigma import eServiceCenter, ePixmap, ePicLoad, loadPic, eTimer
 from Components.Converter.Poll import Poll
 from Components.Pixmap import Pixmap
 import os

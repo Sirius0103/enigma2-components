@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 # 
-# 20.02.2020 add BulCrypt, Cryptoguard, Verimatrix Crypt, Rosscrypt mod by Sirius
+# 20.02.2020 add BulCrypt, Cryptoguard, Verimatrix, Rosscrypt mod by Sirius
 # 05.03.2020 add DigiCipher, AlphaCrypt, OmniCrypt, CodiCrypt, X-Crypt, Panaccess mod by Sirius
 
 from Components.Converter.Converter import Converter
@@ -37,7 +37,7 @@ class CaidInfo2(Poll, Converter, object):
 	PROV = 5
 	HOST = 6
 	DELAY = 7
-	CRD = 8
+	IS_CRD = 8
 	CRDTXT = 9
 	IS_NET = 10
 	IS_EMU = 11
@@ -210,7 +210,7 @@ class CaidInfo2(Poll, Converter, object):
 		elif type == "RossEcm":
 			self.type = self.ROSS_C
 		elif type == "Crd":
-			self.type = self.CRD
+			self.type = self.IS_CRD
 		elif type == "CrdTxt":
 			self.type = self.CRDTXT
 		elif  type == "IsFta":
@@ -531,12 +531,12 @@ class CaidInfo2(Poll, Converter, object):
 				using = ecm_info.get("using", "")
 				# mgcamd
 				source = ecm_info.get("source", "")
-				if self.type == self.CRD:
+				if self.type == self.IS_CRD:
 				# oscam
 					if source == 'sci':
 						return True
 				# wicardd
-					if source != 'cache' and source != 'net' and source != 'emu':
+					if source != 'cache' and source != 'net' and source.find('emu') == -1:
 						return True
 					return False
 				source = ecm_info.get("source", "")

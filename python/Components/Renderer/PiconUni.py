@@ -77,7 +77,6 @@ class PiconUni(Renderer):
 				sname = self.source.text
 				sname = sname.upper().replace('.', '').replace('\xc2\xb0', '')
 				print sname
-				#if sname.startswith('4097'):
 				if not sname.startswith('1'):
 					sname = sname.replace('4097', '1', 1).replace('5001', '1', 1).replace('5002', '1', 1)
 				if ':' in sname:
