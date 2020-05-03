@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
 # Coders by Sirius
-# v1.3
+# v1.4
 # code otimization
 # add support TMBD-Kinopoisk-Kinorium
+# add support AMS
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
@@ -105,6 +106,9 @@ class MovieInfo2(Converter, object):
 					if filename.endswith('/'): # DVD
 						filetext = filename + filename.split('/')[-2].strip()
 						filename = filename[:-1] + '.'
+					elif '. ' in filename and '/movie/' in filename: # AMS
+						filetext = filename.split('.')[0].strip() + '-' + filename.split('.')[1].strip()
+						filename = filename[:-2]
 					elif '.ts' in filename and '/movie/' in filename: # rec files
 						covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
 						filetext = filename.split('.')[0].strip()
@@ -129,7 +133,10 @@ class MovieInfo2(Converter, object):
 					name = service.getPath()
 					covername = filename = "%s" % (name)
 					try:
-						if '.ts' in filename and '/movie/' in filename: # rec files
+						if '. ' in filename and '/movie/' in filename: # AMS
+							filetext = filename.split('.')[0].strip() + '-' + filename.split('.')[1].strip()
+							filename = filename[:-2]
+						elif '.ts' in filename and '/movie/' in filename: # rec files
 							covername = filename = os.path.dirname(filename) + '/' + filename.split(' - ')[2].strip()
 							filetext = filename.split('.')[0].strip()
 							filename = filename[:-2]
