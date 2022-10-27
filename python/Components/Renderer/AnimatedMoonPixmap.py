@@ -1,11 +1,11 @@
 # Coded by Nikolasi
-# v1.4
+# v1.5
 # code optimization (by Sirius)
 # fix search Paths (by Sirius)
 
 from Components.Renderer.Renderer import Renderer
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
+from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
 from enigma import ePixmap, eTimer
 import os
 
@@ -16,15 +16,15 @@ class AnimatedMoonPixmap(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
 #		self.path = 'AnimatedMoonPixmap'
-		if fileExists('/usr/share/enigma2/AnimatedMoonPixmap'):
+		if os.path.isfile('/usr/share/enigma2/AnimatedMoonPixmap'):
 			self.path = '/usr/share/enigma2/AnimatedMoonPixmap'
-		elif fileExists('/media/hdd/AnimatedMoonPixmap'):
+		elif os.path.isfile('/media/hdd/AnimatedMoonPixmap'):
 			self.path = '/media/hdd/AnimatedMoonPixmap'
-		elif fileExists('/media/usb/AnimatedMoonPixmap'):
+		elif os.path.isfile('/media/usb/AnimatedMoonPixmap'):
 			self.path = '/media/usb/AnimatedMoonPixmap'
-		elif fileExists('/media/sdb1/AnimatedMoonPixmap'):
+		elif os.path.isfile('/media/sdb1/AnimatedMoonPixmap'):
 			self.path = '/media/sdb1/AnimatedMoonPixmap'
-		elif fileExists('/media/sdb2/AnimatedMoonPixmap'):
+		elif os.path.isfile('/media/sdb2/AnimatedMoonPixmap'):
 			self.path = '/media/sdb2/AnimatedMoonPixmap'
 		else:
 			self.path = None
@@ -69,7 +69,7 @@ class AnimatedMoonPixmap(Renderer):
 	def runAnim(self, id):
 		global total
 		animokicon = False
-		if fileExists('%s/%s' % (self.path, id)):
+		if os.path.exists('%s/%s' % (self.path, id)):
 			pathanimicon = '%s/%s/a' % (self.path, id)
 			path = '%s/%s' % (self.path, id)
 			dir_work = os.listdir(path)
@@ -77,7 +77,7 @@ class AnimatedMoonPixmap(Renderer):
 			self.slideicon = total
 			animokicon = True
 		else:
-			if fileExists('%s/NA' % self.path):
+			if os.path.exists('%s/NA' % self.path):
 				pathanimicon = '%s/NA/a' % self.path
 				path = '%s/NA'  % self.path
 				dir_work = os.listdir(path)

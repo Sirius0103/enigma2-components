@@ -17,16 +17,15 @@
 # 26.11.2018 add terrestrial and cable type mod by Sirius
 # 01.12.2018 fix video codec mod by Sirius
 # 25.12.2018 add support for gamma values mod by Sirius
-# py3 fix
+# 27.10.2022 fix
 
-from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from enigma import iServiceInformation, iPlayableService
 from Components.config import config
 from Components.Element import cached
-from Tools.Directories import fileExists
 
-if fileExists("/etc/issue"):
+if os.path.exists("/etc/issue"):
 	image = ''
 	for text in open("/etc/issue"):
 		image += text

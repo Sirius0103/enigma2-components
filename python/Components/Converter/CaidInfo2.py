@@ -17,12 +17,12 @@
 # 
 # 20.02.2020 add BulCrypt, Cryptoguard, Verimatrix, Rosscrypt mod by Sirius
 # 05.03.2020 add DigiCipher, AlphaCrypt, OmniCrypt, CodiCrypt, X-Crypt, Panaccess mod by Sirius
+# 27.10.2022 fix
 
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from enigma import iServiceInformation, iPlayableService
-from Tools.Directories import fileExists
 from Components.Element import cached
-from Poll import Poll
 import os
 
 info = {}
@@ -283,11 +283,11 @@ class CaidInfo2(Poll, Converter, object):
 		if not info:
 			return False
 		caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if self.type is self.IS_FTA:
+		if self.type == self.IS_FTA:
 			if caids:
 				return False
 			return True
-		if self.type is self.IS_CRYPTED:
+		if self.type == self.IS_CRYPTED:
 			if caids:
 				return True
 			return False
@@ -584,7 +584,7 @@ class CaidInfo2(Poll, Converter, object):
 				if self.type == self.CRYPT2:
 					if info.getInfoObject(iServiceInformation.sCAIDs):
 				# crypt
-						if fileExists("/tmp/ecm.info"):
+						if os.path.exists("/tmp/ecm.info"):
 							try:
 								caid_a = ("%0.4X" % int(ecm_info.get("caid", ""),16))[:2]
 								caid_b = ("%0.4X" % int(ecm_info.get("caid", ""),16))[2:]

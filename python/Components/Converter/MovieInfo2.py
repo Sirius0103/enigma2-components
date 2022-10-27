@@ -11,7 +11,6 @@ from Components.Element import cached, ElementError
 from Components.config import config
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference
 from ServiceReference import ServiceReference
-from Tools.Directories import fileExists
 import os, sys
 
 class MovieInfo2(Converter, object):
@@ -159,7 +158,7 @@ class MovieInfo2(Converter, object):
 						or service.getPath())
 #FullDescription
 				elif self.type == self.MOVIE_FULL_DESCRIPTION:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						fulldescription = open("%s" % filename + 'txt', "r").readlines()[5]\
 							+ open("%s" % filename + 'txt', "r").readlines()[4]\
 							+"\n"+ open("%s" % filename + 'txt', "r").readlines()[2]\
@@ -167,7 +166,7 @@ class MovieInfo2(Converter, object):
 							+ open("%s" % filename + 'txt', "r").readlines()[0]\
 							+ open("%s" % filename + 'txt', "r").readlines()[1]
 						return fulldescription
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						fulldescription = open("%s" % filetext + '.txt', "r").readlines()[2]\
 							+ open("%s" % filetext + '.txt', "r").readlines()[3]\
 							+"\n"+ open("%s" % filetext + '.txt', "r").readlines()[4]\
@@ -181,10 +180,10 @@ class MovieInfo2(Converter, object):
 							or service.getPath())
 #Description
 				elif self.type == self.MOVIE_DESCRIPTION:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						description = open("%s" % filename + 'txt', "r").readlines()[2]
 						return description
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						description = open("%s" % filetext + '.txt', "r").readlines()[4]
 						return description
 					else:
@@ -193,55 +192,55 @@ class MovieInfo2(Converter, object):
 							or service.getPath())
 #Director
 				elif self.type == self.MOVIE_DIRECTOR:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						director = open("%s" % filename + 'txt', "r").readlines()[5]
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						director = open("%s" % filetext + '.txt', "r").readlines()[2]
 					else:
 						director = _("No director")
 					return director
 #Actors
 				elif self.type == self.MOVIE_ACTORS:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						actors = open("%s" % filename + 'txt', "r").readlines()[4]
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						actors = open("%s" % filetext + '.txt', "r").readlines()[3]
 					else:
 						actors = _("No actors")
 					return actors
 #Coutry
 				elif self.type == self.MOVIE_COUNTRY:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						coutry = open("%s" % filename + 'txt', "r").readlines()[0]
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						coutry = open("%s" % filetext + '.txt', "r").readlines()[1]
 					else:
 						coutry = _("No coutry")
 					return coutry
 #Genre
 				elif self.type == self.MOVIE_GENRE:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						genre = open("%s" % filename + 'txt', "r").readlines()[1]
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						genre = open("%s" % filetext + '.txt', "r").readlines()[5]
 					else:
 						genre = _("No genre")
 					return genre
 #Year
 				elif self.type == self.MOVIE_YEAR:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						year = open("%s" % filename + 'txt', "r").readlines()[6]
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						year = open("%s" % filetext + '.txt', "r").readlines()[6]
 					else:
 						year =  _("No year")
 					return year
 #Rating
 				elif self.type == self.MOVIE_RATING:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						ratingall = open("%s" % filename + 'txt', "r").readlines()[3]
 						rating = ratingall.split('Рейтинг:')[1].split('.')[0].strip()
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						ratingall = open("%s" % filetext + '.txt', "r").readlines()[7]
 						rating = ratingall.split('Рейтинг:')[1].split('.')[0].strip()
 					else:
@@ -249,19 +248,19 @@ class MovieInfo2(Converter, object):
 					return rating
 #MovieInfo
 				elif self.type == self.MOVIE_INFO:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						movieinfo = open("%s" % filename + 'txt', "r").readlines()[3]
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						movieinfo = open("%s" % filetext + '.txt', "r").readlines()[7]
 					else:
 						movieinfo = _("No info")
 					return movieinfo
 #MovieOrigName
 				elif self.type == self.MOVIE_ORIG_NAME:
-					if fileExists(filename + 'txt'):
+					if os.path.exists(filename + 'txt'):
 						nameall = open("%s" % filename + 'txt', "r").readlines()[7]
 						origname = nameall.split('Origname:')[1].strip()
-					elif fileExists(filetext + '.txt'):
+					elif os.path.exists(filetext + '.txt'):
 						nameall = open("%s" % filetext + '.txt', "r").readlines()[0]
 						origname = nameall.split('Оригинальное название:')[1].strip()
 					else:
@@ -277,9 +276,9 @@ class MovieInfo2(Converter, object):
 					path6 = '/media/sdb1/covers/' + covername.split('/')[-1].split('.')[0].strip() + '.jpg'
 					path7 = '/media/sdb2/covers/' + covername.split('/')[-1].strip() + '.jpg'
 					path8 = '/media/sdb2/covers/' + covername.split('/')[-1].split('.')[0].strip() + '.jpg'
-					if fileExists(path1) or fileExists(path3) or fileExists(path5) or fileExists(path7): #.mkv.jpg
+					if os.path.exists(path1) or os.path.exists(path3) or os.path.exists(path5) or os.path.exists(path7): #.mkv.jpg
 						covername = covername.split('/')[-1].strip()
-					elif fileExists(path2) or fileExists(path4) or fileExists(path6) or fileExists(path8): #.jpg
+					elif os.path.exists(path2) or os.path.exists(path4) or os.path.exists(path6) or os.path.exists(path8): #.jpg
 						covername = covername.split('/')[-1].split('.')[0].strip()
 					else:
 						covername = covername.split('/')[-2].strip()

@@ -1,11 +1,11 @@
 # Coded by Nikolasi
-# v1.4
+# v1.5
 # code optimization (by Sirius)
 # fix search Paths (by Sirius)
 
 from Components.Renderer.Renderer import Renderer
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
+from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
 from enigma import ePixmap, eTimer
 import os
 
@@ -16,15 +16,15 @@ class AnimatedWeatherPixmap(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
 #		self.path = 'AnimatedWeatherPixmap'
-		if fileExists('/usr/share/enigma2/AnimatedWeatherPixmap'):
+		if os.path.isfile('/usr/share/enigma2/AnimatedWeatherPixmap'):
 			self.path = '/usr/share/enigma2/AnimatedWeatherPixmap'
-		elif fileExists('/media/hdd/AnimatedWeatherPixmap'):
+		elif os.path.isfile('/media/hdd/AnimatedWeatherPixmap'):
 			self.path = '/media/hdd/AnimatedWeatherPixmap'
-		elif fileExists('/media/usb/AnimatedWeatherPixmap'):
+		elif os.path.isfile('/media/usb/AnimatedWeatherPixmap'):
 			self.path = '/media/usb/AnimatedWeatherPixmap'
-		elif fileExists('/media/sdb1/AnimatedWeatherPixmap'):
+		elif os.path.isfile('/media/sdb1/AnimatedWeatherPixmap'):
 			self.path = '/media/sdb1/AnimatedWeatherPixmap'
-		elif fileExists('/media/sdb2/AnimatedWeatherPixmap'):
+		elif os.path.isfile('/media/sdb2/AnimatedWeatherPixmap'):
 			self.path = '/media/sdb2/AnimatedWeatherPixmap'
 		else:
 			self.path = None
@@ -76,7 +76,7 @@ class AnimatedWeatherPixmap(Renderer):
 	def runAnim(self, id):
 		global total
 		animokicon = False
-		if fileExists('%s/%s' % (self.path, id)):
+		if os.path.exists('%s/%s' % (self.path, id)):
 			pathanimicon = '%s/%s/a' % (self.path, id)
 			path = '%s/%s' % (self.path, id)
 			dir_work = os.listdir(path)
@@ -84,7 +84,7 @@ class AnimatedWeatherPixmap(Renderer):
 			self.slideicon = total
 			animokicon = True
 		else:
-			if fileExists('%s/NA' % self.path):
+			if os.path.exists('%s/NA' % self.path):
 				pathanimicon = '%s/NA/a' % self.path
 				path = '%s/NA'  % self.path
 				dir_work = os.listdir(path)
