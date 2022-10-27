@@ -24,6 +24,7 @@ from Components.Converter.Poll import Poll
 from enigma import iServiceInformation, iPlayableService
 from Components.config import config
 from Components.Element import cached
+import os
 
 if os.path.exists("/etc/issue"):
 	image = ''
