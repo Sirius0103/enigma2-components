@@ -1,9 +1,10 @@
 # -*- coding: UTF-8 -*-
 # Coders by Sirius
-# v1.4
+# v1.5
 # code otimization
 # add support TMBD-Kinopoisk-Kinorium
 # add support AMS
+# py3 fix
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
@@ -285,7 +286,7 @@ class MovieInfo2(Converter, object):
 					return covername
 #MovieFileName
 				elif self.type == self.MOVIE_FILE_NAME:
-					if filetext is not None:
+					if filetext != None:
 						moviename = filetext.split('/')[-1].strip()
 					else:
 						moviename = _("No name")
@@ -299,7 +300,7 @@ class MovieInfo2(Converter, object):
 					if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
 						return _("Directory")
 					filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
-					if filesize is not None:
+					if filesize != None:
 						if filesize >= 104857600000: #100000*1024*1024
 							return _("%.0f GB") % (filesize / 1073741824.0)
 						elif filesize >= 1073741824: #1024*1024*1024

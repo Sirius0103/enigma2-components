@@ -2,11 +2,12 @@
 # ConverterRotator Converter for Enigma2 (ConverterRotator.py)
 # Coded by vlamo (c) 2012
 #
-# Version: 0.1 (26.01.2012 04:05)
+# Version: 0.2 (27.05.2012 04:05)
 # Support: http://dream.altmaster.net/
+# 27.05.2022 2boom fix py3
 #
-from Converter import Converter
-from Poll import Poll
+from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
 from time import strftime
 

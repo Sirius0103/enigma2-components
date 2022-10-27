@@ -1,12 +1,13 @@
 # ProgressDiskSpaceInfo
 # Coded by Vlamo 2012
-# v0.4
+# v0.5
 # 
 # 10.01.2020 code optimization mod by Sirius
+# py3 fix
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from Poll import Poll
+from Components.Converter.Poll import Poll
 from os import popen, statvfs
 
 SIZE_UNITS = [_("B"), _("KB"), _("MB"), _("GB"), _("TB"), _("PB"), _("EB")]
@@ -175,7 +176,7 @@ class ProgressDiskSpaceInfo(Poll, Converter):
 				st = statvfs(path)
 			except:
 				st = None
-			if not st is None and not 0 in (st.f_bsize, st.f_blocks):
+			if not st == None and not 0 in (st.f_bsize, st.f_blocks):
 				result[0] = st.f_bsize * st.f_blocks	# size
 				result[2] = st.f_bsize * st.f_bavail	# avail
 				result[1] = result[0] - result[2]	# used

@@ -1,6 +1,6 @@
 # WifiInfo
-# Copyright (c) 2boom 2012-13
-# v.1.1.2
+# Copyright (c) 2boom 2012-22
+# v.1.1.3
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +21,7 @@
 #  </widget>
 
 
-from Poll import Poll
+from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from pythonwifi.iwlibs import  Wireless

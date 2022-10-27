@@ -3,11 +3,12 @@
 # code otimization (by Sirius)
 # add ModuleSlot, rename NameSlot (by Sirius)
 # add Module name upper (by Sirius)
+# py3 fix
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
+from Components.Converter.Poll import Poll
 from enigma import eDVBCI_UI, eDVBCIInterfaces
-from Poll import Poll
 
 class ModuleControl(Poll, Converter, object):
 	SLOT1 = 0

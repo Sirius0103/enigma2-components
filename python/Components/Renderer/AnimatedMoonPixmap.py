@@ -3,7 +3,7 @@
 # code optimization (by Sirius)
 # fix search Paths (by Sirius)
 
-from Renderer import Renderer 
+from Components.Renderer.Renderer import Renderer
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
 from enigma import ePixmap, eTimer

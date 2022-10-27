@@ -30,7 +30,7 @@
 # 08.05.2016 add 5001, 5002 stream id
 # 16.11.2018 fix search Paths (by Sirius, thx Taapat)
 
-from Renderer import Renderer 
+from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename 
 import os

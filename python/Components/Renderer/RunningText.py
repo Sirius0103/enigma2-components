@@ -18,7 +18,7 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ################################################################################
 
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from skin import parseColor, parseFont
 from enigma import eCanvas, eLabel, eTimer, eRect, ePoint, eSize, gRGB, gFont, \
 	RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_HALIGN_RIGHT, RT_HALIGN_BLOCK, \
@@ -194,7 +194,7 @@ class RunningText(Renderer):
 		Renderer.connect(self, source)
 
 	def changed(self, what):
-		if not self.mTimer is None: self.mTimer.stop()
+		if not self.mTimer == None: self.mTimer.stop()
 		if what[0] == self.CHANGED_CLEAR:
 			self.txtext = ""
 			if self.instance:
@@ -207,7 +207,7 @@ class RunningText(Renderer):
 	def drawText(self, X, Y, W, H):
 		self.instance.clear(self.bcolor)
 		
-		if not self.scolor is None:
+		if not self.scolor == None:
 			self.instance.writeText( eRect(X-self.soffset[0], Y-self.soffset[1], W, H), self.scolor, self.bcolor, self.txfont, self.txtext, self.txtflags )
 			self.instance.writeText( eRect(X, Y, W, H), self.fcolor, self.scolor, self.txfont, self.txtext, self.txtflags )
 		else:
@@ -216,7 +216,7 @@ class RunningText(Renderer):
 	def calcMoving(self):
 		if self.txtext == "" or \
 		   self.type == NONE or \
-		   self.test_label is None:
+		   self.test_label == None:
 			return False
 		
 		self.test_label.setText(self.txtext)
@@ -246,7 +246,7 @@ class RunningText(Renderer):
 					self.mStep = abs(self.mStep)
 					self.mStop = self.B - text_width + self.soffset[0] - self.mStep
 					self.P = self.A
-				if not self.mStartPoint is None:
+				if not self.mStartPoint == None:
 					if self.direction == LEFT:
 						self.mStop = self.P = max(self.A, min(self.W, self.mStartPoint))
 					else:
@@ -294,7 +294,7 @@ class RunningText(Renderer):
 					self.mStep = abs(self.mStep)
 					self.mStop = self.B - text_height + self.soffset[1] - self.mStep
 					self.P = self.A
-				if not self.mStartPoint is None:
+				if not self.mStartPoint == None:
 					if self.direction == TOP:
 						self.mStop = self.P = max(self.A, min(self.H, self.mStartPoint))
 					else:

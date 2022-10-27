@@ -18,7 +18,7 @@ class ServiceOrbitalPosition2(Converter, object):
 		else: # reference
 			info = service and self.source.info
 			ref = service
-		if info is None:
+		if info == None:
 			return ""
 		if ref:
 			transponder_info = info.getInfoObject(ref, iServiceInformation.sTransponderData)

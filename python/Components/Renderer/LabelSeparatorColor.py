@@ -1,6 +1,6 @@
-﻿# LabelDuoColors Render
-# Copyright (c) 2boom 2014-22
-# v.0.3-r0
+﻿# LabelSeparatorColors Render
+# Copyright (c) 2boom 2022
+# v.0.1-r1
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,21 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# 22.12.2018 code optimization mod by Sirius
-# 05.01.2022 space fix - 2boom
-# 07.01.2022 add '*' and '|' as separator & code optimization
-
-
 from Components.VariableText import VariableText
 from Components.Renderer.Renderer import Renderer
 
 from enigma import eLabel
 
-class LabelDuoColors(VariableText, Renderer):
+class LabelSeparatorColor(VariableText, Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
 		VariableText.__init__(self)
-		self.colors = self.firstColor = self.secondColor = self.tmptext = self.text = ""
+		self.colors = self.firstColor = self.secondColor = self.tmptext = self.text = self.separatorwithcolor = ""
 		self.separatorsymbol = '|*'
 		self.separator = '|'
 
@@ -62,29 +57,10 @@ class LabelDuoColors(VariableText, Renderer):
 		for i in range(len(self.separatorsymbol)):
 			if self.separatorsymbol[i] in self.source.text:
 				self.separator = self.separatorsymbol[i]
-			
 		if self.separator in self.source.text:
-			for i in range(self.source.text.count(self.separator) + 1):
-				try:
-					if i % 2 == 0: 
-						self.tmptext += '%s%s' % (self.firstColor, self.source.text.split(self.separator)[i])
-					else:
-						if i % 2 == 0: 
-							self.tmptext += '%s%s%s' % (self.secondColor, self.separator, self.source.text.split(self.separator)[i])
-						else:
-							self.tmptext += '%s%s%s%s' % (self.secondColor, self.separator, self.source.text.split(self.separator)[i], self.separator)
-				except:
-					pass
-			self.tmptext = self.tmptext.rstrip(self.separator)
-				
+			self.separatorwithcolor = '%s%s%s' % (self.secondColor, self.separator, self.firstColor)
+			self.tmptext = '%s%s' % (self.firstColor, self.source.text.replace(self.separator, self.separatorwithcolor))
 		else:
-			for i in range(len(self.source.text.split())):
-				try:
-					if i % 2 == 0: 
-						self.tmptext += '%s%s ' % (self.firstColor, self.source.text.split()[i])
-					else:
-						self.tmptext += '%s%s ' % (self.secondColor, self.source.text.split()[i])
-				except:
-					pass
-		self.text = '  '.join(self.tmptext.strip().replace('_', ' ').split())
-		#self.text = self.tmptext.strip().replace('_', ' ')
+			self.tmptext = self.source.text
+
+		self.text = ' '.join(self.tmptext.strip().split())

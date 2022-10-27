@@ -1,6 +1,6 @@
 # IsNet2 Converter
-# Copyright (c) 2boom 2014
-# v.0.1-r0
+# Copyright (c) 2boom 2014-22
+# v.0.1-r2
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -16,9 +16,9 @@
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from Poll import Poll
+from Components.Converter.Poll import Poll
 import urllib2
-
+#import urllib.request, urllib.error, urllib.parse
 
 class IsNet(Poll, Converter, object):
 	def __init__(self, type):
@@ -39,7 +39,7 @@ class IsNet(Poll, Converter, object):
 	boolean = property(getBoolean)
 
 	def changed(self, what):
-		if what[0] is self.CHANGED_SPECIFIC:
+		if what[0] == self.CHANGED_SPECIFIC:
 			Converter.changed(self, what)
-		elif what[0] is self.CHANGED_POLL:
+		elif what[0] == self.CHANGED_POLL:
 			self.downstream_elements.changed(what)

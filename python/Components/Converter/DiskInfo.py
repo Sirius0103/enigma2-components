@@ -1,6 +1,6 @@
 # DiskInfo Converter
-# Copyright (c) 2boom 2014
-# v.0.1-r2
+# Copyright (c) 2boom 2014-22
+# v.0.1-r3
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,11 +13,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+# py3 fix
 
 #Fotmat string: %C - capacity, %F - free, %M - model, %S - filesystem, %D - devpoint
 
-from Poll import Poll
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
 from Components.Harddisk import harddiskmanager
 from Tools.Directories import fileExists
@@ -83,20 +84,20 @@ class DiskInfo(Poll, Converter, object):
 					elif 'usb' in self.paramert_str:
 						self.device = 'usb'
 					if hdd.mountDevice() == '/media/%s' % self.device:
-						if self.type is self.capacity:
+						if self.type == self.capacity:
 							data = hdd.capacity()
-						elif self.type is self.free:
+						elif self.type == self.free:
 							if int(hdd.free()) > 1024:
 								data = '%d.%03d GB' % (hdd.free()/1024 , hdd.free()%1024)
 							else:
 								data = '%03d MB' % hdd.free()
-						elif self.type is self.model:
+						elif self.type == self.model:
 							data = hdd.model()
-						elif self.type is self.fsystem:
+						elif self.type == self.fsystem:
 							data = self.filesystem(hdd.mountDevice())
-						elif self.type is self.dpoint:
+						elif self.type == self.dpoint:
 							data = self.devpoint(hdd.mountDevice())
-						elif self.type is self.format:
+						elif self.type == self.format:
 							if int(hdd.free()) > 1024:
 								tmpdata = '%d.%03d GB' % (hdd.free()/1024 , hdd.free()%1024)
 							else:
@@ -110,7 +111,7 @@ class DiskInfo(Poll, Converter, object):
 	text = property(getText)
 
 	def changed(self, what):
-		if what[0] is self.CHANGED_SPECIFIC:
+		if what[0] == self.CHANGED_SPECIFIC:
 			Converter.changed(self, what)
-		elif what[0] is self.CHANGED_POLL:
+		elif what[0] == self.CHANGED_POLL:
 			self.downstream_elements.changed(what)

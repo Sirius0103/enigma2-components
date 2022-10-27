@@ -15,7 +15,7 @@
 #  modify it (if you keep the license), but it may not be commercially 
 #  distributed other than under the conditions noted above.
 #  
-#  mod by 2boom 2013-15 08.12.2015
+#  mod by 2boom 2013-22 08.12.2015
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, eTimer, eServiceReference
@@ -45,7 +45,7 @@ class Bitrate2(Converter, object):
 			#   %A - audio bitrate value
 			self.type = self.FORMAT
 			self.sfmt = type[:]
-			if self.sfmt is '':
+			if self.sfmt == '':
 				self.sfmt = "V:%V Kb/s A:%A Kb/s"
 		self.clearData()
 		self.initTimer = eTimer()
@@ -78,9 +78,9 @@ class Bitrate2(Converter, object):
 	def getText(self):
 		if not binaryfound:
 			return 'Opps'
-		if self.type is self.VBIT:
+		if self.type == self.VBIT:
 			return '%d' % self.video
-		elif self.type is self.ABIT:
+		elif self.type == self.ABIT:
 			return '%d' % self.audio
 		else:
 			return self.sfmt[:].replace('%A', '%d' % self.audio).replace('%V', '%d' % self.video)
@@ -102,13 +102,13 @@ class Bitrate2(Converter, object):
 		Converter.changed(self, (self.CHANGED_POLL,))
 
 	def changed(self, what):
-		if what[0] is self.CHANGED_SPECIFIC:
-			if what[1] is iPlayableService.evStart or what[1] is iPlayableService.evUpdatedInfo:
+		if what[0] == self.CHANGED_SPECIFIC:
+			if what[1] == iPlayableService.evStart or what[1] == iPlayableService.evUpdatedInfo:
 				self.initTimer.start(500, True)
-			elif what[1] is iPlayableService.evEnd:
+			elif what[1] == iPlayableService.evEnd:
 				self.clearData()
 				Converter.changed(self, what)
-		elif what[0] is self.CHANGED_POLL:
+		elif what[0] == self.CHANGED_POLL:
 			#self.downstream_elements.changed(what)
 			self.initTimer.start(500, True)
 

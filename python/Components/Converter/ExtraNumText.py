@@ -12,7 +12,7 @@
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
-#
+#    # 27.05.2022 py3 fix 2boom
 #######################################################################
 
 from Components.Converter.Converter import Converter
@@ -65,7 +65,7 @@ class ExtraNumText(Converter, object):
 			percent = self.source.snr
 		elif self.type == self.AGCTEXT:
 			percent = self.source.agc
-		if percent is None:
+		if percent == None:
 			return "N/A"
 		return "%d" % (percent * 100 / 65536)
 
@@ -75,12 +75,12 @@ class ExtraNumText(Converter, object):
 	def getValue(self):	
 		if self.type == self.SNRNUM:
 			count = self.source.snr
-			if count is None:
+			if count == None:
 				return 0
 			return (count * 100 / 65536)
 		elif self.type == self.AGCNUM:
 			count = self.source.agc
-			if count is None:
+			if count == None:
 				return 0
 			return (count * 100 / 65536)
 		elif self.type == self.BERNUM:
@@ -90,7 +90,7 @@ class ExtraNumText(Converter, object):
 			return 320000
 		elif self.type == self.STEP:
 			time = self.source.time
-			if time is None:
+			if time == None:
 				return 0
 			t = localtime(time)
 			c = t.tm_sec
@@ -107,21 +107,21 @@ class ExtraNumText(Converter, object):
 			return (c - 50)
 		elif self.type == self.SECHAND:
 			time = self.source.time
-			if time is None:
+			if time == None:
 				return 0
 			t = localtime(time)
 			c = t.tm_sec
 			return c
 		elif self.type == self.MINHAND:
 			time = self.source.time
-			if time is None:
+			if time == None:
 				return 0
 			t = localtime(time)
 			c = t.tm_min
 			return c			
 		elif self.type == self.HOURHAND:
 			time = self.source.time
-			if time is None:
+			if time == None:
 				return 0
 			t = localtime(time)
 			c = t.tm_hour

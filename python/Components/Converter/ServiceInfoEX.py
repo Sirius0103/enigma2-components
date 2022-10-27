@@ -1,6 +1,6 @@
 # ServiceInfoEX
 # Copyright (c) 2boom 2013-18
-# v.1.4.5
+# v.1.5
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -17,8 +17,9 @@
 # 26.11.2018 add terrestrial and cable type mod by Sirius
 # 01.12.2018 fix video codec mod by Sirius
 # 25.12.2018 add support for gamma values mod by Sirius
+# py3 fix
 
-from Poll import Poll
+from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
 from Components.config import config
@@ -254,14 +255,14 @@ class ServiceInfoEX(Poll, Converter, object):
 		self.tpdata = info.getInfoObject(iServiceInformation.sTransponderData)
 		if self.tpdata:
 			self.stream['ttype'] = self.tpdata.get('tuner_type', '')
-			if self.stream['ttype'] == 'DVB-S' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 1:
+			if self.stream['ttype'] == 'DVB-S' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 1:
 					self.stream['ttype'] = 'DVB-S2'
-			elif self.stream['ttype'] == 'DVB-C' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 1:
+			elif self.stream['ttype'] == 'DVB-C' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 1:
 					self.stream['ttype'] = 'DVB-C2'
-			elif self.stream['ttype'] == 'DVB-T' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 1:
+			elif self.stream['ttype'] == 'DVB-T' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 1:
 					self.stream['ttype'] = 'DVB-T2'
 		else:
 			self.stream['ttype'] = 'IP-TV'
@@ -397,31 +398,31 @@ class ServiceInfoEX(Poll, Converter, object):
 			if type == 'DVB-T':
 				return True
 		elif self.type == self.IS_STREAMTV:
-			if service.streamed() is not None:
+			if service.streamed() != None:
 				return True
 		elif self.type == self.IS_SATELLITE_S:
-			if type == 'DVB-S' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 0:
+			if type == 'DVB-S' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 0:
 					return True
 		elif self.type == self.IS_SATELLITE_S2:
-			if type == 'DVB-S' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 1:
+			if type == 'DVB-S' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 1:
 					return True
 		elif self.type == self.IS_CABLE_C:
-			if type == 'DVB-C' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 0:
+			if type == 'DVB-C' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 0:
 					return True
 		elif self.type == self.IS_CABLE_C2:
-			if type == 'DVB-C' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 1:
+			if type == 'DVB-C' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 1:
 					return True
 		elif self.type == self.IS_TERRESTRIAL_T:
-			if type == 'DVB-T' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 0:
+			if type == 'DVB-T' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 0:
 					return True
 		elif self.type == self.IS_TERRESTRIAL_T2:
-			if type == 'DVB-T' and service.streamed() is None:
-				if self.tpdata.get('system', 0) is 1:
+			if type == 'DVB-T' and service.streamed() == None:
+				if self.tpdata.get('system', 0) == 1:
 					return True
 		return False
 	boolean = property(getBoolean)

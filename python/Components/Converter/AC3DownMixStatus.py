@@ -1,6 +1,6 @@
 # AC3DownMixStatus v.0.1
-# Copyright (c) 2boom 2013
-# v.0.1
+# Copyright (c) 2boom 2013-22
+# v.0.2
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from Components.config import config
-from Poll import Poll
+from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
@@ -29,7 +29,11 @@ class AC3DownMixStatus(Poll, Converter, object):
 
 	@cached
 	def getBoolean(self):
-		return config.av.downmix_ac3.value
+		if config.av.downmix_ac3.value == True or config.av.downmix_ac3.value == "downmix":
+			return True
+		else:
+			return False
+		return False
 		
 	boolean = property(getBoolean)
 

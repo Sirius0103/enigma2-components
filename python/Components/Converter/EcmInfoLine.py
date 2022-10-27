@@ -1,6 +1,6 @@
 # EcmInfoLine Converter
-# Copyright (c) 2boom 2014-16
-# v.0.9-r1
+# Copyright (c) 2boom 2014-22
+# v.0.9-r5
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,11 +13,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+# 01.01.2022 - seprate ip stream vs fta broadcast
+# 06.05.2022 - add HDMI-In detect
+# 28.05.2022 - py3 fix
 
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from Poll import Poll
+from Components.Converter.Poll import Poll
 import time
 import os
 
@@ -102,7 +105,7 @@ class EcmInfoLine(Poll, Converter, object):
 						self.caid_data = line.strip("\n").split()[-1][2:].zfill(4)
 					elif "CaID" in line or "CAID" in line:
 						self.caid_data = line.split(',')[0].split()[-1][2:]
-					if not self.caid_data is '':
+					if not self.caid_data == '':
 						self.out_data['caid'] = self.caid_data.upper()
 					##### get reader
 					if 'reader:' in line:
@@ -113,12 +116,12 @@ class EcmInfoLine(Poll, Converter, object):
 							self.reader_data = 'emu'
 					elif 'response time:' in line and ' decode' in line and '(' in line:
 						self.reader_data = line.split('(')[0].split()[-1]
-					if not self.reader_data is '':
+					if not self.reader_data == '':
 						self.out_data['reader'] = self.reader_data
 					##### get port
 					if 'port:' in line:
 						self.port_data = line.split()[-1]
-					if not self.port_data is '':
+					if not self.port_data == '':
 						self.out_data['port'] = ':%s' % self.port_data
 					##### get prov
 					if 'provid:' in line or 'PROVIDER' in line:
@@ -128,7 +131,7 @@ class EcmInfoLine(Poll, Converter, object):
 						self.prov_data = line.split()[-1].replace('0x', '')
 					elif 'prov:' in line and 'pkey:' in line:
 						self.prov_data = line.split(',')[0].split()[-1]
-					if not self.prov_data is '':
+					if not self.prov_data == '':
 						self.out_data['prov'] = self.prov_data
 					##### get ecm time
 					if 'ecm time:' in line:
@@ -137,11 +140,11 @@ class EcmInfoLine(Poll, Converter, object):
 						self.ecm_time = line.split()[0]
 					elif 'response time:' in line:
 						self.ecm_time = line.split()[2]
-					if not self.ecm_time is '':
+					if not self.ecm_time == '':
 						self.out_data['time'] = self.ecm_time
 					if 'hops:' in line:
 						self.hops_data = line.split()[-1]
-					if not self.hops_data is '':
+					if not self.hops_data == '':
 						self.out_data['hops'] = self.hops_data
 					###### get using
 					if 'address:' in line or 'from:' in line.lower():
@@ -156,7 +159,7 @@ class EcmInfoLine(Poll, Converter, object):
 						self.using_data = line.split()[-1].strip('(').strip(')')
 					elif 'response time:' in line and ' decode' in line and '(' in line:
 						self.using_data = line.split()[-1].strip('(').strip(')')
-					if not self.using_data is '':
+					if not self.using_data == '':
 						self.out_data['using'] = self.using_data
 					###### get protocol
 					if 'protocol:' in line:
@@ -165,7 +168,7 @@ class EcmInfoLine(Poll, Converter, object):
 						self.protocol_data = line.split()[-3].strip('(').strip(')')
 					elif 'using:' in line and 'at' in line:
 						self.protocol_data = line.split('at')[0].split()[-1].strip('(').strip(')')
-					if not self.protocol_data is '':
+					if not self.protocol_data == '':
 						self.out_data['protocol'] = self.protocol_data
 					#### get source
 					if 'emu' in line:
@@ -196,7 +199,7 @@ class EcmInfoLine(Poll, Converter, object):
 						self.out_data['source'] = 'net'
 					elif 'CAID' in line and 'PID' in line and 'PROVIDER' in line:
 						self.out_data['source'] = 'net'
-					if not self.out_data['port'] is '':
+					if not self.out_data['port'] == '':
 						self.out_data['using'] = self.out_data['using'] + self.out_data['port']
 				filedata.close()
 
@@ -208,8 +211,13 @@ class EcmInfoLine(Poll, Converter, object):
 			return ''
 		# %C - caid, %P - Provider, %T - time, %U -using, %R - Reader, %S - source, %H - hops, %O - port, %L - Protocol
 		iscrypt = info.getInfo(iServiceInformation.sIsCrypted)
-		if self.type is self.Auto or self.type is self.Format or self.type is self.PreDefine:
+		serref = info.getInfo(iServiceInformation.sSID)
+		if self.type == self.Auto or self.type == self.Format or self.type == self.PreDefine:
+			if serref == -1:
+				return _('HDMI-in')	
 			if not iscrypt or iscrypt == -1:
+				if service.streamed() != None:
+					return  _('Internet broadcasting')
 				return _('Free-to-air')
 			elif iscrypt and not os.path.isfile('/tmp/ecm.info'):
 				return _('No parse cannot emu')
@@ -220,64 +228,64 @@ class EcmInfoLine(Poll, Converter, object):
 				except:
 					return _('No parse cannot emu')
 
-		if not self.out_data.get('source', '') is 'emu' and os.path.isfile('/tmp/ecm.info'):
+		if not self.out_data.get('source', '') == 'emu' and os.path.isfile('/tmp/ecm.info'):
 			try:
 				if int((time.time() - os.stat("/tmp/ecm.info").st_mtime)) > 14:
 					return _('No parse cannot emu')
 			except:
 				return _('No parse cannot emu')
 		self.get_ecm_data()
-		if self.type is self.PreDefine:
-			if self.out_data.get('source', '') is 'emu':
+		if self.type == self.PreDefine:
+			if self.out_data.get('source', '') == 'emu':
 				if self.out_data.get('caid').startswith('4A'):
 					return 'emu - %s (Prov: %s, Caid: %s)' % (self.txt_dre_caids.get(self.out_data.get('caid')[2:]),self.out_data.get('prov', ''), self.out_data.get('caid', ''))
 				else:
 					return 'emu - %s (Prov: %s, Caid: %s)' % (self.TxtCaids.get(self.out_data.get('caid')[:2]),self.out_data.get('prov', ''), self.out_data.get('caid', ''))
-			if self.out_data.get('source', '') is 'sci':
-				if not self.out_data.get('reader', '') is '':
+			if self.out_data.get('source', '') == 'sci':
+				if not self.out_data.get('reader', '') == '':
 					return '%s - Prov: %s, Caid: %s, Reader: %s - %s ms' %\
 						(self.out_data.get('source', ''), self.out_data.get('prov', ''), self.out_data.get('caid', ''), self.out_data.get('reader', ''), self.out_data.get('time', ''))
-				elif self.out_data.get('reader', '') is '':
+				elif self.out_data.get('reader', '') == '':
 					return '%s - Prov: %s, Caid: %s, Reader: %s - %s ms' %\
 						(self.out_data.get('source', ''), self.out_data.get('prov', ''), self.out_data.get('caid', ''), self.out_data.get('using', ''), self.out_data.get('time', ''))
 
-			elif self.out_data.get('source', '') is 'net':
-				if not self.out_data.get('protocol', '') is '' and not self.out_data.get('time', '') is '':
+			elif self.out_data.get('source', '') == 'net':
+				if not self.out_data.get('protocol', '') == '' and not self.out_data.get('time', '') == '':
 					return ('%s - Prov: %s, Caid: %s, %s (%s) - %s ms') %\
 						(self.out_data.get('source', ''),  self.out_data.get('prov', ''), self.out_data.get('caid', ''), self.out_data.get('protocol', ''), self.out_data.get('using', ''), self.out_data.get('time', ''))
-				elif self.out_data.get('protocol', '') is '' and not self.out_data.get('time', '') is '':
+				elif self.out_data.get('protocol', '') == '' and not self.out_data.get('time', '') == '':
 					return ('%s - Prov: %s, Caid: %s (%s) - %s ms') %\
 						(self.out_data.get('source'),  self.out_data.get('prov', ''), self.out_data.get('caid', ''), self.out_data.get('using', ''), self.out_data.get('time', ''))
-				elif self.out_data.get('protocol', '') is '' and self.out_data.get('time', '') is '':
+				elif self.out_data.get('protocol', '') == '' and self.out_data.get('time', '') == '':
 					return ('%s - Prov: %s, Caid: %s (%s)') %\
 						(self.out_data.get('source', ''),  self.out_data.get('prov', ''), self.out_data.get('caid', ''), self.out_data.get('using', ''))
 
 			for data in ('source', 'prov', 'caid', 'reader', 'protocol', 'using', 'hops', 'time'):
-				if not self.out_data.get(data, '') is '':
+				if not self.out_data.get(data, '') == '':
 					self.display_data += self.out_data.get(data, '') + '  '
 			return self.display_data
 
-		elif self.type is self.Auto:
-			if not self.out_data.get('source', '') is '':
+		elif self.type == self.Auto:
+			if not self.out_data.get('source', '') == '':
 				self.display_data += self.out_data.get('source', '') + ' - '
-			if not self.out_data.get('prov', '') is '':
+			if not self.out_data.get('prov', '') == '':
 				self.display_data += 'Prov: ' + self.out_data.get('prov', '') + ',  '
-			if not self.out_data.get('caid', '') is '':
+			if not self.out_data.get('caid', '') == '':
 				self.display_data += 'Caid: ' + self.out_data.get('caid', '') + ',  '
-			if not self.out_data.get('reader', '') is '':
+			if not self.out_data.get('reader', '') == '':
 				self.display_data += 'Reader: ' + self.out_data.get('reader', '') + ',  '
-			if not self.out_data.get('protocol', '') is '':
+			if not self.out_data.get('protocol', '') == '':
 				self.display_data += self.out_data.get('protocol', '') + '  '
-			if not self.out_data.get('using', '') is '':
+			if not self.out_data.get('using', '') == '':
 				self.display_data += '(' + self.out_data.get('using', '') + ')  '
-			if not self.out_data.get('hops', '') is '':
+			if not self.out_data.get('hops', '') == '':
 				self.display_data += 'hops: ' + self.out_data.get('hops', '') + ' '
-			if not self.out_data.get('time', '') is '':
+			if not self.out_data.get('time', '') == '':
 				self.display_data += '- ' + self.out_data.get('time', '') + ' ms'
 			return self.display_data
 
-		elif self.type is self.Crypt:
-			if self.out_data.get('caid', '') is not '':
+		elif self.type == self.Crypt:
+			if self.out_data.get('caid', '') != '':
 				if self.out_data.get('caid', '').startswith('4A'):
 					return self.txt_dre_caids.get(self.out_data.get('caid')[2:], '')
 				else:
@@ -285,7 +293,7 @@ class EcmInfoLine(Poll, Converter, object):
 			else:
 				return 'NONDECODE'
 
-		elif self.type is self.Format:
+		elif self.type == self.Format:
 			return self.paramert_str.replace('Format:', '').replace('%C', self.out_data.get('caid', '')).replace('%P', self.out_data.get('prov', '')).replace('%T', self.out_data.get('time', '')).replace('%U', self.out_data.get('using', ''))\
 				.replace('%R', self.out_data.get('reader', '')).replace('%H', self.out_data.get('hops', '')).replace('%O', self.out_data.get('port', '')).replace('%L', self.out_data.get('protocol', '')).replace('%S', self.out_data.get('source', ''))
 
@@ -297,21 +305,21 @@ class EcmInfoLine(Poll, Converter, object):
 		info = service and service.info()
 		if not info:
 			return False
-		if self.type is self.EMU or self.type is self.NET or self.type is self.SCI or self.type is self.FTA:
+		if self.type == self.EMU or self.type == self.NET or self.type == self.SCI or self.type == self.FTA:
 			self.get_ecm_data()
-			if self.type is self.EMU:
-				if self.out_data.get('source', '') is 'emu':
+			if self.type == self.EMU:
+				if self.out_data.get('source', '') == 'emu':
 					return True
 				return False
-			elif self.type is self.NET:
-				if self.out_data.get('source', '') is 'net':
+			elif self.type == self.NET:
+				if self.out_data.get('source', '') == 'net':
 					return True
 				return False
-			elif self.type is self.SCI:
-				if self.out_data.get('source', '') is 'sci':
+			elif self.type == self.SCI:
+				if self.out_data.get('source', '') == 'sci':
 					return True
 				return False
-			elif self.type is self.FTA:
+			elif self.type == self.FTA:
 				iscrypt = info.getInfo(iServiceInformation.sIsCrypted)
 				if not iscrypt or iscrypt == -1:
 					return True
@@ -322,7 +330,7 @@ class EcmInfoLine(Poll, Converter, object):
 	boolean = property(getBoolean)
 
 	def changed(self, what):
-		if what[0] is self.CHANGED_SPECIFIC:
+		if what[0] == self.CHANGED_SPECIFIC:
 			Converter.changed(self, what)
-		elif what[0] is self.CHANGED_POLL:
+		elif what[0] == self.CHANGED_POLL:
 			self.downstream_elements.changed(what)

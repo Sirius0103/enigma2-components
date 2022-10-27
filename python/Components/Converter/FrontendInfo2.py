@@ -1,5 +1,6 @@
-# by 2boom 2011-14
-# last update 18.01.2014
+# by 2boom 2011-22
+# last update 04.01.2022
+# 27.05.2022 py3 fix
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
@@ -13,6 +14,13 @@ class FrontendInfo2(Converter, object):
 	TUNER_TYPE = 6
 	SNR_ANALOG = 7
 	AGC_ANALOG = 8
+	SNR_AGC_STR = 9
+	ber = 10
+	snr = 11
+	agc = 12
+	snrdb = 13
+	format = 14
+	
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -32,16 +40,20 @@ class FrontendInfo2(Converter, object):
 			self.type = self.SNR_ANALOG
 		elif type == "AGC_ANALOG":
 			self.type = self.AGC_ANALOG
+		elif type == "SNR_AGC_STR":
+			self.type = self.SNR_AGC_STR
 		else:
 			self.type = self.LOCK
-
+			
 	@cached
 	def getText(self):
+			
 		assert self.type not in (self.LOCK, self.SLOT_NUMBER), "the text output of FrontendInfo cannot be used for lock info"
 		percent = None
+		
 		if self.type == self.BER: # as count
 			count = self.source.ber
-			if count is not None:
+			if count != None:
 				return str(count)
 			else:
 				return "N/A"
@@ -50,14 +62,17 @@ class FrontendInfo2(Converter, object):
 		elif self.type == self.SNR:
 			percent = self.source.snr
 		elif self.type == self.SNRdB:
-			#if self.source.snr_db is not None:
-				#return "%3.01f dB" % (self.source.snr_db / 100.0)
-			if self.source.snr is not None: #fallback to normal SNR
+			if self.source.snr != None: #fallback to normal SNR
 				return "%3.01f dB" % (0.32 *((self.source.snr * 100) /65536.0) / 2)
 			return "N/A"
+		elif self.type == self.SNR_AGC_STR:
+			if self.source.snr != None:
+				return 'SNR: %d%%  AGC: %d%%' % (self.source.snr * 100 / 65536.0, self.source.agc * 100 / 65536.0)
+			else:
+				return ''
 		elif self.type == self.TUNER_TYPE:
 			return self.source.frontend_type and self.frontend_type or "Unknown"
-		if percent is None:
+		if percent == None:
 			return "N/A"
 		return "%d %%" % (percent * 100 / 65536.0)
 
@@ -66,12 +81,12 @@ class FrontendInfo2(Converter, object):
 		assert self.type in (self.LOCK, self.BER), "the boolean output of FrontendInfo can only be used for lock or BER info"
 		if self.type == self.LOCK:
 			lock = self.source.lock
-			if lock is None:
+			if lock == None:
 				lock = False
 			return lock
 		else:
 			ber = self.source.ber
-			if ber is None:
+			if ber == None:
 				ber = 0
 			return ber > 0
 
@@ -86,7 +101,7 @@ class FrontendInfo2(Converter, object):
 		if self.type == self.AGC:
 			return self.source.agc or 0
 		elif self.type == self.AGC_ANALOG:
-			if self.source.agc is None:
+			if self.source.agc == None:
 				return 50
 			_local = int(((self.source.agc * 60) / 65536.0) / 3)
 			if _local < 10:
@@ -96,7 +111,7 @@ class FrontendInfo2(Converter, object):
 		elif self.type == self.SNR:
 			return self.source.snr or 0
 		elif self.type == self.SNR_ANALOG:
-			if self.source.snr is None:
+			if self.source.snr == None:
 				return 50
 			_local = int(((self.source.snr * 60) / 65536.0) / 3)
 			if _local < 10:
@@ -116,10 +131,12 @@ class FrontendInfo2(Converter, object):
 				return 1
 			elif type == 'DVB-T':
 				return 2
+			elif type == 'ATSC':
+				return 3
 			return -1
 		elif self.type == self.SLOT_NUMBER:
 			num = self.source.slot_number
-			return num is None and -1 or num
+			return num == None and -1 or num
 
 	range = 65536
 	value = property(getValue)

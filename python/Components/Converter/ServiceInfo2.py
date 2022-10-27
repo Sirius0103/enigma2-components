@@ -13,8 +13,9 @@
 # v 0.4c 16/12/2012 added xALLTYPE mod by 2boom
 # v 0.5a 03/01/2013 speed opt. mod by 2boom
 # v 0.6 01/12/2018 fix video codec mod by Sirius
+#  v 0.7 27.05.2022 py3 fix 2boom
 
-from Poll import Poll
+from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
 from Components.Element import cached

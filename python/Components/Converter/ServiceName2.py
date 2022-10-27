@@ -23,10 +23,11 @@
 # Version: 2.1 (07.01.2019) add DVB-T2 DVB-C2 system - Sirius
 # Version: 2.2 (07.01.2019) remove iptv provname add iptv list /etc/enigma2/iptvprov.list - Vasiliks
 # Version: 2.3 (15.01.2019) add terrestrial description - ikrom
-# Version: 2.4 (11.01.2020) fix terrestrial description - ikrom
+# Version: 2.4 (19.12.2021) small output fix spaces, fix stream, fix t2,s/s2 output, add channel number %k for t2, fix t2 region name - 2boom
 
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
+from Tools.Transponder import ConvertToHumanReadable
 from Components.Element import cached
 from Components.config import config
 import NavigationInstance
@@ -210,11 +211,12 @@ class ServiceName2(Converter, object):
 				self.tpdata = ref and info.getInfoObject(ref, iServiceInformation.sTransponderData)
 			else:
 				self.tpdata = info.getInfoObject(iServiceInformation.sTransponderData)
+			self.fedata = ConvertToHumanReadable(self.tpdata)
 			if not isinstance(self.tpdata, dict):
 				self.tpdata = None
 				return result
 		if self.isStream:
-			type = 'IP-TV'
+			type = 'IPTV'
 		else:
 			type = self.tpdata.get('tuner_type', '')
 		if not fmt or fmt == 'T':
@@ -222,10 +224,10 @@ class ServiceName2(Converter, object):
 				fmt = ["t ","F ","Y ","i ","f ","M"]	#(type frequency symbol_rate inversion fec modulation)
 			elif type == 'DVB-T':
 				if ref:
-					fmt = ["O ","F ","h ","m ","g ","c"]	#(orbital_position code_rate_hp transmission_mode guard_interval constellation)
+					fmt = ["O ","F ","h ","m ","g ","c", "k "]	#(orbital_position code_rate_hp transmission_mode guard_interval constellation)
 				else:
-					fmt = ["t ","F ","h ","m ","g ","c"]	#(type frequency code_rate_hp transmission_mode guard_interval constellation)
-			elif type == 'IP-TV':
+					fmt = ["t ","F ","h ","m ","g ","c", "k "]	#(type frequency code_rate_hp transmission_mode guard_interval constellation)
+			elif type == 'IPTV':
 				return _("Streaming")
 			else:
 				fmt = ["O ","F","p ","Y ","f"]		#(orbital_position frequency polarization symbol_rate fec)
@@ -238,7 +240,7 @@ class ServiceName2(Converter, object):
 					result += _("Cable")
 				elif type == 'DVB-T':
 					result += _("Terrestrial")
-				elif type == 'IP-TV':
+				elif type == 'IPTV':
 					result += _("Stream-tv")
 				else:
 					result += 'N/A'
@@ -255,12 +257,17 @@ class ServiceName2(Converter, object):
 				else:
 					result += type
 			elif f == 'F':	# %F - frequency (dvb-s/s2/c/t) in KHz
-				if type in ('DVB-S','DVB-C','DVB-T'):
-					result += '%d'% round(self.tpdata.get('frequency', 0) / 1000.0)
+				if type == 'DVB-S':
+					result += '%d' % round(self.tpdata.get('frequency', 0) / 1000.0)
+				elif type in ('DVB-T', 'DVB-C'):
+					result += '%d MHz' % round(self.tpdata.get('frequency', 0) / 1000000.0)
+			elif f == 'k': # %k ch number t2
+				if type == 'DVB-T':
+					result += self.fedata.get("channel") or ''
 			elif f == 'f':	# %f - fec_inner (dvb-s/s2/c/t)
 				if type in ('DVB-S','DVB-C'):
 					x = self.tpdata.get('fec_inner', 15)
-					result += x in range(10)+[15] and {0:'Auto',1:'1/2',2:'2/3',3:'3/4',4:'5/6',5:'7/8',6:'8/9',7:'3/5',8:'4/5',9:'9/10',15:'None'}[x] or ''
+					result += x in list(range(10))+[15] and {0:'Auto',1:'1/2',2:'2/3',3:'3/4',4:'5/6',5:'7/8',6:'8/9',7:'3/5',8:'4/5',9:'9/10',15:'None'}[x] or ''
 				elif type == 'DVB-T':
 					x = self.tpdata.get('code_rate_lp', 5)
 					result += x in range(6) and {0:'1/2',1:'2/3',2:'3/4',3:'5/6',4:'7/8',5:'Auto'}[x] or ''
@@ -343,21 +350,17 @@ class ServiceName2(Converter, object):
 				try:
 					nimfile = open('/proc/bus/nim_sockets')
 				except IOError:
-					pass
+					return
 				current_slot = None
-				txt = ''
 				for line in nimfile:
-					txt += line.strip() + '\n'
-				nims = txt.split('NIM Socket')
-				for item in nims:
-					if item.__contains__('DVB-T'):
-						lines = item.split('\n')
-						current_slot = int(lines[0].strip().replace(':',''))
-				try:
-					from Components.NimManager import nimmanager
-					return str(nimmanager.getTerrestrialDescription(current_slot))
-				except:
-					return _("Terrestrial")
+					if not line:
+						break
+					line = line.strip()
+					if line.startswith('NIM Socket'):
+						parts = line.split(' ')
+						current_slot = int(parts[2][:-1])
+				from Components.NimManager import nimmanager
+				return str(nimmanager.getTerrestrialDescription(current_slot))
 			else: #Satellite
 				orbpos = ref.getData(4) >> 16
 				if orbpos < 0: orbpos += 3600
@@ -374,6 +377,7 @@ class ServiceName2(Converter, object):
 							return _("Alternative")
 						elif refString.startswith('4097:'):
 							return _("Internet")
+							
 						else:
 							return orbpos > 1800 and "%d.%d°W"%((3600-orbpos)/10, (3600-orbpos)%10) or "%d.%d°E"%(orbpos/10, orbpos%10)
 		return ""
@@ -603,6 +607,7 @@ class ServiceName2(Converter, object):
 					if self.isStream:
 						if self.refstr:
 							tmpprov = self.getIPTVProvider(self.refstr)
+						
 						tmpprov = self.getIPTVProvider(refstr)
 					else:
 						if self.ref:
@@ -635,12 +640,15 @@ class ServiceName2(Converter, object):
 						ret += refstr
 				elif f == 'S':	# %S - Satellite
 					if self.isStream:
-						ret += "Internet"
+						try:
+							ret += _("Stream:") + " " + refstr.replace("%3a", ":").rsplit("://", 1)[1].split("/")[0].split(":")[0]
+						except:
+							pass
 					else:
 						if self.ref:
 							ret += self.getSatelliteName(self.ref)
 						else:
-							ret += self.getSatelliteName(ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref)))
+							ret += self.getSatelliteName(ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref))).replace("Europe, Middle East, Africa: DVB-T/T2 Frequencies", "EMEA").split(" ")[0].strip()
 				elif f == 'A':	# %A - AllRef
 					tmpref = self.getReferenceType(refstr, ref)
 					if 'Bouquet' in tmpref or 'Satellit' in tmpref or 'Provider' in tmpref:
@@ -649,13 +657,13 @@ class ServiceName2(Converter, object):
 						ret += ':'.join(refstr.split(':')[:10])
 					else:
 						ret += tmpref
-				elif f in 'TtsFfiOMpYroclhmgbe':
+				elif f in 'TtsFfiOMpYrokclhmgbe':
 					if self.ref:
 						ret += self.getTransponderInfo(self.info, self.ref, f)
 					else:
 						ret += self.getTransponderInfo(info, ref, f)
 				ret += line[1:]
-			return '%s'%(ret.replace('N/A', '').strip())
+			return '%s'% ' '.join((ret.replace('N/A', '').strip()).split())
 
 	text = property(getText)
 

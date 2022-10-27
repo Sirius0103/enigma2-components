@@ -1,6 +1,6 @@
 # TunerBar Converter
-# Copyright (c) 2boom 2014-16
-# v.0.3-r0
+# Copyright (c) 2boom 2014-22
+# v.0.3-r2
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,6 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #WARNING! source="session.FrontendInfo"
+# 27.05.2022 py3 fix
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
@@ -28,12 +29,7 @@ class TunerBar(Converter, object):
 		self.workcolor = self.convert_color(self.type[1].strip())
 
 	def convert_color(self, color_in):
-		hex_color = {'0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9',\
-			'a':':', 'b':';', 'c':'<', 'd':'=', 'e':'>', 'f':'?', 'A':':', 'B':';', 'C':'<', 'D':'=', 'E':'>', 'F':'?'}
-		color_out = '\c'
-		for i in range(1, len(color_in)):
-			color_out += hex_color.get(color_in[i])
-		return color_out
+		return '\c' + color_in.lower().replace('#','').replace('a',':').replace('b',';').replace('c','<').replace('d','=').replace('e','>').replace('f','?')
 
 	@cached
 	def getText(self):
@@ -41,7 +37,7 @@ class TunerBar(Converter, object):
 		nimletter = []
 		for nim in nimmanager.nim_slots:
 			if nim.type:
-				if nim.slot is self.source.slot_number:
+				if nim.slot == self.source.slot_number:
 					string += self.workcolor
 				elif self.source.tuner_mask & 1 << nim.slot:
 					string += self.workcolor

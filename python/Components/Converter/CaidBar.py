@@ -19,8 +19,8 @@
 
 from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
-from Poll import Poll
 import os
 
 class CaidBar(Poll, Converter, object):
@@ -234,7 +234,7 @@ class CaidBar(Poll, Converter, object):
 		caidinfo = self.getServiceInfoString(info, iServiceInformation.sCAIDs)
 		if caidinfo:
 			ecmcaid = self.getCaidInEcmFile()
-		if ecmcaid is not None:
+		if ecmcaid != None:
 			for caid in caidinfo.split():
 				if caid.upper().startswith('4A'):
 					if self.txt_caids_d.get(caid[2:]) not in self.caid_default:
@@ -278,7 +278,7 @@ class CaidBar(Poll, Converter, object):
 					string += self.maincolor
 				string += self.caid_default[i] + " "
 			for i in range(len(self.caid_current)):
-				if self.caid_current[i] is not None:
+				if self.caid_current[i] != None:
 					if self.addspaces(self.caid_current[i]) in ecmcaid:
 						string += self.ecmcolor
 					elif self.addspaces(self.caid_current[i]) in line_caids:
@@ -291,7 +291,7 @@ class CaidBar(Poll, Converter, object):
 	text = property(getText)
 
 	def changed(self, what):
-		if what[0] is self.CHANGED_SPECIFIC:
+		if what[0] == self.CHANGED_SPECIFIC:
 			Converter.changed(self, what)
-		elif what[0] is self.CHANGED_POLL:
+		elif what[0] == self.CHANGED_POLL:
 			self.downstream_elements.changed(what)

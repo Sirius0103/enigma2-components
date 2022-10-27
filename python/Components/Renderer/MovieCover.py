@@ -1,15 +1,16 @@
 # -*- coding: UTF-8 -*-
 #Coders by Nikolasi
-# v1.1
+# v1.2
 # code optimization (by Sirius)
 # fix search Paths (by Sirius)
+# py3 fix
 
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
+from Components.Converter.Poll import Poll
+from Components.Pixmap import Pixmap
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
 from enigma import eServiceCenter, ePixmap, ePicLoad, loadPic, eTimer
-from Components.Converter.Poll import Poll
-from Components.Pixmap import Pixmap
 import os
 
 class MovieCover(Renderer, Poll):

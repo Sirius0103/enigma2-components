@@ -1,6 +1,6 @@
 # MemoryInfo
-# Copyright (c) 2boom 2013
-# 0.3
+# Copyright (c) 2boom 2013-22
+# 0.4
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -43,7 +43,7 @@ class MemoryInfo(Converter, object):
 		service = self.source.service
 		info = service and service.info()
 		meminfo = open("cat /proc/meminfo", "r")
-		if meminfo is not None:
+		if meminfo != None:
 			for line in meminfo:
 				if self.type == self.MemTotal and "MemTotal" in line:
 					try:

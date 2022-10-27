@@ -52,7 +52,7 @@ class TestConnection(Converter, object):
 
 	def poll(self):
 		if self.testDisabled: return
-		if self.testThread is None or not self.testThread.isAlive():
+		if self.testThread == None or not self.testThread.isAlive():
 			self.testThread = Thread(target=self.test)
 			self.testThread.start()
 			if self.testPause > 0:
