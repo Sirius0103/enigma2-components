@@ -18,9 +18,9 @@
 #	<convert type="MemoryInfo">MemTotal</convert>
 # </widget>
 
-from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
 from Components.Element import cached
+from enigma import iServiceInformation
 import os
 
 class MemoryInfo(Converter, object):

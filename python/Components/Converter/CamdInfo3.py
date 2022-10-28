@@ -6,12 +6,12 @@
 # 25.11.2018 code optimization mod by Sirius
 # 27.10.2022 fix
 
-from Components.Converter.Poll import Poll
-from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
+from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
+from enigma import iServiceInformation
 import os
 
 class CamdInfo3(Poll, Converter, object):
@@ -37,31 +37,31 @@ class CamdInfo3(Poll, Converter, object):
 		if not info:
 			return ""
 		# Alternative SoftCam Manager
-		if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
+		if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
 			if config.plugins.AltSoftcam.actcam.value != None:
 				return config.plugins.AltSoftcam.actcam.value
 			else:
 				return None
 		# E-Panel
-		elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
+		elif os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
 			if config.plugins.epanel.activeemu.value != None:
 				return config.plugins.epanel.activeemu.value
 			else:
 				return None
 		# PKT
-		elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
+		elif os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/PKT/plugin.pyo"):
 			if config.plugins.emuman.cam.value != None:
 				return config.plugins.emuman.cam.value
 			else:
 				return None
 		# GlassSysUtil
-		elif os.path.exists("/tmp/ucm_cam.info"):
+		elif os.path.isfile("/tmp/ucm_cam.info"):
 			try:
 				return open("/tmp/ucm_cam.info").read()
 			except:
 				return None
 		# TS-Panel
-		elif os.path.exists("/etc/startcam.sh"):
+		elif os.path.isfile("/etc/startcam.sh"):
 			try:
 				for line in open("/etc/startcam.sh"):
 					if "script" in line:
@@ -69,32 +69,32 @@ class CamdInfo3(Poll, Converter, object):
 			except:
 				return None
 		# VTI
-		elif os.path.exists("/tmp/.emu.info"):
+		elif os.path.isfile("/tmp/.emu.info"):
 			try:
 				for line in open("/tmp/.emu.info"):
 					return line.strip('\n')
 			except:
 				return None
 		# BlackHole
-		elif os.path.exists("/etc/CurrentBhCamName"):
+		elif os.path.isfile("/etc/CurrentBhCamName"):
 			try:
 				return open("/etc/CurrentBhCamName").read()
 			except:
 				return None
 		# Domica
-		elif os.path.exists("/etc/active_emu.list"):
+		elif os.path.isfile("/etc/active_emu.list"):
 			try:
 				return open("/etc/active_emu.list").read()
 			except:
 				return None
 		# Egami old
-		elif os.path.exists("/etc/CurrentEGCamName"):
+		elif os.path.isfile("/etc/CurrentEGCamName"):
 			try:
 				return open("/etc/CurrentEGCamName").read()
 			except:
 				return None
 		# Egami
-		elif os.path.exists("/tmp/egami.inf"):
+		elif os.path.isfile("/tmp/egami.inf"):
 			try:
 				for line in open("/tmp/egami.inf"):
 					item = line.split(":",1)
@@ -103,26 +103,26 @@ class CamdInfo3(Poll, Converter, object):
 			except:
 				return None
 		# OoZooN
-		elif os.path.exists("/tmp/cam.info"):
+		elif os.path.isfile("/tmp/cam.info"):
 			try:
 				return open("/tmp/cam.info").read()
 			except:
 				return None
 		# Merlin2
-		elif os.path.exists("/etc/clist.list"):
+		elif os.path.isfile("/etc/clist.list"):
 			try:
 				return open("/etc/clist.list").read()
 			except:
 				return None
 		# HDMU
-		elif os.path.exists("/etc/.emustart"):
+		elif os.path.isfile("/etc/.emustart"):
 			try:
 				for line in open("/etc/.emustart"):
 					return line.split()[0].split('/')[-1]
 			except:
 				return None
 		# GP3
-		elif os.path.exists("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
+		elif os.path.isfile("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
 			try:
 				from Plugins.Bp.geminimain.plugin import GETCAMDLIST
 				from Plugins.Bp.geminimain.lib import libgeminimain
@@ -135,7 +135,7 @@ class CamdInfo3(Poll, Converter, object):
 			except:
 				return None
 		# Pli & HDF & ATV & AAF
-		elif os.path.exists("/etc/issue"):
+		elif os.path.isfile("/etc/issue"):
 			for line in open("/etc/issue"):
 				if 'openatv' in line or 'openaaf' in line:
 					if config.softcam.actCam.value:

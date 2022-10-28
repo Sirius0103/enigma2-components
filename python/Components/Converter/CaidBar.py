@@ -16,11 +16,12 @@
 # 
 # 04.03.2020 add Short, Full mod by MegAndretH
 # 05.03.2020 fix crypt mod by Sirius
+# 27.10.2022 fix
 
-from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached
+from enigma import iServiceInformation
 import os
 
 class CaidBar(Poll, Converter, object):

@@ -6,8 +6,8 @@
 # py3 fix
 
 from Components.Converter.Converter import Converter
-from Components.Element import cached
 from Components.Converter.Poll import Poll
+from Components.Element import cached
 from os import popen, statvfs
 
 SIZE_UNITS = [_("B"), _("KB"), _("MB"), _("GB"), _("TB"), _("PB"), _("EB")]
@@ -160,7 +160,7 @@ class ProgressDiskSpaceInfo(Poll, Converter):
 	def getDiskInfo(self, path):
 		def isMountPoint():
 			try:
-				fd = open('/proc/mounts', 'r')
+				fd = open("/proc/mounts", "r")
 				for line in fd:
 					l = line.split()
 					if len(l) > 1 and l[1] == path:

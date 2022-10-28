@@ -26,12 +26,13 @@
 # Version: 2.4 (19.12.2021) small output fix spaces, fix stream, fix t2,s/s2 output, add channel number %k for t2, fix t2 region name - 2boom
 
 from Components.Converter.Converter import Converter
-from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
-from Tools.Transponder import ConvertToHumanReadable
 from Components.Element import cached
 from Components.config import config
+from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
+from Tools.Transponder import ConvertToHumanReadable
 import NavigationInstance
 import os
+
 try:
 	from Components.Renderer.ChannelNumber import ChannelNumberClasses
 	correctChannelNumber = True

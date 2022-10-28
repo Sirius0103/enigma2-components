@@ -19,8 +19,8 @@
 # 09.03.2019 fix Hisilicon CPU mod by ikrom
 # 27.05.2022 py3 fix
 
-from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
 import os
 
@@ -49,9 +49,9 @@ class FanTempInfo(Poll, Converter, object):
 		info = "N/A"
 		if self.type == self.FanInfo or self.type == self.TxtFanInfo:
 			try:
-				if os.path.exists("/proc/stb/fp/fan_speed"):
+				if os.path.isfile("/proc/stb/fp/fan_speed"):
 					info = open("/proc/stb/fp/fan_speed").read().strip('\n')
-				elif os.path.exists("/proc/stb/fp/fan_pwm"):
+				elif os.path.isfile("/proc/stb/fp/fan_pwm"):
 					info = open("/proc/stb/fp/fan_pwm").read().strip('\n')
 				else:
 					info = "N/A"
@@ -61,15 +61,15 @@ class FanTempInfo(Poll, Converter, object):
 				info = "Fan: " + info
 		elif self.type == self.TempInfo or self.type == self.TxtTempInfo:
 			try:
-				if os.path.exists("/proc/stb/sensors/temp0/value") and os.path.exists("/proc/stb/sensors/temp0/unit"):
+				if os.path.isfile("/proc/stb/sensors/temp0/value") and os.path.isfile("/proc/stb/sensors/temp0/unit"):
 					info = "%s%s%s" % (open("/proc/stb/sensors/temp0/value").read().strip('\n'), unichr(176).encode("latin-1"), open("/proc/stb/sensors/temp0/unit").read().strip('\n'))
-				elif os.path.exists("/proc/stb/fp/temp_sensor_avs"):
+				elif os.path.isfile("/proc/stb/fp/temp_sensor_avs"):
 					info = "%s%sC" % (open("/proc/stb/fp/temp_sensor_avs").read().strip('\n'), unichr(176).encode("latin-1"))
-				elif os.path.exists("/proc/stb/fp/temp_sensor"):
+				elif os.path.isfile("/proc/stb/fp/temp_sensor"):
 					info = "%s%sC" % (open("/proc/stb/fp/temp_sensor").read().strip('\n'), unichr(176).encode("latin-1"))
-				elif os.path.exists("/sys/devices/virtual/thermal/thermal_zone0/temp"):
+				elif os.path.isfile("/sys/devices/virtual/thermal/thermal_zone0/temp"):
 					info = "%s%sC" % (open("/sys/devices/virtual/thermal/thermal_zone0/temp").read()[:2].strip('\n'), unichr(176).encode("latin-1"))
-				elif os.path.exists("/proc/hisi/msp/pm_cpu"):
+				elif os.path.isfile("/proc/hisi/msp/pm_cpu"):
 					for line in open("/proc/hisi/msp/pm_cpu").readlines():
 						line = [x.strip() for x in line.strip().split(':')]
 						if line[0] in "Tsensor":

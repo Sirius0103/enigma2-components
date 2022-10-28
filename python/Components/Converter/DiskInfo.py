@@ -19,9 +19,9 @@
 
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
-from Components.Element import cached
 from Components.Harddisk import harddiskmanager
-from Tools.Directories import fileExists
+from Components.Element import cached
+import os
 
 class DiskInfo(Poll, Converter, object):
 	capacity = 0
@@ -58,14 +58,14 @@ class DiskInfo(Poll, Converter, object):
 		self.poll_enabled = True
 
 	def filesystem(self, mountpoint):
-		if fileExists("/proc/mounts"):
+		if os.path.isfile("/proc/mounts"):
 			for line in open("/proc/mounts"):
 				if mountpoint in line:
 					return "%s  %s" % (line.split()[2], line.split()[3].split(',')[0])
 		return ''
 
 	def devpoint(self, mountpoint):
-		if fileExists("/proc/mounts"):
+		if os.path.isfile("/proc/mounts"):
 			for line in open("/proc/mounts"):
 				if mountpoint in line:
 					return line.split()[0]

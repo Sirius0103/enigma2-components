@@ -6,8 +6,8 @@
 # py3 fix
 
 from Components.Converter.Converter import Converter
-from Components.Element import cached
 from Components.Converter.Poll import Poll
+from Components.Element import cached
 from enigma import eDVBCI_UI, eDVBCIInterfaces
 
 class ModuleControl(Poll, Converter, object):

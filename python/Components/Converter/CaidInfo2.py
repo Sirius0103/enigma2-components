@@ -21,8 +21,8 @@
 
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
-from enigma import iServiceInformation, iPlayableService
 from Components.Element import cached
+from enigma import iServiceInformation, iPlayableService
 import os
 
 info = {}

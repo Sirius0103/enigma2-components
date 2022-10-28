@@ -1,8 +1,8 @@
 # (c) 2boom mod
-from Components.Converter.Converter import Converter
-from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr
-from Components.Element import cached
 
+from Components.Converter.Converter import Converter
+from Components.Element import cached
+from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr
 
 class ServiceOrbitalPosition2(Converter, object):
 

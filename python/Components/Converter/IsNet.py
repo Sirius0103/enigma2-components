@@ -15,8 +15,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from Components.Converter.Converter import Converter
-from Components.Element import cached
 from Components.Converter.Poll import Poll
+from Components.Element import cached
 import urllib2
 #import urllib.request, urllib.error, urllib.parse
 

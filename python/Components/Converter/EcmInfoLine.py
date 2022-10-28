@@ -17,10 +17,10 @@
 # 06.05.2022 - add HDMI-In detect
 # 28.05.2022 - py3 fix
 
-from enigma import iServiceInformation
 from Components.Converter.Converter import Converter
-from Components.Element import cached
 from Components.Converter.Poll import Poll
+from Components.Element import cached
+from enigma import iServiceInformation
 import time
 import os
 

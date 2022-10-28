@@ -20,12 +20,11 @@
 #    <convert type="WiFiInfo">link | level | noise | bitrate | ssid | encryption</convert>
 #  </widget>
 
-
-from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
 from pythonwifi.iwlibs import  Wireless
-from Tools.Directories import fileExists
+import os
 
 ifobj = Wireless('ra0')
 type = 'ra0'
@@ -102,7 +101,7 @@ class WiFiInfo(Poll, Converter, object):
 			elif self.type == self.noise and (line.split()[0] == "wlan0:" or line.split()[0] == "ra0:"):
 				wifi = ("%s dBm" % line.split()[4])
 			elif self.type == self.encryption and (line.split()[0] == "wlan0:" or line.split()[0] == "ra0:"):
-				if fileExists("/etc/wpa_supplicant.%s.conf" % type):
+				if os.path.isfile("/etc/wpa_supplicant.%s.conf" % type):
 					wifi = "Open"
 					for line in open("/etc/wpa_supplicant.%s.conf" % type):
 						if "proto" in line:

@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from Components.config import config
-from Components.Converter.Poll import Poll
 from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
+from Components.config import config
 
 class AC3DownMixStatus(Poll, Converter, object):
 

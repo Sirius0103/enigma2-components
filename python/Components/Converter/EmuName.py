@@ -19,11 +19,10 @@
 
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
-from enigma import iServiceInformation
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigText, ConfigPassword, ConfigClock, ConfigSelection, ConfigSubsection, ConfigYesNo, configfile, NoSave
 from Components.Element import cached
-from Tools.Directories import fileExists
+from enigma import iServiceInformation
 from cStringIO import StringIO
 import os
 
@@ -40,67 +39,67 @@ class EmuName(Poll, Converter, object):
 		nofile = False
 		camdname = cardname = camdlist = None
 		# Alternative SoftCam Manager
-		if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
+		if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/AlternativeSoftCamManager/plugin.pyo"):
 			if config.plugins.AltSoftcam.actcam.value != None:
 				camdname = StringIO(config.plugins.AltSoftcam.actcam.value)
 			else:
 				camdname = None
 		# E-Panel
-		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
+		elif os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/epanel/plugin.pyo"):
 			if config.plugins.epanel.activeemu.value != None:
 				camdname = StringIO(config.plugins.epanel.activeemu.value)
 			else:
 				camdname = None
 		# E-Tools
-		elif fileExists("/usr/lib/enigma2/python/Plugins/Extensions/etools/plugin.pyo"):
+		elif os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/etools/plugin.pyo"):
 			if config.plugins.etools.activeemu.value != None:
 				camdname = StringIO(config.plugins.etools.activeemu.value)
 			else:
 				camdname = None
 		# VTI
-		elif fileExists("/tmp/.emu.info"):
+		elif os.path.isfile("/tmp/.emu.info"):
 			try:
 				camdname = open("/tmp/.emu.info", "r")
 			except:
 				camdname = None
 		# TS-Panel
-		elif fileExists("/etc/startcam.sh"):
+		elif os.path.isfile("/etc/startcam.sh"):
 			try:
 				camdname = open("/etc/startcam.sh", "r")
 			except:
 				camdname = None
 		# BlackHole
-		elif fileExists("/etc/CurrentBhCamName"):
+		elif os.path.isfile("/etc/CurrentBhCamName"):
 			try:
 				camdname = open("/etc/CurrentBhCamName", "r")
 			except:
 				camdname = None
 		# Domica
-		elif fileExists("/etc/active_emu.list"):
+		elif os.path.isfile("/etc/active_emu.list"):
 			try:
 				camdname = open("/etc/active_emu.list", "r")
 			except:
 				camdname = None
 		# OoZooN
-		elif fileExists("/tmp/cam.info"):
+		elif os.path.isfile("/tmp/cam.info"):
 			try:
 				camdname = open("/tmp/cam.info", "r")
 			except:
 				camdname = None
 		# Merlin2
-		elif fileExists("/etc/clist.list"):
+		elif os.path.isfile("/etc/clist.list"):
 			try:
 				camdname = open("/etc/clist.list", "r")
 			except:
 				camdname = None
 		# HDMU
-		elif fileExists("/etc/.emustart"):
+		elif os.path.isfile("/etc/.emustart"):
 			try:
 				camdname = open("/etc/.emustart", "r")
 			except:
 				camdname = None
 		# GP3
-		elif fileExists("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
+		elif os.path.isfile("/usr/lib/enigma2/python/Plugins/Bp/geminimain/lib/libgeminimain.so"):
 			try:
 				from Plugins.Bp.geminimain.plugin import GETCAMDLIST
 				from Plugins.Bp.geminimain.lib import libgeminimain
@@ -114,7 +113,7 @@ class EmuName(Poll, Converter, object):
 			except:
 				camdname = None
 		# Pli & HDF & ATV & AAF
-		elif fileExists("/etc/issue"):
+		elif os.path.isfile("/etc/issue"):
 			for line in open("/etc/issue"):
 				if 'openatv' in line or 'openaaf' in line:
 					if config.softcam.actCam.value:
