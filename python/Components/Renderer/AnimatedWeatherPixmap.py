@@ -5,29 +5,17 @@
 
 from Components.Renderer.Renderer import Renderer
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.Directories import resolveFilename ,SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN
 from enigma import ePixmap, eTimer
 import os
 
 class AnimatedWeatherPixmap(Renderer):
 	__module__ = __name__
-#	searchPaths = ('/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
+	searchPaths = ('/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
 
 	def __init__(self):
 		Renderer.__init__(self)
-#		self.path = 'AnimatedWeatherPixmap'
-		if os.path.isfile('/usr/share/enigma2/AnimatedWeatherPixmap'):
-			self.path = '/usr/share/enigma2/AnimatedWeatherPixmap'
-		elif os.path.isfile('/media/hdd/AnimatedWeatherPixmap'):
-			self.path = '/media/hdd/AnimatedWeatherPixmap'
-		elif os.path.isfile('/media/usb/AnimatedWeatherPixmap'):
-			self.path = '/media/usb/AnimatedWeatherPixmap'
-		elif os.path.isfile('/media/sdb1/AnimatedWeatherPixmap'):
-			self.path = '/media/sdb1/AnimatedWeatherPixmap'
-		elif os.path.isfile('/media/sdb2/AnimatedWeatherPixmap'):
-			self.path = '/media/sdb2/AnimatedWeatherPixmap'
-		else:
-			self.path = None
+		self.path = 'AnimatedWeatherPixmap'
 		self.pixdelay = 100
 		self.control = 1
 		self.ftpcontrol = 0

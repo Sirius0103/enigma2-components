@@ -32,14 +32,14 @@
 
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, resolveFilename 
+from Tools.Directories import resolveFilename ,SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS
 import os
 
 searchPaths = []
 
 def initPiconPaths():
 	global searchPaths
-	if os.path.isfile('/proc/mounts'):
+	if os.path.exists('/proc/mounts'):
 		for line in open('/proc/mounts'):
 			if '/dev/sd' in line or '/dev/disk/by-uuid/' in line or '/dev/mmc' in line:
 				piconPath = line.split()[1].replace('\\040', ' ') + '/%s/'
@@ -92,7 +92,7 @@ class PiconUni(Renderer):
 					pngname = self.findPicon('picon_default')
 					if pngname is '':
 						tmp = resolveFilename(SCOPE_CURRENT_SKIN, 'picon_default.png')
-						if os.path.isfile(tmp):
+						if os.path.exists(tmp):
 							pngname = tmp
 						else:
 							pngname = resolveFilename(SCOPE_SKIN_IMAGE, 'skin_default/picon_default.png')
@@ -116,7 +116,7 @@ class PiconUni(Renderer):
 		for path in searchPaths:
 			for dirName in pathtmp:
 				pngname = (path % dirName) + serviceName + '.png'
-				if os.path.isfile(pngname):
+				if os.path.exists(pngname):
 					return pngname
 		return ''
 

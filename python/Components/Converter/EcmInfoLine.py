@@ -93,7 +93,7 @@ class EcmInfoLine(Poll, Converter, object):
 	def	get_ecm_data(self):
 		self.out_data = {'caid':'', 'prov':'', 'time':'', 'using':'', 'protocol':'', 'reader':'', 'port':'', 'source':'', 'hops':''}
 		self.caid_data = self.ecm_time = self.prov_data = self.using_data = self.port_data = self.protocol_data = self.reader_data = self.hops_data = self.display_data = ''
-		if os.path.isfile('/tmp/ecm.info'):
+		if os.path.exists('/tmp/ecm.info'):
 			try:
 				filedata = open('/tmp/ecm.info')
 			except:
@@ -219,16 +219,16 @@ class EcmInfoLine(Poll, Converter, object):
 				if service.streamed() != None:
 					return  _('Internet broadcasting')
 				return _('Free-to-air')
-			elif iscrypt and not os.path.isfile('/tmp/ecm.info'):
+			elif iscrypt and not os.path.exists('/tmp/ecm.info'):
 				return _('No parse cannot emu')
-			elif iscrypt and os.path.isfile('/tmp/ecm.info'):
+			elif iscrypt and os.path.exists('/tmp/ecm.info'):
 				try:
 					if not os.stat('/tmp/ecm.info').st_size:
 						return _('No parse cannot emu')
 				except:
 					return _('No parse cannot emu')
 
-		if not self.out_data.get('source', '') == 'emu' and os.path.isfile('/tmp/ecm.info'):
+		if not self.out_data.get('source', '') == 'emu' and os.path.exists('/tmp/ecm.info'):
 			try:
 				if int((time.time() - os.stat("/tmp/ecm.info").st_mtime)) > 14:
 					return _('No parse cannot emu')

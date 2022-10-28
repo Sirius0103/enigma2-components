@@ -180,7 +180,7 @@ class CaidBar(Poll, Converter, object):
 		caidvalue = return_line = ""
 		ecm_files = ["/tmp/ecm.info", "/tmp/ecm1.info"] # Tuner A,B
 		for ecm_file in ecm_files:
-			if os.path.isfile(ecm_file):
+			if os.path.exists(ecm_file):
 				try:
 					filedata = open(ecm_file)
 				except:

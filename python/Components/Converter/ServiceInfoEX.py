@@ -26,7 +26,7 @@ from Components.config import config
 from enigma import iServiceInformation, iPlayableService
 import os
 
-if os.path.isfile("/etc/issue"):
+if os.path.exists("/etc/issue"):
 	image = ''
 	for text in open("/etc/issue"):
 		image += text

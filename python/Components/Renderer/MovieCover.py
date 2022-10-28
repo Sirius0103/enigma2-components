@@ -9,7 +9,7 @@ from Components.Renderer.Renderer import Renderer
 from Components.Converter.Poll import Poll
 from Components.Pixmap import Pixmap
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
+from Tools.Directories import resolveFilename ,SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN
 from enigma import eServiceCenter, ePixmap, ePicLoad, loadPic, eTimer
 import os
 
@@ -63,7 +63,7 @@ class MovieCover(Renderer, Poll):
 					pngname = self.findPicon('picon_default')
 					if (pngname == ''):
 						tmp = resolveFilename(SCOPE_CURRENT_SKIN, 'no_poster.png')
-						if fileExists(tmp):
+						if os.path.exists(tmp):
 							pngname = tmp
 						self.nameCache['default'] = pngname
 			if (self.pngname != pngname):
@@ -80,7 +80,7 @@ class MovieCover(Renderer, Poll):
 			try:
 				name = ((path % self.path) + serviceName)
 				pngname = name + '.jpg'
-				if fileExists(pngname):
+				if os.path.exists(pngname):
 					return pngname
 			except:
 				return ''

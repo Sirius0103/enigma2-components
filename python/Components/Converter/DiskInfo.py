@@ -58,14 +58,14 @@ class DiskInfo(Poll, Converter, object):
 		self.poll_enabled = True
 
 	def filesystem(self, mountpoint):
-		if os.path.isfile("/proc/mounts"):
+		if os.path.exists("/proc/mounts"):
 			for line in open("/proc/mounts"):
 				if mountpoint in line:
 					return "%s  %s" % (line.split()[2], line.split()[3].split(',')[0])
 		return ''
 
 	def devpoint(self, mountpoint):
-		if os.path.isfile("/proc/mounts"):
+		if os.path.exists("/proc/mounts"):
 			for line in open("/proc/mounts"):
 				if mountpoint in line:
 					return line.split()[0]

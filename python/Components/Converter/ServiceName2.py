@@ -385,7 +385,7 @@ class ServiceName2(Converter, object):
 
 	def getIPTVProvider(self, refstr):
 		iptv_prov = '/etc/enigma2/iptvprov.list'
-		if os.path.isfile(iptv_prov):
+		if os.path.exists(iptv_prov):
 			with open(iptv_prov, "r") as f:
 				for d in f.readlines():
 					if d.split(',')[0] in refstr:
@@ -527,7 +527,7 @@ class ServiceName2(Converter, object):
 				else:
 					tmpref = refstr
 				for i in range(len(searchpath)):
-					if os.path.isfile('%s%s' % (searchpath[i], refname)):
+					if os.path.exists('%s%s' % (searchpath[i], refname)):
 						refpath = '%s%s' % (searchpath[i], refname)
 				if not '' is refpath:
 					tmpref = ':'.join(tmpref.split(':')[:10])
@@ -623,7 +623,7 @@ class ServiceName2(Converter, object):
 						else:
 							tmpref = refstr
 						for i in range(len(searchpath)):
-							if os.path.isfile('%s%s' % (searchpath[i], refname)):
+							if os.path.exists('%s%s' % (searchpath[i], refname)):
 								refpath = '%s%s' % (searchpath[i], refname)
 						if not '' is refpath:
 							tmpref = ':'.join(tmpref.split(':')[:10])
@@ -642,7 +642,8 @@ class ServiceName2(Converter, object):
 				elif f == 'S':	# %S - Satellite
 					if self.isStream:
 						try:
-							ret += _("Stream:") + " " + refstr.replace("%3a", ":").rsplit("://", 1)[1].split("/")[0].split(":")[0]
+#							ret += _("Stream:") + " " + refstr.replace("%3a", ":").rsplit("://", 1)[1].split("/")[0].split(":")[0]
+							ret += refstr.replace("%3a", ":").rsplit("://", 1)[1].split("/")[0].split(":")[0]
 						except:
 							pass
 					else:

@@ -5,29 +5,17 @@
 
 from Components.Renderer.Renderer import Renderer
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename
+from Tools.Directories import resolveFilename ,SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN
 from enigma import ePixmap, eTimer
 import os
 
 class AnimatedMoonPixmap(Renderer):
 	__module__ = __name__
-#	searchPaths = ('/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
+	searchPaths = ('/media/hdd/%s/', '/media/usb/%s/', '/media/sdb1/%s/', '/media/sdb2/%s/')
 
 	def __init__(self):
 		Renderer.__init__(self)
-#		self.path = 'AnimatedMoonPixmap'
-		if os.path.isfile('/usr/share/enigma2/AnimatedMoonPixmap'):
-			self.path = '/usr/share/enigma2/AnimatedMoonPixmap'
-		elif os.path.isfile('/media/hdd/AnimatedMoonPixmap'):
-			self.path = '/media/hdd/AnimatedMoonPixmap'
-		elif os.path.isfile('/media/usb/AnimatedMoonPixmap'):
-			self.path = '/media/usb/AnimatedMoonPixmap'
-		elif os.path.isfile('/media/sdb1/AnimatedMoonPixmap'):
-			self.path = '/media/sdb1/AnimatedMoonPixmap'
-		elif os.path.isfile('/media/sdb2/AnimatedMoonPixmap'):
-			self.path = '/media/sdb2/AnimatedMoonPixmap'
-		else:
-			self.path = None
+		self.path = 'AnimatedMoonPixmap'
 		self.pixdelay = 100
 		self.control = 1
 		self.ftpcontrol = 0

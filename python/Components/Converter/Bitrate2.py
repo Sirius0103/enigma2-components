@@ -21,7 +21,7 @@ from Components.Element import cached
 from enigma import iServiceInformation, iPlayableService, eTimer, eServiceReference
 import os
 
-if os.path.isfile('/usr/lib/enigma2/python/Components/Converter/bitratecalc.so'):
+if os.path.exists('/usr/lib/enigma2/python/Components/Converter/bitratecalc.so'):
 	from bitratecalc import eBitrateCalculator
 	binaryfound = True
 else:

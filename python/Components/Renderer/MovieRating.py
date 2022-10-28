@@ -8,7 +8,8 @@
 from Components.Renderer.Renderer import Renderer
 from Components.Converter.Poll import Poll
 from enigma import ePixmap, eEnv
-from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, fileExists, resolveFilename
+from Tools.Directories import resolveFilename ,SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN
+import os
 
 class MovieRating(Renderer, Poll):
 	__module__ = __name__
@@ -57,14 +58,14 @@ class MovieRating(Renderer, Poll):
 	def findPicon(self, serviceName):
 		IMAGE_PATH2 = resolveFilename(SCOPE_CURRENT_SKIN, 'starsbar')
 		path2 = resolveFilename(SCOPE_SKIN_IMAGE, IMAGE_PATH2)
-		if fileExists(path2):
+		if os.path.exists(path2):
 			pngname = ((path2 + "/" + serviceName) + ".png")
-			if fileExists(pngname):
+			if os.path.exists(pngname):
 				return pngname
 		else:
 			for path in self.searchPaths:
 				pngname = (((path % self.path) + serviceName) + ".png")
-				if fileExists(pngname):
+				if os.path.exists(pngname):
 					return pngname
 		return ''
 
